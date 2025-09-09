@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Erinka Taxi - bezpečné jazdy Košice</title>
     <style>
-        /* Základ */
-        
         body {
             font-family: Arial, sans-serif;
             background: #fff;
@@ -29,9 +27,15 @@
             color: #d46d6d;
         }
         
+        h1,
+        h2,
+        h3 {
+            color: #b54f4f;
+            margin: 0.2rem 0;
+        }
+        
         h2 {
             font-size: 20px;
-            color: #b54f4f;
             border-bottom: 2px solid #e0b4b4;
             padding-bottom: 0.2rem;
             margin-bottom: 0.5rem;
@@ -41,7 +45,6 @@
         p {
             margin: 0.2rem 0;
         }
-        /* Header */
         
         header {
             background-color: #f9e6e6;
@@ -52,62 +55,50 @@
         }
         
         header h1 {
-            margin: 0;
             font-size: 2rem;
             font-weight: 700;
         }
         
         header p {
-            margin: 0.2rem 0 0;
             font-style: italic;
             font-weight: 500;
             font-size: 14px;
+            margin: 0.2rem 0 0;
         }
-        /* Main */
         
         main {
             max-width: 600px;
             margin: 1rem auto;
             padding: 0 1rem;
         }
-        /* Sekcie */
         
         .section {
             margin-bottom: 1.5rem;
-        }
-        /* Boxy cenníka */
-        
-        .price-cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            /* vycentrovanie boxov */
-            gap: 10px;
-            margin-top: 10px;
+            text-align: center;
         }
         
         .contacts {
             display: flex;
             justify-content: center;
-            /* vycentrovanie horizontálne */
             gap: 20px;
-            /* medzera medzi telefónom a emailom */
             margin-bottom: 10px;
         }
         
         .contacts p {
             margin: 0;
-            /* odstráni default margin */
         }
         
-        .contacts-orders {
-            text-align: center;
-            /* zarovná texty a inline elementy */
+        .price-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
         }
         
         .card {
             flex: 1 1 200px;
-            background-color: #f8f8f8;
+            background: #f8f8f8;
             border-radius: 10px;
             padding: 10px;
             text-align: center;
@@ -118,7 +109,6 @@
         .card h3 {
             font-size: 16px;
             margin-bottom: 5px;
-            color: #b54f4f;
         }
         
         .card p {
@@ -132,16 +122,15 @@
             padding: 6px 10px;
             background-color: #f4cccc;
             color: #a33939;
-            text-decoration: none;
             border-radius: 5px;
             font-weight: 600;
             font-size: 13px;
+            cursor: pointer;
         }
         
         .btn:hover {
             background-color: #e0b4b4;
         }
-        /* Download tlačidlá */
         
         .btn-download {
             display: inline-block;
@@ -150,34 +139,48 @@
             padding: 0.4rem 0.8rem;
             border-radius: 5px;
             font-weight: 700;
-            margin-top: 0.5rem;
+            margin: 0.5rem 0;
             font-size: 13px;
-            transition: background-color 0.3s ease;
-        }
-        
-        .downloads {
-            text-align: center;
-            /* vycentruje nadpis a obsah */
-        }
-        
-        .downloads .btn-download {
-            display: inline-block;
-            margin: 0.3rem 0;
-            /* vertikálne medzery medzi tlačidlami */
+            transition: 0.3s;
         }
         
         .btn-download:hover {
             background-color: #e0b4b4;
         }
-        /* Galéria */
+        
+        #full-cennik {
+            display: none;
+            text-align: left;
+            margin-top: 10px;
+            padding: 10px;
+            background: #fdf0f0;
+            border-radius: 8px;
+        }
+        
+        #full-cennik h3 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        #full-cennik table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        
+        #full-cennik th,
+        #full-cennik td {
+            border: 1px solid #e0b4b4;
+            padding: 5px;
+            text-align: left;
+        }
         
         .gallery img {
             max-width: 100%;
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgb(181 79 79 / 0.3);
+            box-shadow: 0 2px 6px rgba(181, 79, 79, 0.3);
             margin-bottom: 0.5rem;
         }
-        /* Footer */
         
         footer {
             text-align: center;
@@ -190,6 +193,7 @@
 </head>
 
 <body>
+
     <header>
         <h1>Erinka Taxi</h1>
         <p>Safe rides • Woman & child friendly • Everybody &#127752; welcome</p>
@@ -197,44 +201,215 @@
     </header>
 
     <main>
-        <!-- Kontakty a boxy cenníka -->
+        <!-- Kontakty a boxy -->
         <section class="contacts-orders section">
             <h2>Objednávky - Orders</h2>
             <div class="contacts">
                 <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
                 <p>📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a></p>
-                <p></p>
             </div>
 
             <div class="price-cards">
-                <!-- boxy cenníka -->
                 <div class="card">
                     <h3>Minimálne jazdné v meste</h3>
                     <p>5,0 €</p>
-                    <a href="cennik.pdf" class="btn" target="_blank">Pozrieť cenník</a>
                 </div>
                 <div class="card">
-                    <h3>Štartovné</h3>
-                    <p>1,3 €</p>
-                    <a href="cennik.pdf" class="btn" target="_blank">Pozrieť cenník</a>
+                    <h3>Minimálne jazdné mimo mesta</h3>
+                    <p>10,0 €</p>
                 </div>
                 <div class="card">
-                    <h3>Letisko</h3>
+                    <h3>Letisko Košice (KSC)</h3>
                     <p>od 10 €</p>
-                    <a href="cennik.pdf" class="btn" target="_blank">Pozrieť cenník</a>
+                </div>
+                <div class="card">
+                    <h3>Letisko Budapešť (BUD)</h3>
+                    <p>od 160 €</p>
+                </div>
+                <div class="card">
+                    <h3>Letisko Varšava (WAW)</h3>
+                    <p>od 250 €</p>
                 </div>
                 <div class="card">
                     <h3>Kompletný cenník</h3>
-                    <a href="cennik.pdf" class="btn" target="_blank">Pozrieť cenník</a>
                 </div>
             </div>
-        </section>
 
-        <!-- Download sekcia -->
-        <section class="downloads section">
-            <h2>Na stiahnutie - Downloads</h2>
-            <a href="cennik.pdf" class="btn-download" download>Cenník taxi (PDF)</a><br />
-            <a href="prevadzkovy-poriadok.pdf" class="btn-download" download>Prevádzkový poriadok (PDF)</a>
+            <button class="btn" onclick="toggleCennik()">Pozrieť celý cenník</button>
+
+            <div id="full-cennik">
+                <h3>Celý cenník Erinka Taxi</h3>
+                <p><em>Všetky jazdy sú na základe vopred dohodnutej paušálnej ceny (SMS/e-mail),
+                        nejde o výpočet podľa taxametra.</em></p>
+
+                <h4>1. Jazdy na území mesta Košice</h4>
+                <table>
+                    <tr>
+                        <td>Minimálne jazdné v meste</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Čakanie (na požiadanie)</td>
+                        <td>30,00 €/hod</td>
+                    </tr>
+                    <tr>
+                        <td>Znečistenie interiéru</td>
+                        <td>100,00 €</td>
+                    </tr>
+                </table>
+
+                <h4>1a. Orientačné ceny v rámci mesta (príklady)</h4>
+                <table>
+                    <tr>
+                        <td>Centrum – sídliská</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Medzi sídliskami</td>
+                        <td>6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Letisko</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>DoubleTree Hlavná ulica – KVP</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>DoubleTree Hlavná ulica –> Galéria -> KVP</td>
+                        <td>6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Ťahanovce – Terasa</td>
+                        <td>6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Dargovských hrdinov –> Jazero Jenisejská</td>
+                        <td>8,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Košická Nová Ves – Pereš</td>
+                        <td>12,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Hlavná – Baška</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Hlavná – Komenského – Letná – KVP</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Ťahanovce – Dargovských hrdinov – KVP</td>
+                        <td>12,00 €</td>
+                    </tr>
+                </table>
+
+                <h4>1b. Príplatkové zóny (Košice – okolie)</h4>
+                <table>
+                    <tr>
+                        <td>Zóna 2: Barca, Jazero, Košická Nová Ves, Myslava</td>
+                        <td>+2,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 3: Krásna, Myslava Maša, Pereš</td>
+                        <td>+3,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 3b: Baška, Krásna na hore, Lorinčík, Nižný Klátov, Valaliky, Vyšný Lorinčík</td>
+                        <td>+4,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 4: Alpinka, Beniakovce, Budimír, Bukovec, Družstevná nad Hornádom, Geča, Hrašovík, Kavečany, Kokšov-Bakša, Košické Oľšany, Kostolany, Malá Ida, Poľov, Sady nad Torysou, Vajkovce</td>
+                        <td>+6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 5: Hýľov, Kráľovce, Rozhanovce, Šaca, Vyšný Klátov, Ďurďošík</td>
+                        <td>+8,00 €</td>
+                    </tr>
+                </table>
+
+
+                <h4>2. Jazdy mimo mesta Košice</h4>
+                <table>
+                    <tr>
+                        <td>Minimálne jazdné mimo mesta</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Čakanie (na požiadanie)</td>
+                        <td>30,00 €/hod</td>
+                    </tr>
+                </table>
+
+                <h4>3. Letiskové transfery (cena za celé auto)</h4>
+                <table>
+                    <tr>
+                        <td>Letisko Košice (KSC)</td>
+                        <td>od 10 €</td>
+                    </tr>
+                    <tr>
+                        <td>Budapešť (BUD)</td>
+                        <td>od 160 €</td>
+                    </tr>
+                    <tr>
+                        <td>Viedeň (VIE)</td>
+                        <td>od 220 €</td>
+                    </tr>
+                    <tr>
+                        <td>Varšava (WAW)</td>
+                        <td>od 250 €</td>
+                    </tr>
+                    <tr>
+                        <td>Praha (PRG)</td>
+                        <td>od 300 €</td>
+                    </tr>
+                    <tr>
+                        <td>Bratislava (BTS)</td>
+                        <td>od 200 €</td>
+                    </tr>
+                </table>
+
+                <h4>4. Špeciálne služby</h4>
+                <table>
+                    <tr>
+                        <td>Drink Taxi (odvoz vášho auta s vodičom)</td>
+                        <td>v meste 30 €, mimo mesta od 0,50 €/km (dohodou)</td>
+                    </tr>
+                </table>
+
+                <h4>5. Doplatky a poplatky</h4>
+                <table>
+                    <tr>
+                        <td>Čakanie (na požiadanie)</td>
+                        <td>30,00 €/hod</td>
+                    </tr>
+                    <tr>
+                        <td>Znečistenie interiéru</td>
+                        <td>250,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Preprava zvieraťa (okrem asistenčných psov)</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Nadrozmerná batožina (bicykel, veľký kočík a pod.)</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Špecifické požiadavky (extra zastávky, obchádzky, donáška vecí)</td>
+                        <td>dohodou</td>
+                    </tr>
+                    <tr>
+                        <td>Storno jazdy po príchode vozidla</td>
+                        <td>5,00 €</td>
+                    </tr>
+                </table>
+
+
+                <a href="cennik.pdf" class="btn-download" download>Stiahnuť PDF verziu</a>
+            </div>
         </section>
 
         <!-- Galéria -->
@@ -246,6 +421,19 @@
     <footer>
         <p>© 2025 Erinka Taxi</p>
     </footer>
+
+    <script>
+        function toggleCennik() {
+            const cennik = document.getElementById("full-cennik");
+            cennik.style.display = cennik.style.display === "none" ? "block" : "none";
+            if (cennik.style.display === "block") {
+                cennik.scrollIntoView({
+                    behavior: "smooth"
+                });
+            }
+        }
+    </script>
+
 </body>
 
 </html>
