@@ -88,7 +88,7 @@
             margin: 0;
         }
 
-        /* nový box pre dostupnosť */
+        /* BOX DOSTUPNOSTI – dvojjazyčný */
         .availability-box {
             display: flex;
             justify-content: space-between;
@@ -113,6 +113,12 @@
             color: #b54f4f;
         }
 
+        @media (max-width: 520px) {
+            .availability-box {
+                flex-direction: column;
+            }
+        }
+        
         .price-cards {
             display: flex;
             flex-wrap: wrap;
@@ -316,7 +322,154 @@
                         <td>100,00 €</td>
                     </tr>
                 </table>
-                <!-- ... ostatný obsah cenníka zostáva rovnaký ... -->
+
+                <h4>1a. Orientačné ceny v rámci mesta (príklady)</h4>
+                <table>
+                    <tr>
+                        <td>Centrum – sídliská</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Medzi sídliskami</td>
+                        <td>6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Letisko</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>DoubleTree Hlavná ulica – KVP</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>DoubleTree Hlavná ulica –&gt; Galéria -&gt; KVP</td>
+                        <td>6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Ťahanovce – Terasa</td>
+                        <td>6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Dargovských hrdinov –&gt; Jazero Jenisejská</td>
+                        <td>8,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Košická Nová Ves – Pereš</td>
+                        <td>12,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Hlavná – Baška</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Hlavná – Komenského – Letná – KVP</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Ťahanovce – Dargovských hrdinov – KVP</td>
+                        <td>12,00 €</td>
+                    </tr>
+                </table>
+
+                <h4>1b. Príplatkové zóny (Košice – okolie)</h4>
+                <table>
+                    <tr>
+                        <td>Zóna 2: Barca, Jazero, Košická Nová Ves, Myslava</td>
+                        <td>+2,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 3: Krásna, Myslava Maša, Pereš</td>
+                        <td>+3,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 3b: Baška, Krásna na hore, Lorinčík, Nižný Klátov, Valaliky, Vyšný Lorinčík</td>
+                        <td>+4,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 4: Alpinka, Beniakovce, Budimír, Bukovec, Družstevná nad Hornádom, Geča, Hrašovík, Kavečany, Kokšov-Bakša, Košické Oľšany, Kostolany, Malá Ida, Poľov, Sady nad Torysou, Vajkovce</td>
+                        <td>+6,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Zóna 5: Hýľov, Kráľovce, Rozhanovce, Šaca, Vyšný Klátov, Ďurďošík</td>
+                        <td>+8,00 €</td>
+                    </tr>
+                </table>
+
+                <h4>2. Jazdy mimo mesta Košice</h4>
+                <table>
+                    <tr>
+                        <td>Minimálne jazdné mimo mesta</td>
+                        <td>10,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Čakanie (na požiadanie)</td>
+                        <td>30,00 €/hod</td>
+                    </tr>
+                </table>
+
+                <h4>3. Letiskové transfery (cena za celé auto)</h4>
+                <table>
+                    <tr>
+                        <td>Letisko Košice (KSC)</td>
+                        <td>od 10 €</td>
+                    </tr>
+                    <tr>
+                        <td>Budapešť (BUD)</td>
+                        <td>od 160 €</td>
+                    </tr>
+                    <tr>
+                        <td>Viedeň (VIE)</td>
+                        <td>od 220 €</td>
+                    </tr>
+                    <tr>
+                        <td>Varšava (WAW)</td>
+                        <td>od 250 €</td>
+                    </tr>
+                    <tr>
+                        <td>Praha (PRG)</td>
+                        <td>od 300 €</td>
+                    </tr>
+                    <tr>
+                        <td>Bratislava (BTS)</td>
+                        <td>od 200 €</td>
+                    </tr>
+                </table>
+
+                <h4>4. Špeciálne služby</h4>
+                <table>
+                    <tr>
+                        <td>Drink Taxi (odvoz vášho auta s vodičom)</td>
+                        <td>v meste 30 €, mimo mesta od 0,50 €/km (dohodou)</td>
+                    </tr>
+                </table>
+
+                <h4>5. Doplatky a poplatky</h4>
+                <table>
+                    <tr>
+                        <td>Čakanie (na požiadanie)</td>
+                        <td>30,00 €/hod</td>
+                    </tr>
+                    <tr>
+                        <td>Znečistenie interiéru</td>
+                        <td>250,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Preprava zvieraťa (okrem asistenčných psov)</td>
+                        <td>2,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Nadrozmerná batožina (bicykel, veľký kočík a pod.)</td>
+                        <td>5,00 €</td>
+                    </tr>
+                    <tr>
+                        <td>Špecifické požiadavky (extra zastávky, obchádzky, donáška vecí)</td>
+                        <td>dohodou</td>
+                    </tr>
+                    <tr>
+                        <td>Storno jazdy po príchode vozidla</td>
+                        <td>5,00 €</td>
+                    </tr>
+                </table>
 
                 <a href="cennik.pdf" class="btn-download" download>Stiahnuť PDF verziu</a>
             </div>
@@ -337,9 +490,7 @@
             const cennik = document.getElementById("full-cennik");
             cennik.style.display = cennik.style.display === "none" ? "block" : "none";
             if (cennik.style.display === "block") {
-                cennik.scrollIntoView({
-                    behavior: "smooth"
-                });
+                cennik.scrollIntoView({ behavior: "smooth" });
             }
         }
     </script>
