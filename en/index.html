@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Erinka Taxi | Bezpečné jazdy pre ženy, rodiny a seniorov v Košiciach</title>
+    <title>Erinka Taxi | Safe rides for women, families and seniors in Košice</title>
 
     <meta name="description"
-        content="Bezpečné plánované jazdy v Košiciach a okolí. Pre ženy, rodiny s deťmi, seniorov a všetkých, ktorí ocenia pokojný a individuálny prístup. Letiskové transfery, odvoz na oslavy, svadby a ďalšie udalosti.">
+        content="Safe pre-booked rides in Košice and the surrounding area. For women, families with children, seniors and everyone who appreciates a calm and personal approach. Airport transfers, rides to celebrations, weddings and other events.">
 
     <meta name="keywords"
-        content="taxi Košice, žena vodička Košice, bezpečné taxi Košice, letiskový transfer Košice, taxi pre seniorov, taxi pre ženy, Erinka Taxi">
+        content="taxi Košice, female driver Košice, safe taxi Košice, airport transfer Košice, taxi for seniors, taxi for women, Erinka Taxi">
 
     <meta name="author"
         content="Ing. Erin Zeleňáková - ERINKA">
 
     <meta property="og:title"
-        content="Erinka Taxi | Bezpečné jazdy pre ženy, rodiny a seniorov v Košiciach">
+        content="Erinka Taxi | Safe rides for women, families and seniors in Košice">
 
     <meta property="og:description"
-        content="Bezpečné plánované jazdy v Košiciach a okolí. Individuálny prístup, letiskové transfery, rodinné jazdy a preprava seniorov.">
+        content="Safe pre-booked rides in Košice and the surrounding area. Personal approach, airport transfers, family rides and transport for seniors.">
 
     <meta property="og:type"
         content="website">
 
     <meta property="og:url"
-        content="https://www.erinkataxi.sk/">
+        content="https://www.erinkataxi.sk/en/">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,25 +36,25 @@
             line-height: 1.4;
             font-size: 14px;
         }
-        
+
         a {
             color: #b54f4f;
             text-decoration: none;
             font-weight: 600;
         }
-        
+
         a:hover {
             text-decoration: underline;
             color: #d46d6d;
         }
-        
+
         h1,
         h2,
         h3 {
             color: #b54f4f;
             margin: 0.2rem 0;
         }
-        
+
         h2 {
             font-size: 20px;
             border-bottom: 2px solid #e0b4b4;
@@ -62,11 +62,11 @@
             margin-bottom: 0.5rem;
             font-weight: 700;
         }
-        
+
         p {
             margin: 0.2rem 0;
         }
-        
+
         header {
             background-color: #f9e6e6;
             color: #a33939;
@@ -74,6 +74,7 @@
             text-align: center;
             border-bottom: 2px solid #e0b4b4;
         }
+
         .lang-switch {
             text-align: right;
             margin-bottom: 8px;
@@ -90,41 +91,41 @@
             color: #d46d6d;
             text-decoration: underline;
         }
+
         header h1 {
             font-size: 2rem;
             font-weight: 700;
         }
-        
+
         header p {
             font-style: italic;
             font-weight: 500;
             font-size: 14px;
             margin: 0.2rem 0 0;
         }
-        
+
         main {
             max-width: 600px;
             margin: 1rem auto;
             padding: 0 1rem;
         }
-        
+
         .section {
             margin-bottom: 1.5rem;
             text-align: center;
         }
-        
+
         .contacts {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-bottom: 10px;
         }
-        
+
         .contacts p {
             margin: 0;
         }
 
-        /* BOX DOSTUPNOSTI – dvojjazyčný */
         .availability-box {
             display: flex;
             justify-content: space-between;
@@ -154,6 +155,7 @@
                 flex-direction: column;
             }
         }
+
         .about-box {
             background: #fdf0f0;
             border: 1px solid #e0b4b4;
@@ -167,6 +169,7 @@
         .about-box h2 {
             text-align: center;
         }
+
         .price-cards {
             display: flex;
             flex-wrap: wrap;
@@ -174,7 +177,7 @@
             gap: 10px;
             margin-top: 10px;
         }
-        
+
         .card {
             flex: 1 1 200px;
             background: #f8f8f8;
@@ -184,18 +187,18 @@
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
             font-size: 13px;
         }
-        
+
         .card h3 {
             font-size: 16px;
             margin-bottom: 5px;
         }
-        
+
         .card p {
             font-size: 14px;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        
+
         .btn {
             display: inline-block;
             padding: 6px 10px;
@@ -206,11 +209,11 @@
             font-size: 13px;
             cursor: pointer;
         }
-        
+
         .btn:hover {
             background-color: #e0b4b4;
         }
-        
+
         .btn-download {
             display: inline-block;
             background-color: #f4cccc;
@@ -222,11 +225,11 @@
             font-size: 13px;
             transition: 0.3s;
         }
-        
+
         .btn-download:hover {
             background-color: #e0b4b4;
         }
-        
+
         #full-cennik {
             display: none;
             text-align: left;
@@ -235,31 +238,32 @@
             background: #fdf0f0;
             border-radius: 8px;
         }
-        
+
         #full-cennik h3 {
             text-align: center;
             margin-bottom: 0.5rem;
         }
-        
+
         #full-cennik table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 1rem;
         }
-        
+
         #full-cennik th,
         #full-cennik td {
             border: 1px solid #e0b4b4;
             padding: 5px;
             text-align: left;
         }
-        
+
         .gallery img {
             max-width: 100%;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(181, 79, 79, 0.3);
             margin-bottom: 0.5rem;
         }
+
         .legal-box {
             background: #fdf0f0;
             border: 1px solid #e0b4b4;
@@ -290,7 +294,7 @@
                 flex-direction: column;
             }
         }
-        
+
         footer {
             text-align: center;
             font-size: 12px;
@@ -303,379 +307,363 @@
 
 <body>
 
-<!--     <header>
-        <h1>Erinka Taxi</h1>
-        <p>Safe rides • Woman & child friendly • Everybody &#127752; welcome</p>
-        <p>Bezpečná jazda • Vhodné pre ženy aj deti • Všetci &#127752; sú vítaní</p>
-    </header> -->
     <header>
         <div class="lang-switch">
-        <a href="/en/" title="English version">EN</a>
+            <a href="/" title="Slovenská verzia">SK</a>
         </div>
 
         <h1>Erinka Taxi</h1>
-        <p>Bezpečná jazda • Vhodné pre ženy, deti aj seniorov • Všetci &#127752; sú vítaní</p>
-        <p>Plánované jazdy v Košiciach a okolí za vopred dohodnutú cenu</p>
+        <p>Safe rides • Suitable for women, children and seniors • Everyone &#127752; is welcome</p>
+        <p>Pre-booked rides in Košice and the surrounding area for a price agreed in advance</p>
     </header>
+
     <main>
-        <!-- Kontakty a boxy -->
         <section class="contacts-orders section">
-            <h2>Rezervácia jazdy</h2>
+            <h2>Ride reservation</h2>
             <div class="contacts">
                 <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
                 <p>📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a></p>
             </div>
 
-            <!-- OBJEDNANIE A DOSTUPNOSŤ -->
             <div class="availability-box">
 
                 <div class="availability-col">
-                    <strong>📞 Ako objednať jazdu</strong>
-                    1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
-                    2️⃣ Dohodneme termín, trasu a cenu<br>
-                    3️⃣ V dohodnutom čase vás vyzdvihnem<br><br>
+                    <strong>📞 How to book a ride</strong>
+                    1️⃣ Call me, send an SMS or e-mail<br>
+                    2️⃣ We agree on the time, route and price<br>
+                    3️⃣ I will pick you up at the agreed time<br><br>
 
-                    ✈️ Odvoz na letisko aj vyzdvihnutie po prílete<br><br>
+                    ✈️ Airport drop-off and pick-up after arrival<br><br>
 
-                    💳 Platba: hotovosť alebo QR platba<br><br>
+                    💳 Payment: cash or QR payment<br><br>
 
-                    <em>Všetky jazdy sú plánované a rezervované vopred.</em>
+                    <em>All rides are planned and booked in advance.</em>
                 </div>
 
                 <div class="availability-col">
-                    <strong>⏰ Dostupnosť jázd</strong>
+                    <strong>⏰ Ride availability</strong>
 
-                    🚕 Pracovné dni od <b>03:00 do 08:00</b><br>
-                    📅 Popoludní od <b>16:30 do cca 21:00</b><br>
-                    🗓️ Víkendy iba po dohode vopred<br><br>
+                    🚕 Weekdays from <b>03:00 to 08:00</b><br>
+                    📅 Afternoon from <b>16:30 to around 21:00</b><br>
+                    🗓️ Weekends by prior agreement only<br><br>
 
-                    👧 Detská sedačka podľa potreby<br><br>
-                    ♿ Priestor aj pre invalidný vozík, kočík a väčšiu batožinu<br>
+                    👧 Child seat available if needed<br><br>
+                    ♿ Space for a wheelchair, stroller or larger luggage<br>
                 </div>
 
             </div>
+
             <section class="about-box">
-                <h2>O mne</h2>
+                <h2>About me</h2>
 
                 <p>
-                    Volám sa <strong>Ing. Erin Zeleňáková</strong> a prevádzkujem službu
+                    My name is <strong>Ing. Erin Zeleňáková</strong> and I operate
                     <strong>Erinka Taxi</strong>.
                 </p>
 
                 <p>
-                    Erinka Taxi vznikla pôvodne ako možnosť poskytovať bezpečné jazdy ženám.<br>
-                    Postupne sa rozšírila aj na rodinné jazdy, prepravu seniorov,
-                    odvoz detí do školy, letiskové transfery, oslavy ...
+                    Erinka Taxi originally started as a way to provide safe rides for women.
+                    Over time it also expanded to family rides, transport for seniors,
+                    school rides for children, airport transfers, celebrations and other events.
                 </p>
 
                 <p>
-                    Ľudia sú rôzni. Niekto chce počas jazdy rozprávať,
-                    niekto si chce oddýchnuť v tichu. Rešpektujem oboje.
+                    People are different. Some want to talk during the ride,
+                    others prefer to rest in silence. I respect both.
                 </p>
 
                 <p>
-                    Mojím cieľom je, aby ste sa do cieľa dostali bezpečne,
-                    pokojne a s pocitom, že ste boli v dobrých rukách.
+                    My goal is to get you to your destination safely, calmly
+                    and with the feeling that you were in good hands.
                 </p>
 
                 <p>
-                    Možno ma poznáte aj z platforiem Bolt, Uber alebo ZoberMa,<br>
-                    kde ma môžete stretnúť ako vodičku aj mimo vopred dohodnutých jázd.
+                    You may also know me from Bolt, Uber or ZoberMa,
+                    where you can meet me as a driver outside pre-booked rides as well.
                 </p>
             </section>
+
             <div class="price-cards">
                 <div class="card">
-                    <h3>Minimálne jazdné v meste</h3>
-                    <p>5,0 €</p>
+                    <h3>Minimum city fare</h3>
+                    <p>5.0 €</p>
                 </div>
                 <div class="card">
-                    <h3>Minimálne jazdné mimo mesta</h3>
-                    <p>10,0 €</p>
+                    <h3>Minimum fare outside the city</h3>
+                    <p>10.0 €</p>
                 </div>
                 <div class="card">
-                    <h3>Letisko Košice (KSC)</h3>
-                    <p>od 10 €</p>
+                    <h3>Košice Airport (KSC)</h3>
+                    <p>from 10 €</p>
                 </div>
                 <div class="card">
-                    <h3>Letisko Budapešť (BUD)</h3>
-                    <p>od 160 €</p>
+                    <h3>Budapest Airport (BUD)</h3>
+                    <p>from 160 €</p>
                 </div>
                 <div class="card">
-                    <h3>Letisko Varšava (WAW)</h3>
-                    <p>od 250 €</p>
+                    <h3>Warsaw Airport (WAW)</h3>
+                    <p>from 250 €</p>
                 </div>
                 <div class="card">
-                    <h3>📋 Kompletný cenník</h3>
+                    <h3>📋 Full price list</h3>
                 </div>
             </div>
 
-            <button class="btn" onclick="toggleCennik()">Pozrieť celý cenník</button>
+            <button class="btn" onclick="toggleCennik()">View full price list</button>
 
             <div id="full-cennik">
-                <h3>Cenník Erinka Taxi</h3>
+                <h3>Erinka Taxi price list</h3>
 
                 <p>
                     <strong>
-                        Erinka Taxi nepoužíva taxameter.<br>
-                        Cena jazdy je dohodnutá vopred pred začiatkom jazdy
-                        na základe trasy, času a požiadaviek zákazníka.
+                        Erinka Taxi does not use a taximeter.<br>
+                        The price of the ride is agreed in advance before the ride starts,
+                        based on the route, time and customer requirements.
                     </strong>
                 </p>
 
                 <div class="availability-box">
 
                     <div class="availability-col">
-                        <strong>📞 Objednanie jazdy</strong>
+                        <strong>📞 Ride booking</strong>
 
-                        1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
-                        2️⃣ Dohodneme termín, trasu a cenu<br>
-                        3️⃣ V dohodnutom čase vás vyzdvihnem<br><br>
+                        1️⃣ Call me, send an SMS or e-mail<br>
+                        2️⃣ We agree on the time, route and price<br>
+                        3️⃣ I will pick you up at the agreed time<br><br>
 
-                        ✈️ Odvoz na letisko aj vyzdvihnutie po prílete<br><br>
+                        ✈️ Airport drop-off and pick-up after arrival<br><br>
 
-                        💳 Platba: hotovosť alebo QR platba<br><br>
+                        💳 Payment: cash or QR payment<br><br>
 
-                        <em>Všetky jazdy sú plánované a rezervované vopred.</em>
+                        <em>All rides are planned and booked in advance.</em>
                     </div>
 
                     <div class="availability-col">
-                        <strong>⏰ Dostupnosť jázd</strong>
+                        <strong>⏰ Ride availability</strong>
 
-                        🚕 Pracovné dni od <b>03:00 do 08:00</b><br>
-                        📅 Popoludní od <b>16:30 do cca 21:00</b><br>
-                        🗓️ Víkendy iba po dohode vopred<br><br>
+                        🚕 Weekdays from <b>03:00 to 08:00</b><br>
+                        📅 Afternoon from <b>16:30 to around 21:00</b><br>
+                        🗓️ Weekends by prior agreement only<br><br>
 
-                        👧 Detská sedačka podľa potreby<br><br>
-                        ♿ Priestor aj pre invalidný vozík, kočík a väčšiu batožinu
+                        👧 Child seat available if needed<br><br>
+                        ♿ Space for a wheelchair, stroller or larger luggage
                     </div>
 
                 </div>
 
                 <p>
                     <em>
-                        Uvedené ceny sú orientačné. Konečná cena jazdy je zákazníkovi
-                        oznámená a odsúhlasená pred začiatkom jazdy.
+                        The listed prices are indicative. The final ride price is communicated
+                        to the customer and agreed before the ride starts.
                     </em>
                 </p>
 
-                <h4>1. Jazdy na území mesta Košice</h4>
+                <h4>1. Rides within the city of Košice</h4>
                 <table>
                     <tr>
-                        <td>Minimálne jazdné v meste</td>
-                        <td>5,00 €</td>
+                        <td>Minimum city fare</td>
+                        <td>5.00 €</td>
                     </tr>
                     <tr>
-                        <td>Čakanie (na požiadanie)</td>
-                        <td>30,00 €/hod</td>
+                        <td>Waiting time (on request)</td>
+                        <td>30.00 €/hour</td>
                     </tr>
                     <tr>
-                        <td>Znečistenie interiéru</td>
-                        <td>100,00 €</td>
+                        <td>Interior cleaning fee</td>
+                        <td>100.00 €</td>
                     </tr>
                 </table>
 
-                <h4>1a. Orientačné ceny v rámci mesta (príklady)</h4>
+                <h4>1a. Indicative city prices (examples)</h4>
                 <table>
                     <tr>
-                        <td>Centrum – sídliská</td>
-                        <td>5,00 €</td>
+                        <td>City centre – housing estates</td>
+                        <td>5.00 €</td>
                     </tr>
                     <tr>
-                        <td>Medzi sídliskami</td>
-                        <td>6,00 €</td>
+                        <td>Between housing estates</td>
+                        <td>6.00 €</td>
                     </tr>
                     <tr>
-                        <td>Letisko</td>
-                        <td>10,00 €</td>
+                        <td>Airport</td>
+                        <td>10.00 €</td>
                     </tr>
                     <tr>
-                        <td>DoubleTree Hlavná ulica – KVP</td>
-                        <td>5,00 €</td>
+                        <td>DoubleTree Hlavná Street – KVP</td>
+                        <td>5.00 €</td>
                     </tr>
                     <tr>
-                        <td>DoubleTree Hlavná ulica –&gt; Galéria -&gt; KVP</td>
-                        <td>6,00 €</td>
+                        <td>DoubleTree Hlavná Street –&gt; Galéria -&gt; KVP</td>
+                        <td>6.00 €</td>
                     </tr>
                     <tr>
                         <td>Ťahanovce – Terasa</td>
-                        <td>6,00 €</td>
+                        <td>6.00 €</td>
                     </tr>
                     <tr>
                         <td>Dargovských hrdinov –&gt; Jazero Jenisejská</td>
-                        <td>8,00 €</td>
+                        <td>8.00 €</td>
                     </tr>
                     <tr>
                         <td>Košická Nová Ves – Pereš</td>
-                        <td>12,00 €</td>
+                        <td>12.00 €</td>
                     </tr>
                     <tr>
                         <td>Hlavná – Baška</td>
-                        <td>10,00 €</td>
+                        <td>10.00 €</td>
                     </tr>
                     <tr>
                         <td>Hlavná – Komenského – Letná – KVP</td>
-                        <td>10,00 €</td>
+                        <td>10.00 €</td>
                     </tr>
                     <tr>
                         <td>Ťahanovce – Dargovských hrdinov – KVP</td>
-                        <td>12,00 €</td>
+                        <td>12.00 €</td>
                     </tr>
                 </table>
 
-                <h4>1b. Príplatkové zóny (Košice – okolie)</h4>
+                <h4>1b. Additional zones (Košice surroundings)</h4>
                 <table>
                     <tr>
-                        <td>Zóna 2: Barca, Jazero, Košická Nová Ves, Myslava</td>
-                        <td>+2,00 €</td>
+                        <td>Zone 2: Barca, Jazero, Košická Nová Ves, Myslava</td>
+                        <td>+2.00 €</td>
                     </tr>
                     <tr>
-                        <td>Zóna 3: Krásna, Myslava Maša, Pereš</td>
-                        <td>+3,00 €</td>
+                        <td>Zone 3: Krásna, Myslava Maša, Pereš</td>
+                        <td>+3.00 €</td>
                     </tr>
                     <tr>
-                        <td>Zóna 3b: Baška, Krásna na hore, Lorinčík, Nižný Klátov, Valaliky, Vyšný Lorinčík</td>
-                        <td>+4,00 €</td>
+                        <td>Zone 3b: Baška, Krásna na hore, Lorinčík, Nižný Klátov, Valaliky, Vyšný Lorinčík</td>
+                        <td>+4.00 €</td>
                     </tr>
                     <tr>
-                        <td>Zóna 4: Alpinka, Beniakovce, Budimír, Bukovec, Družstevná nad Hornádom, Geča, Hrašovík, Kavečany, Kokšov-Bakša, Košické Oľšany, Kostolany, Malá Ida, Poľov, Sady nad Torysou, Vajkovce</td>
-                        <td>+6,00 €</td>
+                        <td>Zone 4: Alpinka, Beniakovce, Budimír, Bukovec, Družstevná nad Hornádom, Geča, Hrašovík, Kavečany, Kokšov-Bakša, Košické Oľšany, Kostolany, Malá Ida, Poľov, Sady nad Torysou, Vajkovce</td>
+                        <td>+6.00 €</td>
                     </tr>
                     <tr>
-                        <td>Zóna 5: Hýľov, Kráľovce, Rozhanovce, Šaca, Vyšný Klátov, Ďurďošík</td>
-                        <td>+8,00 €</td>
+                        <td>Zone 5: Hýľov, Kráľovce, Rozhanovce, Šaca, Vyšný Klátov, Ďurďošík</td>
+                        <td>+8.00 €</td>
                     </tr>
                 </table>
 
-                <h4>2. Jazdy mimo mesta Košice</h4>
+                <h4>2. Rides outside the city of Košice</h4>
                 <table>
                     <tr>
-                        <td>Minimálne jazdné mimo mesta</td>
-                        <td>10,00 €</td>
+                        <td>Minimum fare outside the city</td>
+                        <td>10.00 €</td>
                     </tr>
                     <tr>
-                        <td>Čakanie (na požiadanie)</td>
-                        <td>30,00 €/hod</td>
+                        <td>Waiting time (on request)</td>
+                        <td>30.00 €/hour</td>
                     </tr>
                 </table>
 
-                <h4>3. Letiskové transfery (cena za celé auto)</h4>
+                <h4>3. Airport transfers (price for the whole car)</h4>
                 <table>
                     <tr>
-                        <td>Letisko Košice (KSC)</td>
-                        <td>od 10 €</td>
+                        <td>Košice Airport (KSC)</td>
+                        <td>from 10 €</td>
                     </tr>
                     <tr>
-                        <td>Budapešť (BUD)</td>
-                        <td>od 160 €</td>
+                        <td>Budapest (BUD)</td>
+                        <td>from 160 €</td>
                     </tr>
                     <tr>
-                        <td>Viedeň (VIE)</td>
-                        <td>od 220 €</td>
+                        <td>Vienna (VIE)</td>
+                        <td>from 220 €</td>
                     </tr>
                     <tr>
-                        <td>Varšava (WAW)</td>
-                        <td>od 250 €</td>
+                        <td>Warsaw (WAW)</td>
+                        <td>from 250 €</td>
                     </tr>
                     <tr>
-                        <td>Praha (PRG)</td>
-                        <td>od 300 €</td>
+                        <td>Prague (PRG)</td>
+                        <td>from 300 €</td>
                     </tr>
                     <tr>
                         <td>Bratislava (BTS)</td>
-                        <td>od 200 €</td>
+                        <td>from 200 €</td>
                     </tr>
                 </table>
 
-                <h4>4. Špeciálne služby</h4>
+                <h4>4. Special services</h4>
                 <table>
                     <tr>
-                        <td>Drink Taxi (odvoz vášho auta s vodičom)</td>
-                        <td>v meste 30 €, mimo mesta od 0,50 €/km (dohodou)</td>
+                        <td>Drink Taxi (driving your car with a driver)</td>
+                        <td>within the city 30 €, outside the city from 0.50 €/km (by agreement)</td>
                     </tr>
                 </table>
 
-                <h4>5. Doplatky a poplatky</h4>
+                <h4>5. Surcharges and fees</h4>
                 <table>
                     <tr>
-                        <td>Čakanie (na požiadanie)</td>
-                        <td>30,00 €/hod</td>
+                        <td>Waiting time (on request)</td>
+                        <td>30.00 €/hour</td>
                     </tr>
                     <tr>
-                        <td>Znečistenie interiéru</td>
-                        <td>250,00 €</td>
+                        <td>Interior cleaning fee</td>
+                        <td>250.00 €</td>
                     </tr>
                     <tr>
-                        <td>Preprava zvieraťa (okrem asistenčných psov)</td>
-                        <td>2,00 €</td>
+                        <td>Transport of an animal (except assistance dogs)</td>
+                        <td>2.00 €</td>
                     </tr>
                     <tr>
-                        <td>Nadrozmerná batožina (bicykel, veľký kočík a pod.)</td>
-                        <td>5,00 €</td>
+                        <td>Oversized luggage (bicycle, large stroller, etc.)</td>
+                        <td>5.00 €</td>
                     </tr>
                     <tr>
-                        <td>Špecifické požiadavky (extra zastávky, obchádzky, donáška vecí)</td>
-                        <td>dohodou</td>
+                        <td>Specific requests (extra stops, detours, item delivery)</td>
+                        <td>by agreement</td>
                     </tr>
                     <tr>
-                        <td>Storno jazdy po príchode vozidla</td>
-                        <td>5,00 €</td>
+                        <td>Ride cancellation after vehicle arrival</td>
+                        <td>5.00 €</td>
                     </tr>
                 </table>
 
-                <a href="cennik.pdf" class="btn-download" download>Stiahnuť PDF verziu</a>
+                <a href="../cennik.pdf" class="btn-download" download>Download PDF version</a>
             </div>
         </section>
 
-        <!-- Galéria -->
-             <!-- 
-        <section class="gallery section">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Taxi Erinka Košice" />
-
-            <section class="about-box">
-                <p> 
-
-                </p>
-            </section>
-        </section> 
-    -->
-
         <section class="legal-box">
-            <h2>Legálne informácie</h2>
+            <h2>Legal information</h2>
 
             <div class="legal-grid">
                 <div class="legal-col">
-                    <p><strong>Prevádzkovateľ:</strong><br>
+                    <p><strong>Operator:</strong><br>
                     Ing. Erin Zeleňáková - ERINKA</p>
 
-                    <p><strong>Sídlo:</strong><br>
+                    <p><strong>Registered office:</strong><br>
                     Rastislavova 746/1<br>
                     040 01 Košice - Juh</p>
 
-                    <p><strong>IČO:</strong> 57063532<br>
-                    <strong>DIČ:</strong> 1125380663<br>
-                    <strong>IČ DPH:</strong> SK1125380663</p>
+                    <p><strong>Company ID:</strong> 57063532<br>
+                    <strong>Tax ID:</strong> 1125380663<br>
+                    <strong>VAT ID:</strong> SK1125380663</p>
                 </div>
 
                 <div class="legal-col">
 
                     <p>
-                        <strong>Platná licencia taxislužby</strong><br>
+                        <strong>Valid taxi service licence</strong><br>
                         OU-KE-OCDPK-2025/042321
                     </p>
                     <p>
-                        <strong>Vydal:</strong><br>
-                        OÚ CD a PK Košice
+                        <strong>Issued by:</strong><br>
+                        District Office, Road Transport and Roads Department, Košice
                     </p>
                     <p>
-                        <strong>Platnosť:</strong><br>
+                        <strong>Valid from/to:</strong><br>
                         07.07.2025 – 07.07.2035
                     </p>
                     <p>
-                        <strong>Kontakt:</strong><br>
+                        <strong>Contact:</strong><br>
                         📞 <a href="tel:+421914208898">+421 914 208 898</a><br>
                         📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a>
                     </p>
                 </div>
+            </div>
         </section>
     </main>
 
