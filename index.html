@@ -154,6 +154,28 @@
                 flex-direction: column;
             }
         }
+
+        .availability-notice {
+            background: #fff3cd;
+            border: 1px solid #ffe69c;
+            border-left: 5px solid #f0ad4e;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+        
+        .availability-notice h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .availability-notice p {
+            margin-bottom: 10px;
+        }
+        
+        .availability-notice p:last-child {
+            margin-bottom: 0;
+        }        
         .about-box {
             background: #fdf0f0;
             border: 1px solid #e0b4b4;
@@ -325,7 +347,30 @@
                 <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
                 <p>📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a></p>
             </div>
+        <!-- 
+        Zapnutie oznamu  style="display:none;"  na style="display:block;"
+        Vypnutie oznamu  style="display:block;" na style="display:none;"
+        -->
 
+        <section id="availability-notice" class="availability-notice" style="display:block;">
+            <h3>📅 Aktuálna dostupnosť</h3>
+
+            <p>
+                V termíne <strong>16. 06. 2026 – 18. 06. 2026</strong>
+                sú všetky termíny obsadené.<br><br>
+            </p>
+
+            <p>
+               🌴 Dovolenka:<br>
+                V termíne <strong>22. 06. – 25. 06. 2026</strong>
+                neprijímam nové rezervácie.<br><br>
+            </p>
+
+            <p>
+                Nové rezervácie prijímam:<br>
+                na <strong>19. 06. 2026</strong> a od <strong>26. 06. 2026 od 04:00</strong>.
+            </p>
+        </section>
             <!-- OBJEDNANIE A DOSTUPNOSŤ -->
             <div class="availability-box">
 
@@ -676,7 +721,7 @@
     </main>
 
     <footer>
-        <p>© 2025 Erinka Taxi</p>
+        <p>© 2025-2026 Erinka Taxi</p>
     </footer>
 
     <script>
