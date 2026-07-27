@@ -26,321 +26,496 @@
 
     <meta property="og:url"
         content="https://www.erinkataxi.sk/">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #fff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            line-height: 1.4;
-            font-size: 14px;
-        }
-        
-        a {
-            color: #b54f4f;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        a:hover {
-            text-decoration: underline;
-            color: #d46d6d;
-        }
-        
-        h1,
-        h2,
-        h3 {
-            color: #b54f4f;
-            margin: 0.2rem 0;
-        }
-        
-        h2 {
-            font-size: 20px;
-            border-bottom: 2px solid #e0b4b4;
-            padding-bottom: 0.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-        
-        p {
-            margin: 0.2rem 0;
-        }
-        
-        header {
-            background-color: #f9e6e6;
-            color: #a33939;
-            padding: 1rem;
-            text-align: center;
-            border-bottom: 2px solid #e0b4b4;
-        }
-        .lang-switch {
-            text-align: right;
-            margin-bottom: 8px;
-        }
+<style>
+    /* =========================================================
+       1. Basic styles
+       ========================================================= */
 
-        .lang-switch a {
-            color: #b54f4f;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 15px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background: #fcf5f5;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        line-height: 1.4;
+        font-size: 14px;
+    }
 
-        .lang-switch a:hover {
-            color: #d46d6d;
-            text-decoration: underline;
-        }
-        header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        header p {
-            font-style: italic;
-            font-weight: 500;
-            font-size: 14px;
-            margin: 0.2rem 0 0;
-        }
-        
-        main {
-            max-width: 600px;
-            margin: 1rem auto;
-            padding: 0 1rem;
-        }
-        
-        .section {
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        
-        .contacts {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .contacts p {
-            margin: 0;
-        }
+    main {
+        max-width: 600px;
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
 
-        /* BOX DOSTUPNOSTI – dvojjazyčný */
-        .availability-box {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            background: #fdf0f0;
-            border: 1px solid #e0b4b4;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            font-size: 14px;
-            color: #a33939;
-            text-align: left;
-        }
+    .section {
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
 
-        .availability-col {
-            flex: 1;
-        }
 
-        .availability-col strong {
+    /* =========================================================
+       2. Links and text
+       ========================================================= */
+
+    a {
+        color: #b54f4f;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    a:hover {
+        color: #d46d6d;
+        text-decoration: underline;
+    }
+
+    h1,
+    h2,
+    h3 {
+        color: #b54f4f;
+        margin: 0.2rem 0;
+    }
+
+    h2 {
+        font-size: 20px;
+        font-weight: 700;
+        border-bottom: 2px solid #e0b4b4;
+        padding-bottom: 0.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        margin: 0.2rem 0;
+    }
+
+
+    /* =========================================================
+       3. Header
+       ========================================================= */
+
+    header {
+        background-color: #f9e6e6;
+        color: #a33939;
+        padding: 1rem;
+        text-align: center;
+        border-bottom: 2px solid #e0b4b4;
+    }
+
+    header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    header p {
+        font-style: italic;
+        font-weight: 500;
+        font-size: 14px;
+        margin: 0.2rem 0 0;
+    }
+
+    .lang-switch {
+        text-align: right;
+        margin-bottom: 8px;
+    }
+
+    .lang-switch a {
+        color: #b54f4f;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .lang-switch a:hover {
+        color: #d46d6d;
+        text-decoration: underline;
+    }
+
+
+    /* =========================================================
+       4. Contact and booking
+       ========================================================= */
+
+    .contacts {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 10px;
+    }
+
+    .contacts p {
+        margin: 0;
+    }
+
+
+    /* =========================================================
+       5a. Booking and availability box
+       ========================================================= */
+
+    .availability-box {
+        background: #fdf0f0;
+        line-height: 1.6;
+        border: 1px solid #e0b4b4;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        font-size: 14px;
+        color: #a33939;
+        text-align: left;
+    }
+
+    .availability-columns {
+        display: flex;
+        justify-content: space-between;
+        gap: 25px;
+    }
+
+    .availability-col {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .availability-col > strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #b54f4f;
+    }
+    /* =========================================================
+    5b. Payment options
+    ========================================================= */
+
+    .payment-options {
+        margin: 4px 0 12px;
+        padding: 10px 14px;
+        text-align: center;
+        /* border-top: 1px solid #e0b4b4;
+        border-bottom: 1px solid #e0b4b4; */
+    }
+
+    .payment-options strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #b54f4f;
+    }
+
+    .payment-options p {
+        margin: 0;
+    }
+    /* =========================================================
+    5c. Included services
+    ========================================================= */
+
+        .service-included {
+        margin-top: 10px;
+        line-height: 1.6;
+        padding: 14px 16px;
+        background: #f8fff8;
+        border: 1px solid #b9d8b9;
+        border-left: 5px solid #4caf50;
+        border-radius: 7px;
+        text-align: left;
+    }
+
+        .service-included small {
             display: block;
-            margin-bottom: 5px;
-            color: #b54f4f;
-        }
-
-        @media (max-width: 520px) {
-            .availability-box {
-                flex-direction: column;
-            }
-        }
-
-        .availability-notice {
-            background: #fff3cd;
-            border: 1px solid #ffe69c;
-            border-left: 5px solid #f0ad4e;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin: 20px 0;
-        }
-        
-        .availability-notice h3 {
-            margin-top: 0;
-            color: #856404;
-        }
-        
-        .availability-notice p {
-            margin-bottom: 10px;
-        }
-        
-        .availability-notice p:last-child {
-            margin-bottom: 0;
-        }        
-        .about-box {
-            background: #fdf0f0;
-            border: 1px solid #e0b4b4;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            color: #a33939;
-            text-align: left;
-        }
-
-        .about-box h2 {
-            text-align: center;
-        }
-        .price-cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .card {
-            flex: 1 1 200px;
-            background: #f8f8f8;
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            font-size: 13px;
-        }
-        
-        .card h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        
-        .card p {
-            font-size: 14px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 6px 10px;
-            background-color: #f4cccc;
-            color: #a33939;
-            border-radius: 5px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background-color: #e0b4b4;
-        }
-        
-        .btn-download {
-            display: inline-block;
-            background-color: #f4cccc;
-            color: #a33939;
-            padding: 0.4rem 0.8rem;
-            border-radius: 5px;
-            font-weight: 700;
-            margin: 0.5rem 0;
-            font-size: 13px;
-            transition: 0.3s;
-        }
-        
-        .btn-download:hover {
-            background-color: #e0b4b4;
-        }
-        
-        #full-cennik {
-            display: none;
-            text-align: left;
-            margin-top: 10px;
-            padding: 10px;
-            background: #fdf0f0;
-            border-radius: 8px;
-        }
-        
-        #full-cennik h3 {
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-        
-        #full-cennik table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-        }
-        
-        #full-cennik th,
-        #full-cennik td {
-            border: 1px solid #e0b4b4;
-            padding: 5px;
-            text-align: left;
-        }
-        .profile-photo {
-            margin: 25px 0;
-            text-align: center;
-        }
-        
-        .profile-photo img {
-            width: 100%;
-            max-width: 700px;
-            height: auto;
-        
-            border-radius: 12px;
-            border: 1px solid #e0b4b4;
-        
-            box-shadow: 0 4px 12px rgba(0,0,0,.15);
-        }
-        
-        .profile-photo p {
-            margin-top: 10px;
-            color: #666;
+            margin-top: 8px;
             font-style: italic;
-        }        
-        .gallery img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(181, 79, 79, 0.3);
-            margin-bottom: 0.5rem;
-        }
-        .legal-box {
-            background: #fdf0f0;
-            border: 1px solid #e0b4b4;
-            border-radius: 8px;
-            padding: 12px;
-            margin: 20px 0;
-            color: #a33939;
-            text-align: left;
-            font-size: 12px;
+            color: #4b6f4b;
         }
 
-        .legal-box h2 {
-            text-align: center;
-            font-size: 16px;
+        .service-included strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #2e7d32;
+            text-align: left;
+        }
+
+    /* =========================================================
+       6. Reservation warning
+       ========================================================= */
+
+    .reservation-warning {
+        margin-top: 10px;
+        padding: 14px 16px;
+        background: #fffaf8;
+        border: 1px solid #e0b4b4;
+        border-left: 5px solid #b54f4f;
+        border-radius: 7px;
+        text-align: center;
+    }
+
+    .reservation-warning > strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #b54f4f;
+        font-size: 15px;
+    }
+
+    .reservation-warning p {
+        margin: 6px 0;
+    }
+
+
+    /* =========================================================
+       7. Temporary availability or vacation notice
+       ========================================================= */
+
+    .availability-notice {
+        background: #fff3cd;
+        border: 1px solid #ffe69c;
+        border-left: 5px solid #f0ad4e;
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin: 20px 0;
+        text-align: left;
+    }
+
+    .availability-notice h3 {
+        margin-top: 0;
+        color: #856404;
+    }
+
+    .availability-notice p {
+        margin-bottom: 10px;
+    }
+
+    .availability-notice p:last-child {
+        margin-bottom: 0;
+    }
+
+
+    /* =========================================================
+       8. About me section
+       ========================================================= */
+
+    .about-box {
+        background: #fdf0f0;
+        border: 1px solid #e0b4b4;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        color: #a33939;
+        text-align: left;
+    }
+
+    .about-box h2 {
+        text-align: center;
+    }
+
+
+    /* =========================================================
+       9. Profile photo
+       ========================================================= */
+
+    .profile-photo {
+        margin: 25px 0;
+        text-align: center;
+    }
+
+    .profile-photo img {
+        display: block;
+        width: 100%;
+        max-width: 700px;
+        height: auto;
+        border-radius: 12px;
+        border: 1px solid #e0b4b4;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-photo p {
+        margin-top: 10px;
+        color: #666;
+        font-style: italic;
+    }
+
+
+    /* =========================================================
+       10. Price cards
+       ========================================================= */
+
+    .price-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .card {
+        flex: 1 1 200px;
+        background: #f8f8f8;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        font-size: 13px;
+    }
+
+    .card h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .card p {
+        font-size: 14px;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+
+    /* =========================================================
+       11. Buttons
+       ========================================================= */
+
+    .btn {
+        display: inline-block;
+        padding: 6px 10px;
+        background-color: #f4cccc;
+        color: #a33939;
+        border: none;
+        border-radius: 5px;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #e0b4b4;
+    }
+
+    .btn-download {
+        display: inline-block;
+        background-color: #f4cccc;
+        color: #a33939;
+        padding: 0.4rem 0.8rem;
+        border-radius: 5px;
+        font-weight: 700;
+        margin: 0.5rem 0;
+        font-size: 13px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-download:hover {
+        background-color: #e0b4b4;
+    }
+
+
+    /* =========================================================
+       12. Expanded price list
+       ========================================================= */
+
+    #full-cennik {
+        display: none;
+        text-align: left;
+        margin-top: 10px;
+        padding: 10px;
+        background: #fdf0f0;
+        border-radius: 8px;
+    }
+
+    #full-cennik h3 {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    #full-cennik table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    #full-cennik th,
+    #full-cennik td {
+        border: 1px solid #e0b4b4;
+        padding: 5px;
+        text-align: left;
+    }
+
+
+    /* =========================================================
+       13. Gallery
+       ========================================================= */
+
+    .gallery img {
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(181, 79, 79, 0.3);
+        margin-bottom: 0.5rem;
+    }
+
+
+    /* =========================================================
+       14. Legal information
+       ========================================================= */
+
+    .legal-box {
+        background: #fdf0f0;
+        border: 1px solid #e0b4b4;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 20px 0;
+        color: #a33939;
+        text-align: left;
+        font-size: 12px;
+    }
+
+    .legal-box h2 {
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .legal-grid {
+        display: flex;
+        gap: 15px;
+    }
+
+    .legal-col {
+        flex: 1;
+        min-width: 0;
+    }
+
+
+    /* =========================================================
+       15. Footer
+       ========================================================= */
+
+    footer {
+        text-align: center;
+        font-size: 12px;
+        color: #a33939;
+        padding: 0.5rem 0;
+        border-top: 1px solid #e0b4b4;
+    }
+
+
+    /* =========================================================
+       16. Mobile view
+       All adjustments for small screens are in one place.
+       ========================================================= */
+
+    @media (max-width: 520px) {
+        main {
+            padding: 0 0.75rem;
+        }
+
+        .contacts {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .availability-columns {
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .reservation-warning {
+            text-align: left;
         }
 
         .legal-grid {
-            display: flex;
-            gap: 15px;
+            flex-direction: column;
         }
-
-        .legal-col {
-            flex: 1;
-        }
-
-        @media (max-width: 520px) {
-            .legal-grid {
-                flex-direction: column;
-            }
-        }
-        
-        footer {
-            text-align: center;
-            font-size: 12px;
-            color: #a33939;
-            padding: 0.5rem 0;
-            border-top: 1px solid #e0b4b4;
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
@@ -362,7 +537,7 @@
     <main>
         <!-- Kontakty a boxy -->
         <section class="contacts-orders section">
-            <h2>Rezervácia jazdy</h2>
+            <h2>Rezervácia jazdy alebo letiskového transferu</h2>
             <div class="contacts">
                 <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
                 <p>📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a></p>
@@ -377,30 +552,27 @@
 
             <p>
                🌴 Dovolenka:<br>
-                V termíne <strong>22. 06. – 25. 06. 2026</strong>
+                V termíne <strong>31. 07. – 02. 08. 2026</strong>
                 neprijímam nové rezervácie.<br><br>
             </p>
 
             <p>
                 Nové rezervácie prijímam:<br>
-                od <strong>26. 06. 2026 od 04:00</strong>.
+                od <strong>03. 08. 2026 od 04:00</strong>.
             </p>
         </section>
-            <!-- OBJEDNANIE A DOSTUPNOSŤ -->
-            <div class="availability-box">
+
+        <!-- OBJEDNANIE A DOSTUPNOSŤ -->
+        <div class="availability-box">
+
+            <div class="availability-columns">
 
                 <div class="availability-col">
-                    <strong>📞 Ako objednať jazdu</strong>
+                <strong>📞 Ako si objednať jazdu?</strong>
+
                     1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
                     2️⃣ Dohodneme termín, trasu a cenu<br>
                     3️⃣ V dohodnutom čase vás vyzdvihnem<br><br>
-
-                    ✈️ Odvoz na letisko aj vyzdvihnutie po prílete<br><br>
-
-                    💳 Platba: hotovosť alebo bezhotovostne
-                       (platobná karta, Apple Pay, Google Pay, QR platba)<br><br>
-
-                    <em>Všetky jazdy sú plánované a rezervované vopred.</em>
                 </div>
 
                 <div class="availability-col">
@@ -409,12 +581,42 @@
                     🚕 Pracovné dni od <b>03:00 do 08:00</b><br>
                     📅 Popoludní od <b>16:30 do cca 21:00</b><br>
                     🗓️ Víkendy iba po dohode vopred<br><br>
-
-                    👧 Detská sedačka podľa potreby<br><br>
-                    ♿ Priestor aj pre invalidný vozík, kočík a väčšiu batožinu<br>
                 </div>
-
             </div>
+         
+
+        <div class="payment-options">
+            <strong>💳 Možnosti platby</strong>
+
+            <p>
+                💳 Kartou • 📱 Apple Pay • 📱 Google Pay • 🔳 QR platba • 💵 Hotovosť
+            </p>
+        </div>
+         
+        <div class="service-included">
+            <strong>✅ V cene služby</strong>
+
+            👧 Detská sedačka / podsedák podľa potreby<br>
+            🐶 Preprava domácich zvierat po dohode<br>  
+            ♿ Invalidný vozík, kočík, bicykel aj väčšia batožina<br>
+        </div>
+             
+        <div class="reservation-warning">
+
+            <strong>📅 Jazdu je potrebné rezervovať vopred.</strong>
+
+            <p>
+                Keďže jazdy plánujem individuálne podľa už dohodnutých rezervácií,<br>
+                odporúčam rezerváciu vytvoriť niekoľko hodín,
+                ideálne deň vopred.
+            </p>
+
+            <strong>Okamžitý odvoz po telefonáte spravidla nie je možný.</strong>
+
+        </div>
+        </div>
+
+        </div>            
             <section class="about-box">
                 <h2>O mne</h2>
 
@@ -465,25 +667,26 @@
                 </div>
                 <div class="card">
                     <h3>Letisko Košice (KSC)</h3>
-                    <p>od 10 €</p>
+                    <p>od 12 €</p>
+                </div>
                 </div>
                 <div class="card">
                     <h3>Letisko Budapešť (BUD)</h3>
-                    <p>od 160 €</p>
+                    <p>od 200 €</p>
                 </div>
                 <div class="card">
                     <h3>Letisko Varšava (WAW)</h3>
-                    <p>od 250 €</p>
+                    <p>od 300 €</p>
                 </div>
                 <div class="card">
                     <h3>📋 Kompletný cenník</h3>
                 </div>
             </div>
 
-            <button class="btn" onclick="toggleCennik()">Pozrieť celý cenník</button>
+            <button class="btn" onclick="toggleCennik()">Otvoriť celý cenník</button>
 
             <div id="full-cennik">
-                <h3>Cenník Erinka Taxi</h3>
+                <h3>Otvoriť celý cenník Erinka Taxi</h3>
 
                 <p>
                     <strong>
@@ -493,34 +696,60 @@
                     </strong>
                 </p>
 
-                <div class="availability-box">
+         <!-- OBJEDNANIE A DOSTUPNOSŤ -->
+        <div class="availability-box">
 
-                    <div class="availability-col">
-                        <strong>📞 Objednanie jazdy</strong>
+            <div class="availability-columns">
 
-                        1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
-                        2️⃣ Dohodneme termín, trasu a cenu<br>
-                        3️⃣ V dohodnutom čase vás vyzdvihnem<br><br>
+                <div class="availability-col">
+                <strong>📞 Ako si objednať jazdu?</strong>
 
-                        ✈️ Odvoz na letisko aj vyzdvihnutie po prílete<br><br>
-
-                        💳 Platba: hotovosť alebo QR platba<br><br>
-
-                        <em>Všetky jazdy sú plánované a rezervované vopred.</em>
-                    </div>
-
-                    <div class="availability-col">
-                        <strong>⏰ Dostupnosť jázd</strong>
-
-                        🚕 Pracovné dni od <b>03:00 do 08:00</b><br>
-                        📅 Popoludní od <b>16:30 do cca 21:00</b><br>
-                        🗓️ Víkendy iba po dohode vopred<br><br>
-
-                        👧 Detská sedačka podľa potreby<br><br>
-                        ♿ Priestor aj pre invalidný vozík, kočík a väčšiu batožinu
-                    </div>
-
+                    1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
+                    2️⃣ Dohodneme termín, trasu a cenu<br>
+                    3️⃣ V dohodnutom čase vás vyzdvihnem<br><br>
                 </div>
+
+                <div class="availability-col">
+                    <strong>⏰ Dostupnosť jázd</strong>
+
+                    🚕 Pracovné dni od <b>03:00 do 08:00</b><br>
+                    📅 Popoludní od <b>16:30 do cca 21:00</b><br>
+                    🗓️ Víkendy iba po dohode vopred<br><br>
+                </div>
+            </div>
+         
+
+        <div class="payment-options">
+            <strong>💳 Možnosti platby</strong>
+
+            <p>
+                💳 Kartou • 📱 Apple Pay • 📱 Google Pay • 🔳 QR platba • 💵 Hotovosť
+            </p>
+        </div>
+         
+        <div class="service-included">
+            <strong>✅ V cene služby</strong>
+
+            👧 Detská sedačka / podsedák podľa potreby<br>
+            🐶 Preprava domácich zvierat po dohode<br>  
+            ♿ Invalidný vozík, kočík, bicykel aj väčšia batožina<br>
+        </div>
+             
+        <div class="reservation-warning">
+
+            <strong>📅 Jazdu je potrebné rezervovať vopred.</strong>
+
+            <p>
+                Keďže jazdy plánujem individuálne podľa už dohodnutých rezervácií,<br>
+                odporúčam rezerváciu vytvoriť niekoľko hodín,
+                ideálne deň vopred.
+            </p>
+
+            <strong>Okamžitý odvoz po telefonáte spravidla nie je možný.</strong>
+
+        </div>
+        </div>    
+
 
                 <p>
                     <em>
@@ -541,7 +770,9 @@
                     </tr>
                     <tr>
                         <td>Znečistenie interiéru</td>
-                        <td>100,00 €</td>
+                        <td>min 100,00 €<br>
+                            v prípade väčšieho znečistenia sa cena 
+                            určuje individuálne podľa nákladov</td>
                     </tr>
                 </table>
 
@@ -629,59 +860,53 @@
                     </tr>
                 </table>
 
-                <h4>3. Letiskové transfery (cena za celé auto)</h4>
+                <h4>3. Letiskové transfery (cena za celé vozidlo bez ohľadu na počet cestujúcich)</h4>
+
                 <table>
                     <tr>
                         <td>Letisko Košice (KSC)</td>
-                        <td>od 10 €</td>
+                        <td>
+                            od 12 €<br>
+                            <small>(podľa miesta nástupu)</small>
+                        </td>
                     </tr>
                     <tr>
                         <td>Budapešť (BUD)</td>
-                        <td>od 160 €</td>
-                    </tr>
-                    <tr>
-                        <td>Viedeň (VIE)</td>
-                        <td>od 220 €</td>
-                    </tr>
-                    <tr>
-                        <td>Varšava (WAW)</td>
-                        <td>od 250 €</td>
-                    </tr>
-                    <tr>
-                        <td>Praha (PRG)</td>
-                        <td>od 300 €</td>
+                        <td>od 200 €</td>
                     </tr>
                     <tr>
                         <td>Bratislava (BTS)</td>
-                        <td>od 200 €</td>
+                        <td>od 280 €</td>
+                    </tr>
+                    <tr>
+                        <td>Ostatné letiská v SR a zahraničí</td>
+                        <td>cena dohodou podľa trasy a termínu</td>
                     </tr>
                 </table>
 
                 <h4>4. Špeciálne služby</h4>
+
                 <table>
                     <tr>
-                        <td>Drink Taxi (odvoz vášho auta s vodičom)</td>
-                        <td>v meste 30 €, mimo mesta od 0,50 €/km (dohodou)</td>
+                        <td>Drink Taxi (odvoz vášho vozidla)</td>
+                        <td>
+                            individuálna cenová ponuka<br>
+                            <small>
+                                iba po rezervácii vopred a podľa dostupnosti druhého vodiča,<br>
+                                môže byť vyžadovaná záloha
+                            </small>
+                        </td>
                     </tr>
                 </table>
 
                 <h4>5. Doplatky a poplatky</h4>
                 <table>
                     <tr>
-                        <td>Čakanie (na požiadanie)</td>
-                        <td>30,00 €/hod</td>
                     </tr>
-                    <tr>
                         <td>Znečistenie interiéru</td>
-                        <td>250,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Preprava zvieraťa (okrem asistenčných psov)</td>
-                        <td>2,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Nadrozmerná batožina (bicykel, veľký kočík a pod.)</td>
-                        <td>5,00 €</td>
+                        <td>min 100,00 €<br>
+                            v prípade väčšieho znečistenia sa cena 
+                            určuje individuálne podľa nákladov</td>
                     </tr>
                     <tr>
                         <td>Špecifické požiadavky (extra zastávky, obchádzky, donáška vecí)</td>
