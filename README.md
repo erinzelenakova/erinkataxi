@@ -1,6 +1,6 @@
 # Taxi Erinka
 
-Official web presentation of the taxi service **Taxi Erinka**.
+Official web presentation of the taxi service **Erinka Taxi**.
 The website is available at: 
 https://www.erinkataxi.sk 
 https://www.taxierinka.sk 
