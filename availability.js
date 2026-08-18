@@ -3,13 +3,6 @@ const availabilityData = {
 
     shortTerm: [
         {
-            date: "18. 08. 2026",
-            time: "15:00 – 20:00",
-            icon: "⛔",
-            text_sk: "Dočasne nedostupná.",
-            text_en: "Temporarily unavailable."
-        },
-        {
             date: "25. 08. 2026",
             time: "15:00 – 18:00",
             icon: "⛔",
@@ -23,7 +16,7 @@ const availabilityData = {
             icon: "⛔",
             text_sk: "Nedostupná.",
             text_en: "Unavailable."
-        }
+        }     
     ],
 
     longTerm: [
