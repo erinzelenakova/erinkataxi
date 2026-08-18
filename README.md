@@ -1,8 +1,10 @@
 # Taxi Erinka
 
 Official web presentation of the taxi service **Taxi Erinka**.
-The website is available at: [https://www.taxierinka.sk] (https://www.taxierinka.sk)
-[https://www.erinkataxi.sk] (https://www.erinkataxi.sk)
+The website is available at: 
+https://www.erinkataxi.sk 
+https://www.taxierinka.sk 
+https://www.erinkataxi.eu
 
 All texts, graphics, site structure and overall visuals are the intellectual property of the author.
 
@@ -27,6 +29,8 @@ Any attempts at misuse, imitation or unauthorized use will be considered copyrig
 
 ## 📬 Contact
 
-Email: [taxierinka@gmail.com](mailto:taxierinka@gmail.com)
-Web: [https://www.taxierinka.sk](https://www.taxierinka.sk)
+Email: [erinkataxi@gmail.com](mailto:erinkataxi@gmail.com)
 Web: [https://www.erinkataxi.sk](https://www.erinkataxi.sk)
+Web: [https://www.erinkataxi.eu](https://www.erinkataxi.eu)
+Web: [https://www.taxierinka.sk](https://www.taxierinka.sk)
+
