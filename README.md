@@ -1,4 +1,4 @@
-# Taxi Erinka
+# Erinka TAXI
 
 Official web presentation of the taxi service **Erinka Taxi**.
 The website is available at: 
