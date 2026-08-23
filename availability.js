@@ -5,18 +5,39 @@ const availabilityData = {
         {
             date: "25. 08. 2026",
             time: "15:00 – 18:00",
-            icon: "⛔",
-            text_sk: "Dočasne nedostupná.",
-            text_en: "Temporarily unavailable."
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
         },
+        {
+            date: "26. 08. 2026",
+            time: "15:00 – 20:00",
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
+        },
+        {
+            date: "02. 09. 2026",
+            time: "18:00 – 20:00",
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
+        },
+        {
+            date: "08. 09. 2026",
+            time: "07:30 – 08:30",
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
+        },            
         {
             date: "20. 09. 2026",
             time_sk: "celý deň",
             time_en: "all day",
-            icon: "⛔",
-            text_sk: "Nedostupná.",
-            text_en: "Unavailable."
-        }     
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
+        }  
     ],
 
     longTerm: [
