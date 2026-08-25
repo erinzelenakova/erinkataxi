@@ -145,6 +145,36 @@
         margin: 0;
     }
 
+    /* Main booking hours */
+    
+    .booking-hours {
+        margin: 10px 0 14px;
+        padding: 10px 14px;
+        background: #fdf0f0;
+        border: 1px solid #e0b4b4;
+        border-radius: 8px;
+        color: #a33939;
+        text-align: center;
+        line-height: 1.5;
+    }
+    
+    .booking-hours strong {
+        display: block;
+        color: #b54f4f;
+        margin-bottom: 3px;
+    }
+    
+    .booking-hours span {
+        display: block;
+    }
+    
+    .booking-hours small {
+        display: block;
+        margin-top: 7px;
+        color: #666;
+        line-height: 1.4;
+    }
+
     /* =========================================================
     5a. Booking and availability box
     ========================================================= */
@@ -548,11 +578,24 @@
     <main>
         <!-- Kontakty a boxy -->
         <section class="contacts-orders section">
-            <h2>Ride or airport transfer reservation</h2>
-            <div class="contacts">
-                <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
-                <p>📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a></p>
-            </div>
+        <h2>Ride or airport transfer reservation</h2>
+        
+        <div class="booking-hours">
+            <strong>⏰ Ride availability</strong>
+        
+            <span>Mon – Fri: <b>03:00 – 08:00</b> and <b>16:00 – approx. 22:00</b></span>
+            <span>Sat – Sun: <b>by prior arrangement</b></span>
+        
+            <small>
+                Outside these hours, rides are available only by prior arrangement
+                and depending on my current availability.
+            </small>
+        </div>
+        
+        <div class="contacts">
+            <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
+            <p>📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a></p>
+        </div>
         <!-- 
         Zapnutie oznamu  style="display:none;"  na style="display:block;"
         Vypnutie oznamu  style="display:block;" na style="display:none;"
@@ -577,8 +620,13 @@
                     <strong>⏰ Ride availability</strong>
                 
                     🚕 Weekdays:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<b>03:00 to 08:00 &nbsp; and &nbsp; 16:30 to approx. 21:00</b><br>
-                    🗓️ Weekends: <b>by prior arrangement</b>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<b>03:00 to 08:00 &nbsp; and &nbsp; 16:00 to approx. 22:00</b><br>
+                    🗓️ Weekends: <b>by prior arrangement</b><br><br>
+                
+                    <small>
+                        Outside these hours, rides are available only by prior arrangement
+                        and depending on my current availability.
+                    </small>
                 </div>
             </div>
          
@@ -709,10 +757,15 @@
 
                 <div class="availability-col">
                     <strong>⏰ Ride availability</strong>
-
-                    🚕 Weekdays from <b>03:00 to 08:00</b><br>
-                    📅 Afternoons from <b>16:30 to approximately 21:00</b><br>
-                    🗓️ Weekends by prior arrangement only<br><br>
+                
+                    🚕 Weekdays:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<b>03:00 to 08:00 &nbsp; and &nbsp; 16:00 to approx. 22:00</b><br>
+                    🗓️ Weekends: <b>by prior arrangement</b><br><br>
+                
+                    <small>
+                        Outside these hours, rides are available only by prior arrangement
+                        and depending on my current availability.
+                    </small>
                 </div>
             </div>
          
