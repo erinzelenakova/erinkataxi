@@ -29,7 +29,14 @@ const availabilityData = {
             icon: "🔒",
             text_sk: "Obsadený termín.",
             text_en: "Fully booked."
-        },            
+        },
+        {
+            date: "16. 09. 2026",
+            time: "16:30 – 22:30",
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
+        },        
         {
             date: "20. 09. 2026",
             time_sk: "celý deň",
@@ -37,7 +44,14 @@ const availabilityData = {
             icon: "🔒",
             text_sk: "Obsadený termín.",
             text_en: "Fully booked."
-        }  
+        },
+        {
+            date: "21. 09. 2026",
+            time: "15:00 – 18:30",
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
+        },
     ],
 
     longTerm: [
