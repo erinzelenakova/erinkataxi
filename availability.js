@@ -69,9 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let html = "";
 
     html += lang === "sk"
-        ? "<h3>📅 Zmeny v dostupnosti</h3>"
-        : "<h3>📅 Availability updates</h3>";
-
+        ? "<h3>📅 Výnimky a obsadené termíny</h3>"
+        : "<h3>📅 Exceptions and booked time slots</h3>";
 
     /* KRÁTKODOBÉ OBMEDZENIA */
 
