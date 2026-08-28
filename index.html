@@ -173,8 +173,8 @@
 
 
     /* =========================================================
-    5a. Booking and availability box
-    ========================================================= */
+       5a. Booking and services box
+       ========================================================= */
 
     .availability-box {
         background: #fdf0f0;
@@ -205,17 +205,20 @@
         color: #b54f4f;
     }
 
+    .included-col > strong {
+        color: #2e7d32;
+    }
+
 
     /* =========================================================
-    5b. Payment options
-    ========================================================= */
+       5b. Payment options
+       ========================================================= */
 
     .payment-options {
-        margin: 4px 0 12px;
-        padding: 10px 14px;
+        margin: 10px 0 0;
+        padding: 10px 14px 0;
         text-align: center;
-        /* border-top: 1px solid #e0b4b4;
-        border-bottom: 1px solid #e0b4b4; */
+        border-top: 1px solid #e0b4b4;
     }
 
     .payment-options strong {
@@ -227,35 +230,6 @@
     .payment-options p {
         margin: 0;
     }
-
-    /* =========================================================
-    5c. Included services
-    ========================================================= */
-
-        .service-included {
-        margin-top: 10px;
-        line-height: 1.6;
-        padding: 14px 16px;
-        background: #f8fff8;
-        border: 1px solid #b9d8b9;
-        border-left: 5px solid #4caf50;
-        border-radius: 7px;
-        text-align: left;
-    }
-
-        .service-included small {
-            display: block;
-            margin-top: 8px;
-            font-style: italic;
-            color: #4b6f4b;
-        }
-
-        .service-included strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #2e7d32;
-            text-align: left;
-        }
 
     /* =========================================================
        6. Reservation warning
@@ -595,61 +569,44 @@
 
         <section id="availability-notice" class="availability-notice" style="display:none;"></section>
 
-        <!-- OBJEDNANIE A DOSTUPNOSŤ -->
+        <!-- OBJEDNANIE A SLUŽBY -->
         <div class="availability-box">
 
             <div class="availability-columns">
 
                 <div class="availability-col">
-                <strong>📞 Ako si objednať jazdu?</strong>
+                    <strong>📞 Ako si objednať jazdu?</strong>
 
                     1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
                     2️⃣ Dohodneme termín, trasu a cenu<br>
-                    3️⃣ V dohodnutom čase vás vyzdvihnem<br><br>
+                    3️⃣ V dohodnutom čase vás vyzdvihnem
                 </div>
 
-                <div class="availability-col">
-                    <strong>⏰ Dostupnosť jázd</strong>
-                
-                    🚕 Pracovné dni:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<b>03:00 do 08:00 &nbsp; a &nbsp; 16:00 do cca 22:00</b><br>
-                    🗓️ Víkendy: <b>po dohode vopred</b><br><br>
-                
-                    <small>
-                    Mimo uvedených časov je odvoz možný len po predchádzajúcej dohode a podľa mojich aktuálnych možností.
-                    </small>
+                <div class="availability-col included-col">
+                    <strong>✅ V cene jazdy</strong>
+
+                    👧 Detská sedačka / podsedák podľa potreby<br>
+                    🐶 Domáce zvieratá po dohode<br>
+                    ♿ Invalidný vozík, kočík, bicykel aj väčšia batožina
                 </div>
             </div>
 
-        <div class="payment-options">
-            <strong>💳 Možnosti platby</strong>
+            <div class="payment-options">
+                <strong>💳 Možnosti platby</strong>
+                <p>💳 Kartou • 📱 Apple Pay • 📱 Google Pay • 🔳 QR platba • 💵 Hotovosť</p>
+            </div>
 
-            <p>
-                💳 Kartou • 📱 Apple Pay • 📱 Google Pay • 🔳 QR platba • 💵 Hotovosť
-            </p>
-        </div>
-         
-        <div class="service-included">
-            <strong>✅ V cene služby</strong>
+            <div class="reservation-warning">
+                <strong>📅 Jazdu je potrebné rezervovať vopred.</strong>
 
-            👧 Detská sedačka / podsedák podľa potreby<br>
-            🐶 Preprava domácich zvierat po dohode<br>  
-            ♿ Invalidný vozík, kočík, bicykel aj väčšia batožina<br>
-        </div>
-             
-        <div class="reservation-warning">
+                <p>
+                    Keďže jazdy plánujem individuálne podľa už dohodnutých rezervácií,<br>
+                    odporúčam rezerváciu vytvoriť niekoľko hodín,
+                    ideálne deň vopred.
+                </p>
 
-            <strong>📅 Jazdu je potrebné rezervovať vopred.</strong>
-
-            <p>
-                Keďže jazdy plánujem individuálne podľa už dohodnutých rezervácií,<br>
-                odporúčam rezerváciu vytvoriť niekoľko hodín,
-                ideálne deň vopred.
-            </p>
-
-            <strong>Okamžitý odvoz po telefonáte spravidla nie je možný.</strong>
-
-        </div>
+                <strong>Okamžitý odvoz po telefonáte spravidla nie je možný.</strong>
+            </div>
         </div>
 
         </div>            
@@ -705,7 +662,6 @@
                     <h3>Letisko Košice (KSC)</h3>
                     <p>od 12 €</p>
                 </div>
-                </div>
                 <div class="card">
                     <h3>Letisko Budapešť (BUD)</h3>
                     <p>od 200 €</p>
@@ -732,58 +688,44 @@
                     </strong>
                 </p>
 
-         <!-- OBJEDNANIE A DOSTUPNOSŤ -->
+         <!-- OBJEDNANIE A SLUŽBY -->
         <div class="availability-box">
 
             <div class="availability-columns">
 
                 <div class="availability-col">
-                <strong>📞 Ako si objednať jazdu?</strong>
+                    <strong>📞 Ako si objednať jazdu?</strong>
 
                     1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
                     2️⃣ Dohodneme termín, trasu a cenu<br>
-                    3️⃣ V dohodnutom čase vás vyzdvihnem<br><br>
+                    3️⃣ V dohodnutom čase vás vyzdvihnem
                 </div>
 
-                <div class="availability-col">
-                    <strong>⏰ Dostupnosť jázd</strong>
+                <div class="availability-col included-col">
+                    <strong>✅ V cene jazdy</strong>
 
-                    🚕 Pracovné dni od <b>03:00 do 08:00</b><br>
-                    📅 Popoludní od <b>16:30 do cca 21:00</b><br>
-                    🗓️ Víkendy iba po dohode vopred<br><br>
+                    👧 Detská sedačka / podsedák podľa potreby<br>
+                    🐶 Domáce zvieratá po dohode<br>
+                    ♿ Invalidný vozík, kočík, bicykel aj väčšia batožina
                 </div>
             </div>
-         
 
-        <div class="payment-options">
-            <strong>💳 Možnosti platby</strong>
+            <div class="payment-options">
+                <strong>💳 Možnosti platby</strong>
+                <p>💳 Kartou • 📱 Apple Pay • 📱 Google Pay • 🔳 QR platba • 💵 Hotovosť</p>
+            </div>
 
-            <p>
-                💳 Kartou • 📱 Apple Pay • 📱 Google Pay • 🔳 QR platba • 💵 Hotovosť
-            </p>
-        </div>
-         
-        <div class="service-included">
-            <strong>✅ V cene služby</strong>
+            <div class="reservation-warning">
+                <strong>📅 Jazdu je potrebné rezervovať vopred.</strong>
 
-            👧 Detská sedačka / podsedák podľa potreby<br>
-            🐶 Preprava domácich zvierat po dohode<br>  
-            ♿ Invalidný vozík, kočík, bicykel aj väčšia batožina<br>
-        </div>
-             
-        <div class="reservation-warning">
+                <p>
+                    Keďže jazdy plánujem individuálne podľa už dohodnutých rezervácií,<br>
+                    odporúčam rezerváciu vytvoriť niekoľko hodín,
+                    ideálne deň vopred.
+                </p>
 
-            <strong>📅 Jazdu je potrebné rezervovať vopred.</strong>
-
-            <p>
-                Keďže jazdy plánujem individuálne podľa už dohodnutých rezervácií,<br>
-                odporúčam rezerváciu vytvoriť niekoľko hodín,
-                ideálne deň vopred.
-            </p>
-
-            <strong>Okamžitý odvoz po telefonáte spravidla nie je možný.</strong>
-
-        </div>
+                <strong>Okamžitý odvoz po telefonáte spravidla nie je možný.</strong>
+            </div>
         </div>    
 
 

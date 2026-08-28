@@ -183,8 +183,8 @@
     }
 
     /* =========================================================
-    5a. Booking and availability box
-    ========================================================= */
+       5a. Booking and services box
+       ========================================================= */
 
     .availability-box {
         background: #fdf0f0;
@@ -215,16 +215,20 @@
         color: #b54f4f;
     }
 
+    .included-col > strong {
+        color: #2e7d32;
+    }
+
+
     /* =========================================================
-    5b. Payment options
-    ========================================================= */
+       5b. Payment options
+       ========================================================= */
 
     .payment-options {
-        margin: 4px 0 12px;
-        padding: 10px 14px;
+        margin: 10px 0 0;
+        padding: 10px 14px 0;
         text-align: center;
-        /* border-top: 1px solid #e0b4b4;
-        border-bottom: 1px solid #e0b4b4; */
+        border-top: 1px solid #e0b4b4;
     }
 
     .payment-options strong {
@@ -236,35 +240,6 @@
     .payment-options p {
         margin: 0;
     }
-
-    /* =========================================================
-    5c. Included services
-    ========================================================= */
-
-        .service-included {
-        margin-top: 10px;
-        line-height: 1.6;
-        padding: 14px 16px;
-        background: #f8fff8;
-        border: 1px solid #b9d8b9;
-        border-left: 5px solid #4caf50;
-        border-radius: 7px;
-        text-align: left;
-    }
-
-        .service-included small {
-            display: block;
-            margin-top: 8px;
-            font-style: italic;
-            color: #4b6f4b;
-        }
-
-        .service-included strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #2e7d32;
-            text-align: left;
-        }
 
     /* =========================================================
        6. Reservation warning
@@ -610,63 +585,44 @@
 
         <section id="availability-notice" class="availability-notice" style="display:none;"></section>
 
-        <!-- OBJEDNANIE A DOSTUPNOSŤ -->
+        <!-- BOOKING AND SERVICES -->
         <div class="availability-box">
 
             <div class="availability-columns">
 
                 <div class="availability-col">
-                <strong>📞 How to book a ride?</strong>
+                    <strong>📞 How to book a ride?</strong>
 
                     1️⃣ Call me, send an SMS or an email<br>
                     2️⃣ We will agree on the date, route and price<br>
-                    3️⃣ I will pick you up at the agreed time<br><br>
+                    3️⃣ I will pick you up at the agreed time
                 </div>
 
-                <div class="availability-col">
-                    <strong>⏰ Ride availability</strong>
-                
-                    🚕 Weekdays:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<b>03:00 to 08:00 &nbsp; and &nbsp; 16:00 to approx. 22:00</b><br>
-                    🗓️ Weekends: <b>by prior arrangement</b><br><br>
-                
-                    <small>
-                        Outside these hours, rides are available only by prior arrangement
-                        and depending on my current availability.
-                    </small>
+                <div class="availability-col included-col">
+                    <strong>✅ Included in the ride</strong>
+
+                    👧 Child seat / booster seat if needed<br>
+                    🐶 Pets by prior arrangement<br>
+                    ♿ Wheelchair, stroller, bicycle and larger luggage
                 </div>
             </div>
-         
 
-        <div class="payment-options">
-            <strong>💳 Payment options</strong>
+            <div class="payment-options">
+                <strong>💳 Payment options</strong>
+                <p>💳 Card • 📱 Apple Pay • 📱 Google Pay • 🔳 QR payment • 💵 Cash</p>
+            </div>
 
-            <p>
-                💳 Card • 📱 Apple Pay • 📱 Google Pay • 🔳 QR payment • 💵 Cash
-            </p>
-        </div>
-         
-        <div class="service-included">
-            <strong>✅ Included in the service</strong>
+            <div class="reservation-warning">
+                <strong>📅 Rides must be booked in advance.</strong>
 
-            👧 Child seat / booster seat available if needed<br>
-            🐶 Transport of pets by prior arrangement<br>  
-            ♿ Wheelchair, stroller, bicycle and larger luggage<br>
-        </div>
-             
-        <div class="reservation-warning">
+                <p>
+                    Since I schedule rides individually based on existing reservations,<br>
+                    I recommend making your reservation several hours,
+                    ideally one day in advance.
+                </p>
 
-            <strong>📅 Rides must be booked in advance.</strong>
-
-            <p>
-                Since I schedule rides individually based on existing reservations,<br>
-                I recommend making your reservation several hours,
-                ideally one day in advance.
-            </p>
-
-            <strong>Immediate rides after a phone call are generally not available.</strong>
-
-        </div>
+                <strong>Immediate rides after a phone call are generally not available.</strong>
+            </div>
         </div>
 
         </div>            
@@ -722,7 +678,6 @@
                     <h3>Košice Airport (KSC)</h3>
                     <p>from €12</p>
                 </div>
-                </div>
                 <div class="card">
                     <h3>Budapest Airport (BUD)</h3>
                     <p>from €200</p>
@@ -749,63 +704,44 @@
                     </strong>
                 </p>
 
-       <!-- OBJEDNANIE A DOSTUPNOSŤ -->
+       <!-- BOOKING AND SERVICES -->
         <div class="availability-box">
 
             <div class="availability-columns">
 
                 <div class="availability-col">
-                <strong>📞 How to book a ride?</strong>
+                    <strong>📞 How to book a ride?</strong>
 
                     1️⃣ Call me, send an SMS or an email<br>
                     2️⃣ We will agree on the date, route and price<br>
-                    3️⃣ I will pick you up at the agreed time<br><br>
+                    3️⃣ I will pick you up at the agreed time
                 </div>
 
-                <div class="availability-col">
-                    <strong>⏰ Ride availability</strong>
-                
-                    🚕 Weekdays:<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<b>03:00 to 08:00 &nbsp; and &nbsp; 16:00 to approx. 22:00</b><br>
-                    🗓️ Weekends: <b>by prior arrangement</b><br><br>
-                
-                    <small>
-                        Outside these hours, rides are available only by prior arrangement
-                        and depending on my current availability.
-                    </small>
+                <div class="availability-col included-col">
+                    <strong>✅ Included in the ride</strong>
+
+                    👧 Child seat / booster seat if needed<br>
+                    🐶 Pets by prior arrangement<br>
+                    ♿ Wheelchair, stroller, bicycle and larger luggage
                 </div>
             </div>
-         
 
-        <div class="payment-options">
-            <strong>💳 Payment options</strong>
+            <div class="payment-options">
+                <strong>💳 Payment options</strong>
+                <p>💳 Card • 📱 Apple Pay • 📱 Google Pay • 🔳 QR payment • 💵 Cash</p>
+            </div>
 
-            <p>
-                💳 Card • 📱 Apple Pay • 📱 Google Pay • 🔳 QR payment • 💵 Cash
-            </p>
-        </div>
-         
-        <div class="service-included">
-            <strong>✅ Included in the service</strong>
+            <div class="reservation-warning">
+                <strong>📅 Rides must be booked in advance.</strong>
 
-            👧 Child seat / booster seat available if needed<br>
-            🐶 Transport of pets by prior arrangement<br>  
-            ♿ Wheelchair, stroller, bicycle and larger luggage<br>
-        </div>
-             
-        <div class="reservation-warning">
+                <p>
+                    Since I schedule rides individually based on existing reservations,<br>
+                    I recommend making your reservation several hours,
+                    ideally one day in advance.
+                </p>
 
-            <strong>📅 Rides must be booked in advance.</strong>
-
-            <p>
-                Since I schedule rides individually based on existing reservations,<br>
-                I recommend making your reservation several hours,
-                ideally one day in advance.
-            </p>
-
-            <strong>Immediate rides after a phone call are generally not available.</strong>
-
-        </div>
+                <strong>Immediate rides after a phone call are generally not available.</strong>
+            </div>
         </div>      
 
 

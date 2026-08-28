@@ -1,3 +1,6 @@
+// Erinka Taxi - shared availability data and renderer for SK/EN pages.
+// Edit only the data block below for ordinary availability updates.
+
 const availabilityData = {
     enabled: true,
 
@@ -36,7 +39,7 @@ const availabilityData = {
             icon: "🔒",
             text_sk: "Obsadený termín.",
             text_en: "Fully booked."
-        },        
+        },
         {
             date: "20. 09. 2026",
             time_sk: "celý deň",
@@ -51,7 +54,7 @@ const availabilityData = {
             icon: "🔒",
             text_sk: "Obsadený termín.",
             text_en: "Fully booked."
-        },
+        }
     ],
 
     longTerm: [
@@ -70,108 +73,71 @@ const availabilityData = {
 
 document.addEventListener("DOMContentLoaded", function () {
     const box = document.getElementById("availability-notice");
-
     if (!box) return;
 
-    if (!availabilityData.enabled) {
+    const hasItems = availabilityData.shortTerm.length > 0 || availabilityData.longTerm.length > 0;
+    if (!availabilityData.enabled || !hasItems) {
         box.style.display = "none";
         return;
     }
 
     const lang = document.documentElement.lang === "en" ? "en" : "sk";
+    const labels = lang === "sk"
+        ? {
+            title: "📅 Výnimky a obsadené termíny",
+            shortTerm: "Krátkodobé obmedzenia",
+            longTerm: "Dlhodobejšie obmedzenia",
+            nextBooking: "✅ Nové objednávky po dovolenke prijímam od"
+        }
+        : {
+            title: "📅 Exceptions and booked time slots",
+            shortTerm: "Short-term availability changes",
+            longTerm: "Long-term availability changes",
+            nextBooking: "✅ I am accepting new bookings again from"
+        };
 
-    let html = "";
+    function localizedTime(item) {
+        if (item.time) return item.time;
+        return lang === "sk" ? item.time_sk : item.time_en;
+    }
 
-    html += lang === "sk"
-        ? "<h3>📅 Výnimky a obsadené termíny</h3>"
-        : "<h3>📅 Exceptions and booked time slots</h3>";
+    function localizedText(item) {
+        return lang === "sk" ? item.text_sk : item.text_en;
+    }
 
-    /* KRÁTKODOBÉ OBMEDZENIA */
+    function renderItem(item) {
+        const time = localizedTime(item);
+        return '<p class="availability-row">' +
+            item.icon + ' <strong>' + item.date + '</strong>' +
+            (time ? ' • ' + time : '') +
+            ' • ' + localizedText(item) +
+            '</p>';
+    }
+
+    let html = '<h3>' + labels.title + '</h3>';
 
     if (availabilityData.shortTerm.length > 0) {
-
-        html += lang === "sk"
-            ? "<strong>Krátkodobé obmedzenia</strong>"
-            : "<strong>Short-term availability changes</strong>";
-
+        html += '<strong>' + labels.shortTerm + '</strong>';
         availabilityData.shortTerm.forEach(function (item) {
-            html += '<p class="availability-row">';
-
-            html += item.icon + " <strong>" + item.date + "</strong>";
-
-            if (item.time) {
-                html += " • " + item.time;
-            } else if (item.time_sk || item.time_en) {
-                html += " • " + (lang === "sk" ? item.time_sk : item.time_en);
-            }
-
-            html += " • ";
-
-            html += lang === "sk"
-                ? item.text_sk
-                : item.text_en;
-
-            html += "</p>";
+            html += renderItem(item);
         });
     }
-
-
-    /* DLHODOBÉ OBMEDZENIA */
 
     if (availabilityData.longTerm.length > 0) {
-
-        html += lang === "sk"
-            ? '<strong class="availability-longterm-title">Dlhodobejšie obmedzenia</strong>'
-            : '<strong class="availability-longterm-title">Long-term availability changes</strong>';            
+        html += '<strong class="availability-longterm-title">' + labels.longTerm + '</strong>';
 
         availabilityData.longTerm.forEach(function (item) {
-            html += '<p class="availability-row">';
-
-            html += item.icon + " <strong>" + item.date + "</strong>";
-
-            if (item.time) {
-                html += " • " + item.time;
-            } else if (item.time_sk || item.time_en) {
-                html += " • " + (lang === "sk" ? item.time_sk : item.time_en);
-            }
-
-            html += " • ";
-
-            html += lang === "sk"
-                ? item.text_sk
-                : item.text_en;
-
-            html += "</p>";
-
+            html += renderItem(item);
 
             if (item.nextAvailableDate) {
-                html += '<p class="availability-row">';
-
-                if (lang === "sk") {
-                    html += "✅ Nové objednávky po dovolenke prijímam od <strong>" +
-                        item.nextAvailableDate;
-
-                    if (item.nextAvailableTime) {
-                        html += " od " + item.nextAvailableTime;
-                    }
-
-                    html += "</strong>.";
-                } else {
-                    html += "✅ I am accepting new bookings again from <strong>" +
-                        item.nextAvailableDate;
-
-                    if (item.nextAvailableTime) {
-                        html += " at " + item.nextAvailableTime;
-                    }
-
-                    html += "</strong>.";
-                }
-
-                html += "</p>";
+                const connector = lang === "sk" ? " od " : " at ";
+                html += '<p class="availability-row">' + labels.nextBooking + ' <strong>' +
+                    item.nextAvailableDate +
+                    (item.nextAvailableTime ? connector + item.nextAvailableTime : '') +
+                    '</strong>.</p>';
             }
         });
     }
-
 
     box.innerHTML = html;
     box.style.display = "block";
