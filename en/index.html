@@ -186,38 +186,45 @@
        5a. Booking and services box
        ========================================================= */
 
-    .availability-box {
-        background: #fdf0f0;
-        line-height: 1.6;
-        border: 1px solid #e0b4b4;
-        border-radius: 8px;
-        padding: 15px;
-        margin: 15px 0;
-        font-size: 14px;
-        color: #a33939;
-        text-align: left;
-    }
-
-    .availability-columns {
-        display: flex;
-        justify-content: space-between;
-        gap: 25px;
-    }
-
-    .availability-col {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .availability-col > strong {
-        display: block;
-        margin-bottom: 8px;
-        color: #b54f4f;
-    }
-
-    .included-col > strong {
-        color: #2e7d32;
-    }
+        .availability-box {
+            background: #fdf0f0;
+            line-height: 1.6;
+            border: 1px solid #e0b4b4;
+            border-radius: 8px;
+            padding: 15px 12px;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #a33939;
+            text-align: left;
+        }
+        
+        .availability-columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        
+        .availability-col {
+            min-width: 0;
+        }
+        
+        .availability-col:first-child {
+            flex: 0.85;
+        }
+        
+        .included-col {
+            flex: 1.15;
+        }
+        
+        .availability-col > strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #b54f4f;
+        }
+        
+        .included-col > strong {
+            color: #2e7d32;
+        }
 
 
     /* =========================================================
