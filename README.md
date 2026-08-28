@@ -96,7 +96,7 @@ Supported payment methods shown on the website:
 - QR payment
 - cash
 
-## Included services
+## Ride equipment and additional services
 
 Depending on prior arrangement and vehicle capacity, the booking section highlights:
 
@@ -113,51 +113,25 @@ The Slovak page is canonical at `https://www.erinkataxi.sk/` and the English pag
 
 Both pages define `hreflang` links for `sk`, `en` and `x-default`. `sitemap.xml` contains both language URLs and `robots.txt` allows crawling and points search engines to the sitemap.
 
-## Versioning and Git tags
+## Versioning
 
-Release tags mark stable website milestones, not every content edit. Use semantic-style tags: `vMAJOR.MINOR.PATCH`.
+Stable website versions are marked using GitHub release tags.
 
-Suggested historical milestones based on the repository commit history:
+The current stable release is **v2.5.0**. New release tags are created after changes have been deployed and verified.
 
-| Tag | Date | Stable milestone / commit to tag |
-| --- | --- | --- |
-| `v1.0.0` | 2025-07-21 | first published site (`Create index.html`) |
-| `v2.0.0` | 2026-06-13 | redesign + English version (`redesign page, create en page`) |
-| `v2.1.0` | 2026-06-26 | profile-photo section |
-| `v2.2.0` | 2026-07-22 | card and mobile payment options |
-| `v2.3.0` | 2026-07-27 | layout/style/contact refactor |
-| `v2.4.0` | 2026-08-18 | availability feature + Erinka Taxi branding/URL cleanup; tag the last stable commit of that set |
-| `v2.5.0` | 2026-08-25 | booking-hours section + availability presentation; tag the last stable commit of that day |
-| `v2.6.0` | 2026-08-28 | compact booking/services layout, SK/EN sync, availability.js cleanup and README refresh |
+## Copyright
 
-For future releases:
-
-- increment **PATCH** for text fixes, small CSS corrections and bugs (`v2.6.1`),
-- increment **MINOR** for a new backward-compatible feature (`v2.7.0`),
-- increment **MAJOR** for a substantial architecture change (`v3.0.0`).
-
-Annotated tag example:
-
-```bash
-git tag -a v2.6.0 -m "Erinka Taxi website v2.6.0"
-git push origin v2.6.0
-```
-
-Past tags should be created on the matching historical commit, not on the current HEAD. The commit-history export does not contain commit hashes, so use the date + commit message above to locate each target in GitHub/Git before tagging it.
-
-## Copyright notice
-
-All texts, graphics, site structure and overall visuals are the intellectual property of the author.
+Copyright © Erin Zeleňáková. All rights reserved.
 
 This project is protected by copyright under the relevant laws of the Slovak Republic and international conventions.
 
-- It is not allowed to copy, modify, share or distribute any part of this project without permission.
-- It is not allowed to create derivative versions or imitate the visual or content of this site without permission.
-- It is not allowed to use any part of the code, design or texts for commercial or non-commercial purposes without permission.
+All texts, graphics, source code, site structure and original visual elements of this project are the intellectual property of the author unless stated otherwise.
+
+The content and source code of this project may not be copied, modified, redistributed, published or used to create derivative works without prior permission from the author.
 
 ## Ownership
 
-The owner and sole author of this project is **Erin Zeleňáková**.
+The website and the Erinka Taxi project are owned and maintained by **Erin Zeleňáková**.
 
 ## Contact
 
