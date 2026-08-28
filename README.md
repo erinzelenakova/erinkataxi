@@ -115,9 +115,27 @@ Both pages define `hreflang` links for `sk`, `en` and `x-default`. `sitemap.xml`
 
 ## Versioning
 
-Stable website versions are marked using GitHub release tags.
+Stable website versions are marked using GitHub release tags. Earlier development milestones are documented using their corresponding Git commits.
 
-The current stable release is **v2.5.0**. New release tags are created after changes have been deployed and verified.
+### Releases
+
+| Version | Commit | Description |
+| --- | --- | --- |
+| `v2.5.0` | `f2d29db` | Stable version before booking and services layout optimization |
+| `v2.6.0` | `8814151` | Optimized booking and services layout, SK/EN synchronization and availability improvements |
+
+The current stable release is **v2.6.0**.
+
+### Historical milestones
+
+| Milestone | Commit | Description |
+| --- | --- | --- |
+| `v1.0.0` | `50a338e` | Initial stable website version |
+| `v2.0.0` | `3d236a8` | Major website redesign and English version |
+| `v2.1.0` | `8a931b8` | Driver profile and profile photo section |
+| `v2.2.0` | `87c4a73` | Card and mobile payment options |
+| `v2.3.0` | `c157c9f` | Layout, styling and contact information improvements |
+| `v2.4.0` | `49d1a79` | Availability system, branding and website URL updates |
 
 ## Copyright
 
