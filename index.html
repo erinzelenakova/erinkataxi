@@ -211,7 +211,76 @@
         .included-col > strong {
             color: #2e7d32;
         }
-        
+    /* =========================================================
+    Live driver status
+    ========================================================= */
+
+    .live-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        margin: 8px 0 12px;
+        padding: 10px 14px;
+
+        border: 1px solid;
+        border-radius: 8px;
+
+        line-height: 1.3;
+    }
+
+    .live-status-dot {
+        width: 13px;
+        height: 13px;
+        min-width: 13px;
+        border-radius: 50%;
+        background: currentColor;
+        box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.12);
+    }
+
+    .live-status-text {
+        white-space: nowrap;
+    }
+
+    .live-status strong {
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .live-status-detail {
+        font-size: 13px;
+        font-weight: 400;
+    }
+
+    /* Jazdím */
+    .live-status-online {
+        background: #eef8ef;
+        border-color: #a8d5aa;
+        color: #2e7d32;
+    }
+
+    /* Prijímam objednávky */
+    .live-status-booking {
+        background: #eef5fb;
+        border-color: #a9c9e4;
+        color: #356b96;
+    }
+
+    /* Offline */
+    .live-status-offline {
+        background: #f3f3f3;
+        border-color: #cccccc;
+        color: #666;
+    }
+
+    /* Kým sa status načíta */
+    .live-status-loading {
+        background: #fafafa;
+        border-color: #dddddd;
+        color: #777;
+    }
+
     /* =========================================================
        5b. Payment options
        ========================================================= */
@@ -581,6 +650,20 @@
         .legal-grid {
             flex-direction: column;
         }
+
+        .legal-documents {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #e0b4b4;
+            font-size: 12px;
+        }
+
+        .legal-documents a {
+            font-weight: 600;
+        }
     }
 </style>
 </head>
@@ -605,6 +688,7 @@
         <!-- Kontakty a boxy -->
         <section class="contacts-orders section">
             <h2>Rezervácia jazdy alebo letiskového transferu</h2>
+            
             <div class="booking-hours">
                 <strong>⏰ Dostupnosť odvozov</strong>
                 <span>Po – Pia: <b>03:00 – 08:00</b> a <b>16:00 – cca 22:00</b></span>
@@ -613,6 +697,17 @@
                 Mimo uvedených časov je odvoz možný len po predchádzajúcej dohode a podľa mojich aktuálnych možností.
                 </small>
             </div>
+
+            <!-- LIVE STATUS -->
+            <div id="live-status" class="live-status live-status-loading">
+                <span class="live-status-dot"></span>
+
+                <span class="live-status-text">
+                    <strong id="live-status-title">Načítavam aktuálny stav...</strong>
+                    <span id="live-status-detail" class="live-status-detail"></span>
+                </span>
+            </div>
+
             <div class="contacts">
                 <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
                 <p>📧 <a href="mailto:erinkataxi@gmail.com">erinkataxi@gmail.com</a></p>
@@ -1005,6 +1100,19 @@
                     </p>
                 </div>
             </div>
+
+            <div class="legal-documents">
+                <a href="Prepravny_poriadok_ErinkaTAXI_revizia_k_datumu_20260828.pdf"
+                download>
+                    📄 Prepravný poriadok (PDF)
+                </a>
+
+                <a href="cennik.pdf"
+                download>
+                    📄 Cenník (PDF)
+                </a>
+            </div>
+
         </section>
     </main>
 
@@ -1022,6 +1130,7 @@
         }
     </script>
     <script src="availability.js"></script>
+    <script src="status.js"></script>    
     <script src="reviews.js"></script>
 </body>
 
