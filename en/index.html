@@ -351,6 +351,60 @@
         font-style: italic;
     }
 
+    /* =========================================================
+    Passenger reviews
+    ========================================================= */
+
+    .reviews-section {
+        margin: 24px 0;
+    }
+
+    .reviews-section h2 {
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .review-box {
+        background: #fdf0f0;
+        border: 1px solid #e0b4b4;
+        border-radius: 12px;
+        padding: 14px 20px;
+        min-height: 80px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+    }
+
+    .review-stars {
+        color: #a33939;
+        letter-spacing: 2px;
+        margin-bottom: 6px;
+    }
+
+    .review-text {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.45;
+        font-style: italic;
+
+        transition: opacity 0.35s ease;
+    }
+
+    .review-source {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #777;
+
+        transition: opacity 0.35s ease;
+    }
+
+    .review-hidden {
+        opacity: 0;
+    }
 
     /* =========================================================
        10. Price cards
@@ -664,7 +718,18 @@
                     I look forward to driving you.
                 </p>
             
-            </section>            
+            </section>
+             <section class="reviews-section section">
+                <h2 id="reviews-title"></h2>
+
+                <div class="review-box">
+                    <div class="review-stars">★★★★★</div>
+                    <blockquote id="review-text" class="review-text"></blockquote>
+                    <div id="review-source" class="review-source"></div>
+                </div>
+            </section>           
+            
+
             <div class="price-cards">
                 <div class="card">
                     <h3>Minimum fare within the city</h3>
@@ -980,6 +1045,7 @@
         }
     </script>
     <script src="../availability.js"></script>
+    <script src="../reviews.js"></script>
 </body>
 
 </html>
