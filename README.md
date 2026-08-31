@@ -13,46 +13,71 @@ The project is intentionally lightweight and static. It uses HTML5, embedded CSS
 /
 ├── index.html              # Slovak version
 ├── availability.js         # Shared SK/EN availability data and renderer
-├── cennik.pdf              # Downloadable price list
+├── status.js               # Live driver status renderer
+├── reviews.js              # Customer reviews data and renderer
+├── cennik.pdf              # Slovak downloadable price list
+├── Prepravny_poriadok_ErinkaTAXI_revizia_k_datumu_20260828.pdf
 ├── IMG_8532.jpeg           # Profile photo
 ├── sitemap.xml
 ├── robots.txt
 ├── CNAME
 ├── README.md
 └── en/
-    └── index.html          # English version
+    ├── index.html          # English version
+    └── cennik-en.pdf       # English downloadable price list
 ```
 
 ## Page layout
 
-Both language versions follow the same structure:
+Both language versions follow the same general structure:
 
 1. Header and language switch
 2. Ride / airport-transfer reservation
 3. Standard operating hours
-4. Contact details
-5. Dynamic availability exceptions and booked time slots
-6. Booking instructions + services included in the ride
-7. Payment methods
-8. Advance-booking notice
-9. About Erinka Taxi
-10. Driver profile
-11. Main price cards
-12. Expandable full price list
-13. Target customer groups
-14. Legal information
-15. Footer
+4. Live driver / booking status
+5. Contact details
+6. Dynamic availability exceptions and booked time slots
+7. Booking instructions + services included in the ride
+8. Payment methods
+9. Advance-booking notice
+10. About Erinka Taxi
+11. Driver profile
+12. Main price cards
+13. Expandable full price list
+14. Customer reviews
+15. Target customer groups
+16. Legal information and downloadable documents
+17. Footer
 
 The booking area is deliberately compact: standard operating hours are shown only in the dedicated booking-hours box, while the two-column booking box contains **How to book** and **Included in the ride**. Payment methods are displayed below both columns.
 
 ## Responsive layout
 
-The page uses a mobile-first-friendly single-column width (`max-width: 600px`). At widths below `520px`:
+The page uses a mobile-first-friendly single-column width (`max-width: 600px`). At smaller viewport widths:
 
 - contact details stack vertically,
 - booking/service columns stack vertically,
 - legal-information columns stack vertically,
-- reservation notices use left-aligned text.
+- reservation notices adapt to the available width,
+- live status remains compact and clearly visible.
+
+## Live driver status
+
+The website displays the current Erinka Taxi operating status using `status.js`.
+
+Three states are supported:
+
+- `online` — **Driving – accepting rides**
+- `booking` — **Accepting bookings**
+- `offline` — **Offline**
+
+The Slovak and English labels are selected automatically according to the page language.
+
+The public status is retrieved from the Erinka Taxi Cloudflare Worker and periodically refreshed by the website without requiring a page reload.
+
+The status backend uses Cloudflare Workers and KV storage. Status changes are performed through protected administrative endpoints and are not exposed through the public website interface.
+
+A scheduled Cloudflare Cron Trigger provides automatic nightly offline handling. During the configured night period the public status is forced to `offline`, preventing an outdated online status from remaining visible overnight.
 
 ## Availability system
 
@@ -65,11 +90,7 @@ The shared data structure contains:
 - `nextAvailableDate` / `nextAvailableTime` — optional information about when bookings resume,
 - SK and EN text variants where translation is required.
 
-Both pages contain an initially hidden element:
-
-```html
-<section id="availability-notice" class="availability-notice" style="display:none;"></section>
-```
+Both pages contain an initially hidden availability element which is populated by JavaScript when temporary availability information exists.
 
 The JavaScript detects the page language from `<html lang="...">`, renders the appropriate SK/EN text and shows the notice only when availability is enabled and at least one item exists.
 
@@ -85,6 +106,22 @@ const availabilityData = {
     // ...
 };
 ```
+
+## Customer reviews
+
+Selected customer reviews are maintained separately in `reviews.js`.
+
+The review data is rendered dynamically on the website, keeping review content separate from the main HTML structure and making future updates easier.
+
+## Price lists and transport regulations
+
+The website provides downloadable documents for customers:
+
+- Slovak price list — `cennik.pdf`
+- English price list — `en/cennik-en.pdf`
+- Erinka Taxi transport regulations — `Prepravny_poriadok_ErinkaTAXI_revizia_k_datumu_20260828.pdf`
+
+The HTML price presentation and downloadable price lists are maintained together so that published pricing information remains consistent.
 
 ## Payments
 
@@ -119,12 +156,13 @@ Stable website versions are marked using GitHub release tags. Earlier developmen
 
 ### Releases
 
-| Version | Commit | Description |
-| --- | --- | --- |
-| `v2.5.0` | `f2d29db` | Stable version before booking and services layout optimization |
-| `v2.6.0` | `8814151` | Optimized booking and services layout, SK/EN synchronization and availability improvements |
+| Version | Description |
+| --- | --- |
+| `v2.5.0` | Stable version before booking and services layout optimization |
+| `v2.6.0` | Optimized booking and services layout, SK/EN synchronization and availability improvements |
+| `v2.7.0` | Live driver status, customer reviews, updated price lists, transport regulations and further availability/layout improvements |
 
-The current stable release is **v2.6.0**.
+The current stable release is **v2.7.0**.
 
 ### Historical milestones
 
