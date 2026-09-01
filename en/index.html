@@ -700,8 +700,15 @@
     <main>
         <!-- Kontakty a boxy -->
         <section class="contacts-orders section">
-        <h2>Ride or airport transfer reservation</h2>
-        
+        <h2>Ride or airport transfer reservation</<!-- LIVE STATUS -->
+        <div id="live-status" class="live-status live-status-loading">
+            <span class="live-status-dot"></span>
+
+            <span class="live-status-text">
+                <strong id="live-status-title">Loading current status...</strong>
+                <span id="live-status-detail" class="live-status-detail"></span>
+            </span>
+        </div> 
         <div class="booking-hours">
             <strong>⏰ Ride availability</strong>
         
@@ -713,16 +720,7 @@
                 and depending on my current availability.
             </small>
         </div>
-
-        <!-- LIVE STATUS -->
-        <div id="live-status" class="live-status live-status-loading">
-            <span class="live-status-dot"></span>
-
-            <span class="live-status-text">
-                <strong id="live-status-title">Loading current status...</strong>
-                <span id="live-status-detail" class="live-status-detail"></span>
-            </span>
-        </div> 
+        
         
         <div class="contacts">
             <p>📞 <a href="tel:+421914208898">+421 914 208 898</a></p>
