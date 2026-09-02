@@ -34,6 +34,13 @@ const availabilityData = {
             text_en: "Fully booked."
         },
         {
+            date: "12. 09. 2026",
+            time: "15:30 – 17:00",
+            icon: "⏳",
+            text_sk: "Predbežne rezervované.",
+            text_en: "Tentatively booked."
+        },        
+        {
             date: "16. 09. 2026",
             time: "16:30 – 22:30",
             icon: "🔒",
