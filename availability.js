@@ -6,8 +6,8 @@ const availabilityData = {
 
     shortTerm: [
         {
-            date: "02. 09. 2026",
-            time: "15:00 – 20:00",
+            date: "03. 09. 2026",
+            time: "04:00 – 08:00",
             icon: "🔒",
             text_sk: "Obsadený termín.",
             text_en: "Fully booked."
