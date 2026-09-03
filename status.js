@@ -12,14 +12,21 @@ async function loadLiveStatus() {
 
     const labels = {
         sk: {
-            online: {
-                title: "Jazdím – prijímam jazdy",
+            available: {
+                title: "Voľná – prijímam jazdy",
                 detail: "· Som aktuálne k dispozícii na odvoz"
             },
+
+            driving: {
+                title: "Jazdím – kontaktujte ma cez SMS",
+                detail: "· Počas jazdy nemusím vedieť prijať telefonát"
+            },
+
             booking: {
                 title: "Prijímam objednávky",
                 detail: "· Momentálne nejazdím"
             },
+
             offline: {
                 title: "Offline",
                 detail: "· Momentálne neprijímam jazdy ani objednávky"
@@ -27,14 +34,21 @@ async function loadLiveStatus() {
         },
 
         en: {
-            online: {
-                title: "Driving – accepting rides",
+            available: {
+                title: "Available – accepting rides",
                 detail: "· I am currently available for a ride"
             },
+
+            driving: {
+                title: "Driving – please text me",
+                detail: "· I may not be able to answer calls while driving"
+            },
+
             booking: {
                 title: "Accepting bookings",
                 detail: "· I am not currently driving"
             },
+
             offline: {
                 title: "Offline",
                 detail: "· I am currently not accepting rides or bookings"
@@ -58,24 +72,39 @@ async function loadLiveStatus() {
 
         console.log("ErinkaTaxi status:", data);
 
-        const status = ["online", "booking", "offline"].includes(data.status)
-            ? data.status
-            : "offline";
+        let status = data.status;
+
+        // Spätná kompatibilita so starým stavom "online"
+        if (status === "online") {
+            status = "available";
+        }
+
+        // Spätná kompatibilita so starým stavom "busy"
+        if (status === "busy") {
+            status = "booking";
+        }
+
+        const allowedStatuses = [
+            "available",
+            "driving",
+            "booking",
+            "offline"
+        ];
+
+        if (!allowedStatuses.includes(status)) {
+            status = "offline";
+        }
 
         box.classList.remove(
             "live-status-loading",
             "live-status-online",
+            "live-status-available",
+            "live-status-driving",
             "live-status-booking",
             "live-status-offline"
         );
 
-        if (status === "online") {
-            box.classList.add("live-status-online");
-        } else if (status === "booking") {
-            box.classList.add("live-status-booking");
-        } else {
-            box.classList.add("live-status-offline");
-        }
+        box.classList.add(`live-status-${status}`);
 
         title.textContent = labels[lang][status].title;
         detail.textContent = " " + labels[lang][status].detail;
@@ -85,6 +114,8 @@ async function loadLiveStatus() {
 
         box.classList.remove(
             "live-status-online",
+            "live-status-available",
+            "live-status-driving",
             "live-status-booking",
             "live-status-offline"
         );
