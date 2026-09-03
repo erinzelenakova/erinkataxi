@@ -65,19 +65,27 @@ The page uses a mobile-first-friendly single-column width (`max-width: 600px`). 
 
 The website displays the current Erinka Taxi operating status using `status.js`.
 
-Three states are supported:
+Four states are supported:
 
-- `online` — **Driving – accepting rides**
+- `available` — **Available – accepting rides**
+- `driving` — **Driving – please text me**
 - `booking` — **Accepting bookings**
 - `offline` — **Offline**
 
 The Slovak and English labels are selected automatically according to the page language.
 
+The `driving` state is intended for periods when the driver is actively driving or handling scheduled rides
+and may not be able to answer phone calls. Customers are advised to use SMS instead.
+
 The public status is retrieved from the Erinka Taxi Cloudflare Worker and periodically refreshed by the website without requiring a page reload.
 
-The status backend uses Cloudflare Workers and KV storage. Status changes are performed through protected administrative endpoints and are not exposed through the public website interface.
+The status backend uses Cloudflare Workers and KV storage. 
+Status changes are performed through protected administrative endpoints and are not exposed through the public website interface.
 
-A scheduled Cloudflare Cron Trigger provides automatic nightly offline handling. During the configured night period the public status is forced to `offline`, preventing an outdated online status from remaining visible overnight.
+A scheduled Cloudflare Cron Trigger provides automatic nightly offline handling. 
+During the configured night period the public status is forced to `offline`, preventing an outdated active status from remaining visible overnight.
+
+Legacy `online` and `busy` status values remain supported by the backend for compatibility.
 
 ## Availability system
 
