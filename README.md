@@ -169,8 +169,9 @@ Stable website versions are marked using GitHub release tags. Earlier developmen
 | `v2.5.0` | Stable version before booking and services layout optimization |
 | `v2.6.0` | Optimized booking and services layout, SK/EN synchronization and availability improvements |
 | `v2.7.0` | Live driver status, customer reviews, updated price lists, transport regulations and further availability/layout improvements |
+| `v2.8.0` | Extended live status system with separate available, driving, booking and offline states |
 
-The current stable release is **v2.7.0**.
+The current stable release is **v2.8.0**.
 
 ### Historical milestones
 
