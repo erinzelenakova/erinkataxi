@@ -14,44 +14,44 @@ async function loadLiveStatus() {
         sk: {
             available: {
                 title: "Voľná – prijímam jazdy",
-                detail: "· Som aktuálne k dispozícii na odvoz"
+                detail: "Som aktuálne k dispozícii na odvoz"
             },
 
             driving: {
                 title: "Jazdím – kontaktujte ma cez SMS",
-                detail: "· Počas jazdy nemusím vedieť prijať telefonát"
+                detail: "Počas jazdy nemusím vedieť prijať telefonát"
             },
 
             booking: {
                 title: "Prijímam objednávky",
-                detail: "· Momentálne nejazdím"
+                detail: "Momentálne nejazdím"
             },
 
             offline: {
                 title: "Offline",
-                detail: "· Momentálne neprijímam jazdy ani objednávky"
+                detail: "Momentálne neprijímam jazdy ani objednávky"
             }
         },
 
         en: {
             available: {
                 title: "Available – accepting rides",
-                detail: "· I am currently available for a ride"
+                detail: "I am currently available for a ride"
             },
 
             driving: {
                 title: "Driving – please text me",
-                detail: "· I may not be able to answer calls while driving"
+                detail: "I may not be able to answer calls while driving"
             },
 
             booking: {
                 title: "Accepting bookings",
-                detail: "· I am not currently driving"
+                detail: "I am not currently driving"
             },
 
             offline: {
                 title: "Offline",
-                detail: "· I am currently not accepting rides or bookings"
+                detail: "I am currently not accepting rides or bookings"
             }
         }
     };
