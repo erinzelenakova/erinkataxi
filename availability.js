@@ -6,25 +6,12 @@ const availabilityData = {
 
     shortTerm: [
         {
-            date: "03. 09. 2026",
-            time: "04:00 – 08:00",
-            icon: "🔒",
-            text_sk: "Obsadený termín.",
-            text_en: "Fully booked."
-        },
-        {
-            date: "03. 09. 2026",
-            time: "15:00 – 22:00",
-            icon: "🔒",
-            text_sk: "Obsadený termín.",
-            text_en: "Fully booked."
-        },        
-        {
-            date: "04. 09. 2026",
-            time: "12:00 – 18:00",
-            icon: "⏳",
-            text_sk: "Predbežne rezervované.",
-            text_en: "Tentatively booked."
+            date: "05. 09. 2026",
+            time_sk: "celý deň",
+             time_en: "all day",
+             icon: "🔒",
+             text_sk: "Obsadený termín.",
+             text_en: "Fully booked."
         },
         {
             date: "08. 09. 2026",
