@@ -6,16 +6,15 @@ const availabilityData = {
 
     shortTerm: [
         {
-            date: "05. 09. 2026",
-            time_sk: "celý deň",
-             time_en: "all day",
-             icon: "🔒",
-             text_sk: "Obsadený termín.",
-             text_en: "Fully booked."
+            date: "07. 09. 2026",
+            time: "05:00 – 08:30",
+            icon: "🔒",
+            text_sk: "Obsadený termín.",
+            text_en: "Fully booked."
         },
         {
             date: "08. 09. 2026",
-            time: "07:30 – 08:30",
+            time: "05:00 – 08:30",
             icon: "🔒",
             text_sk: "Obsadený termín.",
             text_en: "Fully booked."
@@ -53,7 +52,7 @@ const availabilityData = {
 
     longTerm: [
         {
-            date: "25. 09. – 11. 10. 2026",
+            date: "24. 09. – 11. 10. 2026",
             time: "",
             icon: "🌴",
             text_sk: "V tomto termíne budem na dovolenke.",
