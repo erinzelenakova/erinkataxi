@@ -14,7 +14,8 @@ const availabilityData = {
         },
         {
             date: "09. 09. 2026",
-            time: "07:45 – 08:30",
+            time_sk: "celý deň",
+            time_en: "all day",
             icon: "🔒",
             text_sk: "Obsadený termín.",
             text_en: "Fully booked."
