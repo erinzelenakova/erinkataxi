@@ -8,10 +8,8 @@ const AVAILABILITY_API =
 const availabilityData = {
     enabled: true,
 
-    // Filled automatically from Google Calendar.
     shortTerm: [],
 
-    // Edit manually only for longer closures / holidays.
     longTerm: [
         {
             date: "24. 09. – 11. 10. 2026",
@@ -38,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             title: "📅 Výnimky a obsadené termíny",
             shortTerm: "Krátkodobé obmedzenia",
             longTerm: "Dlhodobejšie obmedzenia",
+            allDay: "celý deň",
             nextBooking:
                 "✅ Nové objednávky po dovolenke prijímam od"
         }
@@ -45,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             title: "📅 Exceptions and booked time slots",
             shortTerm: "Short-term availability changes",
             longTerm: "Long-term availability changes",
+            allDay: "all day",
             nextBooking:
                 "✅ I am accepting new bookings again from"
         };
@@ -73,6 +73,52 @@ document.addEventListener("DOMContentLoaded", async function () {
                 hour12: false
             }
         ).format(date);
+    }
+
+
+    function getBratislavaParts(date) {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+            timeZone: "Europe/Bratislava",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        });
+
+        const parts = formatter.formatToParts(date);
+
+        const result = {};
+
+        parts.forEach(function (part) {
+            result[part.type] = part.value;
+        });
+
+        return result;
+    }
+
+
+    function isAllDaySlot(start, end) {
+        const startParts = getBratislavaParts(start);
+        const endParts = getBratislavaParts(end);
+
+        const startsAtMidnight =
+            startParts.hour === "00" &&
+            startParts.minute === "00";
+
+        const endsAtMidnight =
+            endParts.hour === "00" &&
+            endParts.minute === "00";
+
+        const duration =
+            end.getTime() - start.getTime();
+
+        return (
+            startsAtMidnight &&
+            endsAtMidnight &&
+            duration >= 23 * 60 * 60 * 1000
+        );
     }
 
 
@@ -117,7 +163,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 return {
                     date: formatDate(start),
                     startTime: formatTime(start),
-                    endTime: formatTime(end)
+                    endTime: formatTime(end),
+                    allDay: isAllDaySlot(start, end)
                 };
             });
 
@@ -161,27 +208,30 @@ document.addEventListener("DOMContentLoaded", async function () {
             '</strong>';
 
         Object.keys(grouped).forEach(function (date) {
-            html +=
-                '<div class="availability-day-group">';
+            const slots = grouped[date];
+
+            const times = slots.map(function (item) {
+                if (item.allDay) {
+                    return "🔒 " + labels.allDay;
+                }
+
+                return (
+                    "🔒 " +
+                    item.startTime +
+                    "–" +
+                    item.endTime
+                );
+            });
 
             html +=
-                '<p class="availability-date">' +
+                '<p class="availability-compact-row">' +
                 '<strong>' +
                 date +
                 '</strong>' +
+                '<span class="availability-times">' +
+                times.join(" · ") +
+                '</span>' +
                 '</p>';
-
-            grouped[date].forEach(function (item) {
-                html +=
-                    '<p class="availability-row">' +
-                    '🔒 ' +
-                    item.startTime +
-                    ' – ' +
-                    item.endTime +
-                    '</p>';
-            });
-
-            html += '</div>';
         });
 
         return html;
