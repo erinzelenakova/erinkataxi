@@ -1,56 +1,17 @@
 // Erinka Taxi - shared availability data and renderer for SK/EN pages.
-// Edit only the data block below for ordinary availability updates.
+// Short-term availability is loaded automatically from Google Calendar.
+// Edit only the longTerm block below for holidays / longer closures.
+
+const AVAILABILITY_API =
+    "https://erinkataxi-status.erin-zelenakova-ke.workers.dev/availability?days=31";
 
 const availabilityData = {
     enabled: true,
 
-    shortTerm: [
-        {
-            date: "08. 09. 2026",
-            time: "05:00 – 08:30",
-            icon: "🔒",
-            text_sk: "Obsadený termín.",
-            text_en: "Fully booked."
-        },
-        {
-            date: "09. 09. 2026",
-            time_sk: "celý deň",
-            time_en: "all day",
-            icon: "🔒",
-            text_sk: "Obsadený termín.",
-            text_en: "Fully booked."
-        },
-        {
-            date: "12. 09. 2026",
-            time: "15:30 – 17:00",
-            icon: "⏳",
-            text_sk: "Predbežne rezervované.",
-            text_en: "Tentatively booked."
-        },        
-        {
-            date: "16. 09. 2026",
-            time: "16:30 – 22:30",
-            icon: "🔒",
-            text_sk: "Obsadený termín.",
-            text_en: "Fully booked."
-        },
-        {
-            date: "20. 09. 2026",
-            time_sk: "celý deň",
-            time_en: "all day",
-            icon: "🔒",
-            text_sk: "Obsadený termín.",
-            text_en: "Fully booked."
-        },
-        {
-            date: "21. 09. 2026",
-            time: "15:00 – 18:30",
-            icon: "🔒",
-            text_sk: "Obsadený termín.",
-            text_en: "Fully booked."
-        }
-    ],
+    // Filled automatically from Google Calendar.
+    shortTerm: [],
 
+    // Edit manually only for longer closures / holidays.
     longTerm: [
         {
             date: "24. 09. – 11. 10. 2026",
@@ -65,73 +26,249 @@ const availabilityData = {
 };
 
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const box = document.getElementById("availability-notice");
     if (!box) return;
 
-    const hasItems = availabilityData.shortTerm.length > 0 || availabilityData.longTerm.length > 0;
-    if (!availabilityData.enabled || !hasItems) {
-        box.style.display = "none";
-        return;
-    }
+    const lang =
+        document.documentElement.lang === "en" ? "en" : "sk";
 
-    const lang = document.documentElement.lang === "en" ? "en" : "sk";
     const labels = lang === "sk"
         ? {
             title: "📅 Výnimky a obsadené termíny",
             shortTerm: "Krátkodobé obmedzenia",
             longTerm: "Dlhodobejšie obmedzenia",
-            nextBooking: "✅ Nové objednávky po dovolenke prijímam od"
+            nextBooking:
+                "✅ Nové objednávky po dovolenke prijímam od"
         }
         : {
             title: "📅 Exceptions and booked time slots",
             shortTerm: "Short-term availability changes",
             longTerm: "Long-term availability changes",
-            nextBooking: "✅ I am accepting new bookings again from"
+            nextBooking:
+                "✅ I am accepting new bookings again from"
         };
+
+
+    function formatDate(date) {
+        return new Intl.DateTimeFormat(
+            lang === "sk" ? "sk-SK" : "en-GB",
+            {
+                timeZone: "Europe/Bratislava",
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        ).format(date);
+    }
+
+
+    function formatTime(date) {
+        return new Intl.DateTimeFormat(
+            lang === "sk" ? "sk-SK" : "en-GB",
+            {
+                timeZone: "Europe/Bratislava",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            }
+        ).format(date);
+    }
+
 
     function localizedTime(item) {
         if (item.time) return item.time;
-        return lang === "sk" ? item.time_sk : item.time_en;
+
+        return lang === "sk"
+            ? item.time_sk
+            : item.time_en;
     }
+
 
     function localizedText(item) {
-        return lang === "sk" ? item.text_sk : item.text_en;
+        return lang === "sk"
+            ? item.text_sk
+            : item.text_en;
     }
 
-    function renderItem(item) {
-        const time = localizedTime(item);
-        return '<p class="availability-row">' +
-            item.icon + ' <strong>' + item.date + '</strong>' +
-            (time ? ' • ' + time : '') +
-            ' • ' + localizedText(item) +
-            '</p>';
-    }
 
-    let html = '<h3>' + labels.title + '</h3>';
+    async function loadCalendarAvailability() {
+        try {
+            const response = await fetch(
+                AVAILABILITY_API,
+                {
+                    cache: "no-store"
+                }
+            );
 
-    if (availabilityData.shortTerm.length > 0) {
-        html += '<strong>' + labels.shortTerm + '</strong>';
-        availabilityData.shortTerm.forEach(function (item) {
-            html += renderItem(item);
-        });
-    }
-
-    if (availabilityData.longTerm.length > 0) {
-        html += '<strong class="availability-longterm-title">' + labels.longTerm + '</strong>';
-
-        availabilityData.longTerm.forEach(function (item) {
-            html += renderItem(item);
-
-            if (item.nextAvailableDate) {
-                const connector = lang === "sk" ? " od " : " at ";
-                html += '<p class="availability-row">' + labels.nextBooking + ' <strong>' +
-                    item.nextAvailableDate +
-                    (item.nextAvailableTime ? connector + item.nextAvailableTime : '') +
-                    '</strong>.</p>';
+            if (!response.ok) {
+                throw new Error(
+                    "Availability API returned " +
+                    response.status
+                );
             }
-        });
+
+            const data = await response.json();
+
+            return (data.busy || []).map(function (slot) {
+                const start = new Date(slot.start);
+                const end = new Date(slot.end);
+
+                return {
+                    date: formatDate(start),
+                    startTime: formatTime(start),
+                    endTime: formatTime(end)
+                };
+            });
+
+        } catch (error) {
+            console.error(
+                "Unable to load calendar availability:",
+                error
+            );
+
+            return [];
+        }
     }
+
+
+    function groupShortTermByDate(items) {
+        const grouped = {};
+
+        items.forEach(function (item) {
+            if (!grouped[item.date]) {
+                grouped[item.date] = [];
+            }
+
+            grouped[item.date].push(item);
+        });
+
+        return grouped;
+    }
+
+
+    function renderShortTerm(items) {
+        if (items.length === 0) {
+            return "";
+        }
+
+        const grouped =
+            groupShortTermByDate(items);
+
+        let html =
+            '<strong>' +
+            labels.shortTerm +
+            '</strong>';
+
+        Object.keys(grouped).forEach(function (date) {
+            html +=
+                '<div class="availability-day-group">';
+
+            html +=
+                '<p class="availability-date">' +
+                '<strong>' +
+                date +
+                '</strong>' +
+                '</p>';
+
+            grouped[date].forEach(function (item) {
+                html +=
+                    '<p class="availability-row">' +
+                    '🔒 ' +
+                    item.startTime +
+                    ' – ' +
+                    item.endTime +
+                    '</p>';
+            });
+
+            html += '</div>';
+        });
+
+        return html;
+    }
+
+
+    function renderLongTerm() {
+        if (
+            availabilityData.longTerm.length === 0
+        ) {
+            return "";
+        }
+
+        let html =
+            '<strong class="availability-longterm-title">' +
+            labels.longTerm +
+            '</strong>';
+
+        availabilityData.longTerm.forEach(
+            function (item) {
+                const time =
+                    localizedTime(item);
+
+                html +=
+                    '<p class="availability-row">' +
+                    item.icon +
+                    ' <strong>' +
+                    item.date +
+                    '</strong>' +
+                    (time
+                        ? ' • ' + time
+                        : '') +
+                    ' • ' +
+                    localizedText(item) +
+                    '</p>';
+
+                if (item.nextAvailableDate) {
+                    const connector =
+                        lang === "sk"
+                            ? " od "
+                            : " at ";
+
+                    html +=
+                        '<p class="availability-row">' +
+                        labels.nextBooking +
+                        ' <strong>' +
+                        item.nextAvailableDate +
+                        (
+                            item.nextAvailableTime
+                                ? connector +
+                                  item.nextAvailableTime
+                                : ''
+                        ) +
+                        '</strong>.</p>';
+                }
+            }
+        );
+
+        return html;
+    }
+
+
+    availabilityData.shortTerm =
+        await loadCalendarAvailability();
+
+    const hasItems =
+        availabilityData.shortTerm.length > 0 ||
+        availabilityData.longTerm.length > 0;
+
+    if (
+        !availabilityData.enabled ||
+        !hasItems
+    ) {
+        box.style.display = "none";
+        return;
+    }
+
+    let html =
+        '<h3>' +
+        labels.title +
+        '</h3>';
+
+    html += renderShortTerm(
+        availabilityData.shortTerm
+    );
+
+    html += renderLongTerm();
 
     box.innerHTML = html;
     box.style.display = "block";
