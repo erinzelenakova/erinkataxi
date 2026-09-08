@@ -346,10 +346,10 @@
     }
 
 
-    /* =========================================================
-    7. Availability changes notice
-    ========================================================= */
-
+        /* =========================================================
+       7. Availability changes notice
+       ========================================================= */
+    
     .availability-notice {
         background: #fff3cd;
         border: 1px solid #ffe69c;
@@ -359,35 +359,64 @@
         margin: 20px 0;
         text-align: left;
     }
-
+    
     .availability-notice h3 {
         margin-top: 0;
         color: #856404;
         text-align: left;
     }
-
+    
     .availability-row {
         margin: 5px 0;
         text-align: left;
     }
-
+    
     .availability-notice p {
         margin-bottom: 10px;
     }
-
+    
     .availability-notice p:last-child {
         margin-bottom: 0;
     }
-
+    
     .availability-longterm-title {
         display: block;
         margin-top: 15px;
     }
-
+    
+    /* Short-term calendar availability */
+    
+    .availability-grid-row {
+        display: grid;
+        grid-template-columns: 125px 28px 1fr;
+        column-gap: 0.5rem;
+        align-items: baseline;
+        margin: 0.45rem 0;
+    }
+    
+    .availability-grid-lock {
+        text-align: center;
+    }
+    
+    .availability-grid-times {
+        font-size: 0.95em;
+    }
+    
+    /* Long-term availability */
+    
+    .availability-longterm-date {
+        display: block;
+    }
+    
+    .availability-longterm-text {
+        display: block;
+        margin-top: 2px;
+    }
+    
+    
     /* =========================================================
        8. About me section
        ========================================================= */
-
     .about-box {
         background: #fdf0f0;
         border: 1px solid #e0b4b4;
