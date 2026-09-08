@@ -264,16 +264,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                     localizedTime(item);
 
                 html +=
-                    '<p class="availability-row">' +
-                    item.icon +
-                    ' <strong>' +
-                    item.date +
-                    '</strong>' +
-                    (time
-                        ? ' • ' + time
-                        : '') +
-                    ' • ' +
-                    localizedText(item) +
+                    '<p class="availability-row availability-longterm-row">' +
+                        '<span class="availability-longterm-date">' +
+                            item.icon +
+                            ' <strong>' +
+                            item.date +
+                            '</strong>' +
+                            (time ? ' • ' + time : '') +
+                        '</span>' +
+                        '<span class="availability-longterm-text">' +
+                            localizedText(item) +
+                        '</span>' +
                     '</p>';
 
                 if (item.nextAvailableDate) {
