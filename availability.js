@@ -194,46 +194,54 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
-    function renderShortTerm(items) {
+      function renderShortTerm(items) {
         if (items.length === 0) {
             return "";
         }
-
+    
         const grouped =
             groupShortTermByDate(items);
-
+    
         let html =
             '<strong>' +
             labels.shortTerm +
             '</strong>';
-
+    
         Object.keys(grouped).forEach(function (date) {
             const slots = grouped[date];
-
+    
             const times = slots.map(function (item) {
                 if (item.allDay) {
-                    return "🔒 " + labels.allDay;
+                    return labels.allDay;
                 }
-
+    
                 return (
-                    "🔒 " +
                     item.startTime +
                     "–" +
                     item.endTime
                 );
             });
-
+    
             html +=
-                '<p class="availability-compact-row">' +
-                '<strong>' +
-                date +
-                '</strong>' +
-                '<span class="availability-times">' +
-                times.join(" · ") +
-                '</span>' +
-                '</p>';
+                '<div class="availability-grid-row">' +
+    
+                    '<div class="availability-grid-date">' +
+                        '<strong>' +
+                        date +
+                        '</strong>' +
+                    '</div>' +
+    
+                    '<div class="availability-grid-lock">' +
+                        '🔒' +
+                    '</div>' +
+    
+                    '<div class="availability-grid-times">' +
+                        times.join(" · ") +
+                    '</div>' +
+    
+                '</div>';
         });
-
+    
         return html;
     }
 
