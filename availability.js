@@ -252,58 +252,73 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     function renderLongTerm() {
-        if (
-            availabilityData.longTerm.length === 0
-        ) {
+        const today = new Date();
+    
+        const activeLongTerm = availabilityData.longTerm.filter(function (item) {
+            if (!item.endDate) return true;
+    
+            const end = new Date(item.endDate + "T23:59:59");
+    
+            return end >= today;
+        });
+    
+        if (activeLongTerm.length === 0) {
             return "";
         }
-
+    
         let html =
             '<strong class="availability-longterm-title">' +
             labels.longTerm +
             '</strong>';
-
-        availabilityData.longTerm.forEach(
-            function (item) {
-                const time =
-                    localizedTime(item);
-
-                html +=
-                    '<p class="availability-row availability-longterm-row">' +
-                        '<span class="availability-longterm-date">' +
-                            item.icon +
-                            ' <strong>' +
-                            item.date +
-                            '</strong>' +
-                            (time ? ' • ' + time : '') +
-                        '</span>' +
-                        '<span class="availability-longterm-text">' +
-                            localizedText(item) +
-                        '</span>' +
-                    '</p>';
-
-                if (item.nextAvailableDate) {
-                    const connector =
-                        lang === "sk"
-                            ? " od "
-                            : " at ";
-
-                    html +=
-                        '<p class="availability-row">' +
-                        labels.nextBooking +
+    
+        activeLongTerm.forEach(function (item) {
+            const time = localizedTime(item);
+    
+            html +=
+                '<p class="availability-row availability-longterm-row">' +
+    
+                    '<span class="availability-longterm-date">' +
+                        item.icon +
                         ' <strong>' +
-                        item.nextAvailableDate +
-                        (
-                            item.nextAvailableTime
-                                ? connector +
-                                  item.nextAvailableTime
-                                : ''
-                        ) +
-                        '</strong>.</p>';
-                }
+                        item.date +
+                        '</strong>' +
+                        (time ? ' • ' + time : '') +
+                    '</span>' +
+    
+                    '<span class="availability-longterm-text">' +
+                        localizedText(item) +
+                    '</span>' +
+    
+                '</p>';
+    
+            if (item.nextAvailableDate) {
+                const connector =
+                    lang === "sk"
+                        ? " od "
+                        : " at ";
+    
+                html +=
+                    '<p class="availability-row availability-next-booking">' +
+    
+                        '<span class="availability-next-booking-label">' +
+                            labels.nextBooking +
+                        '</span>' +
+    
+                        '<span class="availability-next-booking-date">' +
+                            '<strong>' +
+                            item.nextAvailableDate +
+                            (
+                                item.nextAvailableTime
+                                    ? connector + item.nextAvailableTime
+                                    : ''
+                            ) +
+                            '</strong>.' +
+                        '</span>' +
+    
+                    '</p>';
             }
-        );
-
+        });
+    
         return html;
     }
 
