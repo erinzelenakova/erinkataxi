@@ -12,7 +12,7 @@ The project is intentionally lightweight and static. It uses HTML5, embedded CSS
 ```text
 /
 ├── index.html              # Slovak version
-├── availability.js         # Shared SK/EN availability data and renderer
+├── availability.js         # Shared SK/EN availability renderer + Google Calendar availability
 ├── status.js               # Live driver status renderer
 ├── reviews.js              # Customer reviews data and renderer
 ├── cennik.pdf              # Slovak downloadable price list
@@ -42,9 +42,9 @@ Both language versions follow the same general structure:
 9. Advance-booking notice
 10. About Erinka Taxi
 11. Driver profile
-12. Main price cards
-13. Expandable full price list
-14. Customer reviews
+12. Customer reviews
+13. Main price cards
+14. Expandable full price list
 15. Target customer groups
 16. Legal information and downloadable documents
 17. Footer
@@ -53,13 +53,14 @@ The booking area is deliberately compact: standard operating hours are shown onl
 
 ## Responsive layout
 
-The page uses a mobile-first-friendly single-column width (`max-width: 600px`). At smaller viewport widths:
+The page uses a mobile-friendly single-column width (`max-width: 600px`). At smaller viewport widths:
 
 - contact details stack vertically,
 - booking/service columns stack vertically,
 - legal-information columns stack vertically,
 - reservation notices adapt to the available width,
-- live status remains compact and clearly visible.
+- live status remains compact and clearly visible,
+- short-term calendar availability remains compact and readable.
 
 ## Live driver status
 
@@ -74,39 +75,126 @@ Four states are supported:
 
 The Slovak and English labels are selected automatically according to the page language.
 
-The `driving` state is intended for periods when the driver is actively driving or handling scheduled rides
-and may not be able to answer phone calls. Customers are advised to use SMS instead.
+The `driving` state is intended for periods when the driver is actively driving or handling scheduled rides and may not be able to answer phone calls. Customers are advised to use SMS instead.
 
 The public status is retrieved from the Erinka Taxi Cloudflare Worker and periodically refreshed by the website without requiring a page reload.
 
-The status backend uses Cloudflare Workers and KV storage. 
-Status changes are performed through protected administrative endpoints and are not exposed through the public website interface.
+The status backend uses Cloudflare Workers and KV storage. Status changes are performed through protected administrative endpoints and are not exposed through the public website interface.
 
-A scheduled Cloudflare Cron Trigger provides automatic nightly offline handling. 
-During the configured night period the public status is forced to `offline`, preventing an outdated active status from remaining visible overnight.
+A scheduled Cloudflare Cron Trigger provides automatic nightly offline handling. During the configured night period the public status is forced to `offline`, preventing an outdated active status from remaining visible overnight.
 
 Legacy `online` and `busy` status values remain supported by the backend for compatibility.
 
 ## Availability system
 
-Temporary exceptions are maintained in `availability.js`, independently of the HTML pages.
+Availability is split into two independent layers:
 
-The shared data structure contains:
+- **short-term availability** — loaded automatically from Google Calendar,
+- **long-term availability** — maintained manually in `availability.js` for holidays and longer closures.
 
-- `shortTerm` — individual unavailable or tentative time slots,
-- `longTerm` — longer unavailable periods,
-- `nextAvailableDate` / `nextAvailableTime` — optional information about when bookings resume,
-- SK and EN text variants where translation is required.
+This means ordinary booked rides no longer have to be entered manually into the website.
 
-Both pages contain an initially hidden availability element which is populated by JavaScript when temporary availability information exists.
+### Google Calendar integration
 
-The JavaScript detects the page language from `<html lang="...">`, renders the appropriate SK/EN text and shows the notice only when availability is enabled and at least one item exists.
+The short-term availability flow is:
 
-### Normal availability update
+```text
+Google Calendar
+      ↓
+Google Calendar API / FreeBusy
+      ↓
+Cloudflare Worker
+      ↓
+/availability endpoint
+      ↓
+availability.js
+      ↓
+Slovak + English website
+```
 
-For ordinary schedule changes, edit only the `availabilityData` block at the top of `availability.js`. The renderer below it should normally remain unchanged.
+The website currently requests:
 
-To hide all temporary notices without deleting the stored entries:
+```text
+/availability?days=31
+```
+
+so short-term busy periods are loaded for the upcoming **31 days**.
+
+The calendar remains the operational source of truth for ordinary bookings. A ride entered into the Erinka Taxi Google Calendar automatically becomes visible on the website as an occupied time slot.
+
+The website receives only busy time intervals. Event names, passenger details, route information, notes and other private calendar content are not rendered on the public website.
+
+### Calendar backend
+
+The calendar integration uses:
+
+- Google Calendar API,
+- a dedicated Google Cloud service account,
+- Cloudflare Worker server-side authentication,
+- Cloudflare environment variables / secrets,
+- the Google Calendar `freeBusy` data model.
+
+Credentials and private keys are stored outside the public repository and must never be committed to GitHub.
+
+### Short-term rendering
+
+`availability.js`:
+
+- fetches busy intervals from the Cloudflare Worker,
+- converts them to the `Europe/Bratislava` timezone,
+- groups multiple occupied slots by date,
+- detects full-day blocks,
+- renders localized Slovak or English labels,
+- displays compact rows using separate date / lock / time columns.
+
+Example:
+
+```text
+09. 09. 2026     🔒     08:00–09:00
+11. 09. 2026     🔒     07:45–08:00
+12. 09. 2026     🔒     celý deň
+```
+
+If more than one booking exists on the same date, the time slots are displayed on one line:
+
+```text
+11. 09. 2026     🔒     05:20–06:00 · 07:45–08:30 · 16:30–17:15
+```
+
+### Long-term availability
+
+Longer closures, holidays and similar exceptions remain intentionally manual.
+
+They are configured in the `longTerm` array in `availability.js`.
+
+Example:
+
+```js
+longTerm: [
+    {
+        date: "24. 09. – 11. 10. 2026",
+        time: "",
+        icon: "🌴",
+
+        startDate: "2026-09-24",
+        endDate: "2026-10-11",
+
+        text_sk: "V tomto termíne budem na dovolenke.",
+        text_en: "I will be on holiday during this period.",
+
+        nextAvailableDate: "12. 10. 2026",
+        nextAvailableTime: "04:00"
+    }
+]
+```
+
+`endDate` is used to automatically stop rendering an expired long-term notice after the configured period ends.
+
+`nextAvailableDate` and `nextAvailableTime` can optionally show customers when new bookings resume.
+
+### Availability switch
+
+The availability notice can still be disabled globally without deleting stored long-term entries:
 
 ```js
 const availabilityData = {
@@ -145,18 +233,51 @@ Supported payment methods shown on the website:
 
 Depending on prior arrangement and vehicle capacity, the booking section highlights:
 
-- child seat / booster seat
-- pets
-- wheelchair
-- stroller
-- bicycle
-- larger luggage
+- child seat 9–36 kg,
+- booster seat 22–36 kg,
+- own infant carrier below 9 kg,
+- pets,
+- wheelchair,
+- stroller,
+- bicycle,
+- larger luggage.
+
+A child seat or booster seat should normally be requested at least **6 hours in advance**. For shorter notice, availability is not guaranteed.
 
 ## SEO and language versions
 
 The Slovak page is canonical at `https://www.erinkataxi.sk/` and the English page at `https://www.erinkataxi.sk/en/`.
 
-Both pages define `hreflang` links for `sk`, `en` and `x-default`. `sitemap.xml` contains both language URLs and `robots.txt` allows crawling and points search engines to the sitemap.
+Both pages define `hreflang` links for `sk`, `en` and `x-default`.
+
+`sitemap.xml` contains both language URLs and `robots.txt` allows crawling and points search engines to the sitemap.
+
+## Technology stack
+
+### Frontend
+
+- HTML5
+- embedded CSS
+- vanilla JavaScript
+- GitHub Pages
+
+### Backend services
+
+- Cloudflare Workers
+- Cloudflare KV
+- Cloudflare Cron Triggers
+- Google Calendar API
+- Google Cloud service account
+
+The website itself remains static. Dynamic status and calendar availability are provided through the Cloudflare Worker API.
+
+## Security and privacy
+
+The public website does not contain administrative credentials, Google private keys or Cloudflare secrets.
+
+Sensitive values are stored as Cloudflare Worker secrets or environment variables.
+
+The calendar integration exposes only availability intervals required for customer-facing scheduling. Private calendar event metadata is kept outside the public website.
 
 ## Versioning
 
@@ -170,8 +291,9 @@ Stable website versions are marked using GitHub release tags. Earlier developmen
 | `v2.6.0` | Optimized booking and services layout, SK/EN synchronization and availability improvements |
 | `v2.7.0` | Live driver status, customer reviews, updated price lists, transport regulations and further availability/layout improvements |
 | `v2.8.0` | Extended live status system with separate available, driving, booking and offline states |
+| `v3.0.0` | Google Calendar powered short-term availability, Cloudflare Worker calendar API integration, automatic booked-slot rendering and compact availability layout |
 
-The current stable release is **v2.8.0**.
+The current stable release is planned as **v3.0.0**.
 
 ### Historical milestones
 
@@ -183,6 +305,45 @@ The current stable release is **v2.8.0**.
 | `v2.2.0` | `87c4a73` | Card and mobile payment options |
 | `v2.3.0` | `c157c9f` | Layout, styling and contact information improvements |
 | `v2.4.0` | `49d1a79` | Availability system, branding and website URL updates |
+
+## v3.0.0 release highlights
+
+The `v3.0.0` release introduces a major operational improvement to the availability system.
+
+### Added
+
+- Google Calendar integration for short-term booked time slots
+- dedicated Google Cloud service account
+- Cloudflare Worker authentication to Google Calendar
+- public `/availability` endpoint
+- 31-day forward availability window
+- automatic SK/EN rendering of calendar busy intervals
+- grouping of multiple bookings by date
+- full-day availability detection
+- compact date / lock / time grid layout
+- automatic hiding of expired long-term notices using `endDate`
+
+### Changed
+
+- `shortTerm` is no longer maintained manually in `availability.js`
+- Google Calendar is now the source of truth for ordinary booked rides
+- long-term closures remain manually controlled
+- public availability output is limited to busy time intervals
+- availability presentation is more compact and easier to scan
+
+### Operational impact
+
+The driver can now manage ordinary bookings directly from the calendar already used on the phone.
+
+There is no need to:
+
+1. enter a booking into Google Calendar,
+2. open the website repository,
+3. edit `availability.js`,
+4. duplicate the same booking manually,
+5. commit and deploy the change.
+
+A calendar booking is enough. The website updates from the shared availability backend automatically.
 
 ## Copyright
 
