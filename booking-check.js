@@ -90,7 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
             clear: "✅ Bez zistenej časovej kolízie. Otváram SMS s vašou žiadosťou o jazdu...",
             unknown: "ℹ️ Dostupnosť sa nepodarilo automaticky overiť. Žiadosť môžete odoslať aj tak, termín potvrdím ručne. Otváram SMS...",
             missing: "Vyplňte, prosím, dátum a čas jazdy.",
-            missingRoute: "Vyplňte, prosím, odkiaľ a kam máte záujem o odvoz."
+            missingRoute: "Vyplňte, prosím, odkiaľ a kam máte záujem o odvoz.",
+            missingChildEquipment: "Pre každé dieťa vyberte, prosím, či nepotrebuje sedačku alebo aké detské vybavenie potrebuje.",
+            capacity: "⚠️ Maximálna kapacita vozidla sú 4 cestujúci spolu vrátane detí."
         }
         : {
             checking: "Checking availability...",
@@ -98,7 +100,9 @@ document.addEventListener("DOMContentLoaded", function () {
             clear: "✅ No conflict detected. Opening SMS with your request...",
             unknown: "ℹ️ Could not automatically verify availability. You can still send your request, I'll confirm manually. Opening SMS...",
             missing: "Please fill in the date and time of the ride.",
-            missingRoute: "Please fill in the pickup and destination."
+            missingRoute: "Please fill in the pickup and destination.",
+            missingChildEquipment: "For each child, please select whether no seat is needed or which child equipment is required.",
+            capacity: "⚠️ Maximum vehicle capacity is 4 passengers in total, including children."
         };
 
     const smsFlag = lang === "sk"
@@ -130,6 +134,153 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    const adultsInput = document.getElementById("booking-adults");
+    const childrenInput = document.getElementById("booking-children");
+    const childEquipmentGroup = document.getElementById("booking-child-equipment-group");
+    const childEquipmentList = document.getElementById("booking-child-equipment-list");
+
+    const MAX_PASSENGERS = 4;
+
+    const childEquipmentOptions = lang === "sk"
+        ? [
+            { value: "", label: "Vyberte možnosť" },
+            { value: "none", label: "Bez sedačky / podsedáku" },
+            { value: "booster-22-36", label: "Potrebuje podsedák 22–36 kg" },
+            { value: "seat-9-36", label: "Potrebuje sedačku 9–36 kg" },
+            { value: "own-carrier", label: "Vlastné vajíčko – zákazník si prinesie vlastné" }
+        ]
+        : [
+            { value: "", label: "Select an option" },
+            { value: "none", label: "No child seat / booster needed" },
+            { value: "booster-22-36", label: "Booster seat 22–36 kg required" },
+            { value: "seat-9-36", label: "Child seat 9–36 kg required" },
+            { value: "own-carrier", label: "Own infant carrier – customer must bring their own" }
+        ];
+
+    function getChildEquipmentSelects() {
+        if (!childEquipmentList) return [];
+        return Array.from(
+            childEquipmentList.querySelectorAll(".booking-child-equipment-select")
+        );
+    }
+
+    function updateLimitedEquipmentOptions() {
+        const selects = getChildEquipmentSelects();
+
+        selects.forEach(function (select) {
+            Array.from(select.options).forEach(function (option) {
+                if (option.value !== "seat-9-36" && option.value !== "booster-22-36") {
+                    option.disabled = false;
+                    return;
+                }
+
+                const usedByAnotherChild = selects.some(function (otherSelect) {
+                    return otherSelect !== select && otherSelect.value === option.value;
+                });
+
+                option.disabled = usedByAnotherChild;
+            });
+        });
+    }
+
+    function renderChildEquipmentFields() {
+        if (!childrenInput || !childEquipmentGroup || !childEquipmentList) return;
+
+        const children = Math.max(
+            0,
+            Math.min(MAX_PASSENGERS, parseInt(childrenInput.value || "0", 10))
+        );
+
+        const previousValues = getChildEquipmentSelects().map(function (select) {
+            return select.value;
+        });
+
+        childEquipmentList.innerHTML = "";
+
+        if (children === 0) {
+            childEquipmentGroup.hidden = true;
+            return;
+        }
+
+        childEquipmentGroup.hidden = false;
+
+        for (let i = 0; i < children; i++) {
+            const label = document.createElement("label");
+            label.className = "booking-check-field";
+
+            const labelText = document.createElement("span");
+            labelText.className = "booking-check-field-label";
+            labelText.textContent =
+                (lang === "sk" ? "Dieťa " : "Child ") + (i + 1);
+
+            const select = document.createElement("select");
+            select.className = "booking-child-equipment-select";
+            select.required = true;
+
+            childEquipmentOptions.forEach(function (item) {
+                const option = document.createElement("option");
+                option.value = item.value;
+                option.textContent = item.label;
+                select.appendChild(option);
+            });
+
+            if (previousValues[i]) {
+                select.value = previousValues[i];
+            }
+
+            select.addEventListener("change", updateLimitedEquipmentOptions);
+
+            label.appendChild(labelText);
+            label.appendChild(select);
+            childEquipmentList.appendChild(label);
+        }
+
+        updateLimitedEquipmentOptions();
+    }
+
+    function normalizePassengerCounts(changedInput) {
+        if (!adultsInput || !childrenInput) return;
+
+        let adults = Math.max(
+            0,
+            Math.min(MAX_PASSENGERS, parseInt(adultsInput.value || "0", 10))
+        );
+        let children = Math.max(
+            0,
+            Math.min(MAX_PASSENGERS, parseInt(childrenInput.value || "0", 10))
+        );
+
+        if (adults + children > MAX_PASSENGERS) {
+            if (changedInput === adultsInput) {
+                adults = Math.max(0, MAX_PASSENGERS - children);
+            } else {
+                children = Math.max(0, MAX_PASSENGERS - adults);
+            }
+        }
+
+        adultsInput.value = String(adults);
+        childrenInput.value = String(children);
+
+        renderChildEquipmentFields();
+    }
+
+    if (adultsInput && childrenInput) {
+        adultsInput.addEventListener("input", function () {
+            normalizePassengerCounts(adultsInput);
+        });
+        childrenInput.addEventListener("input", function () {
+            normalizePassengerCounts(childrenInput);
+        });
+        adultsInput.addEventListener("change", function () {
+            normalizePassengerCounts(adultsInput);
+        });
+        childrenInput.addEventListener("change", function () {
+            normalizePassengerCounts(childrenInput);
+        });
+
+        normalizePassengerCounts(null);
+    }
+
     // -----------------------------------------------------------
     // Zostavenie textu SMS z vyplnených údajov
     // -----------------------------------------------------------
@@ -143,21 +294,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const seatLabels = lang === "sk"
         ? {
-            "none": "bez sedacky",
-            "seat-9-36": "sedacka 9-36 kg",
-            "booster-22-36": "podsedak 22-36 kg",
-            "own-carrier": "vlastne vajicko (do 9 kg)"
+            "none": "bez sedacky / podsedaku",
+            "seat-9-36": "potrebuje sedacku 9-36 kg",
+            "booster-22-36": "potrebuje podsedak 22-36 kg",
+            "own-carrier": "vlastne vajicko - zakaznik si prinesie vlastne"
         }
         : {
-            "none": "none",
-            "seat-9-36": "seat 9-36 kg",
-            "booster-22-36": "booster 22-36 kg",
-            "own-carrier": "own infant carrier (under 9 kg)"
+            "none": "no child seat / booster needed",
+            "seat-9-36": "child seat 9-36 kg required",
+            "booster-22-36": "booster seat 22-36 kg required",
+            "own-carrier": "own infant carrier - customer will bring their own"
         };
 
     function buildSmsBody(values, status) {
         const flagLine = smsFlag[status];
-        const seatText = seatLabels[values.seat] || values.seat;
 
         const requestLines = lang === "sk"
             ? [
@@ -165,23 +315,51 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Odkial: " + values.from,
                 "Kam: " + values.to,
                 "Datum a cas: " + values.date + " " + values.time + " (SK cas)",
-                "Pocet osob: " + values.passengers,
-                "Vacsia batozina: " + yesNo(values.luggage),
-                "Detska sedacka: " + seatText,
-                "Domace zviera: " + yesNo(values.pet),
-                "Cislo letu: " + (values.flight || "-")
+                "Dospeli: " + values.adults,
+                "Deti: " + values.children,
+                "Spolu cestujucich: " + values.totalPassengers
             ]
             : [
                 "Hello, I would like to book a ride. (non-binding request)",
                 "Pickup: " + values.from,
                 "Destination: " + values.to,
                 "Date and time: " + values.date + " " + values.time + " (SK time)",
-                "Passengers: " + values.passengers,
-                "Larger luggage: " + yesNo(values.luggage),
-                "Child seat: " + seatText,
-                "Pet: " + yesNo(values.pet),
-                "Flight number: " + (values.flight || "-")
+                "Adults: " + values.adults,
+                "Children: " + values.children,
+                "Total passengers: " + values.totalPassengers
             ];
+
+        if (values.childEquipment.length > 0) {
+            requestLines.push("");
+
+            values.childEquipment.forEach(function (item, index) {
+                const text = seatLabels[item] || item;
+                requestLines.push(
+                    (lang === "sk" ? "Dieta " : "Child ") +
+                    (index + 1) +
+                    ": " +
+                    text
+                );
+            });
+        }
+
+        requestLines.push(
+            lang === "sk"
+                ? "Vacsia batozina: " + yesNo(values.luggage)
+                : "Larger luggage: " + yesNo(values.luggage)
+        );
+
+        requestLines.push(
+            lang === "sk"
+                ? "Domace zviera: " + yesNo(values.pet)
+                : "Pet: " + yesNo(values.pet)
+        );
+
+        requestLines.push(
+            lang === "sk"
+                ? "Cislo letu: " + (values.flight || "-")
+                : "Flight number: " + (values.flight || "-")
+        );
 
         return [flagLine, ""].concat(requestLines).join("\n");
     }
@@ -290,14 +468,62 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        const adultsEl = document.getElementById("booking-adults");
+        const childrenEl = document.getElementById("booking-children");
+
+        const adults = parseInt(adultsEl.value || "0", 10);
+        const children = parseInt(childrenEl.value || "0", 10);
+        const totalPassengers = adults + children;
+
+        if (
+            adults < 0 ||
+            children < 0 ||
+            totalPassengers < 1 ||
+            totalPassengers > MAX_PASSENGERS
+        ) {
+            resultBox.textContent = labels.capacity;
+            resultBox.className = "booking-check-result booking-check-warning";
+            return;
+        }
+
+        const childEquipment = getChildEquipmentSelects().map(function (select) {
+            return select.value;
+        });
+
+        if (
+            childEquipment.length !== children ||
+            childEquipment.some(function (value) { return !value; })
+        ) {
+            resultBox.textContent = labels.missingChildEquipment;
+            resultBox.className = "booking-check-result booking-check-warning";
+            return;
+        }
+
+        const seatCount = childEquipment.filter(function (value) {
+            return value === "seat-9-36";
+        }).length;
+
+        const boosterCount = childEquipment.filter(function (value) {
+            return value === "booster-22-36";
+        }).length;
+
+        if (seatCount > 1 || boosterCount > 1) {
+            resultBox.textContent = labels.missingChildEquipment;
+            resultBox.className = "booking-check-result booking-check-warning";
+            updateLimitedEquipmentOptions();
+            return;
+        }
+
         const values = {
             date: dateVal,
             time: timeVal,
             from: fromVal,
             to: toVal,
-            passengers: document.getElementById("booking-passengers").value || "1",
+            adults: String(adults),
+            children: String(children),
+            totalPassengers: String(totalPassengers),
+            childEquipment: childEquipment,
             luggage: document.getElementById("booking-luggage").checked,
-            seat: document.getElementById("booking-seat").value,
             pet: document.getElementById("booking-pet").checked,
             flight: document.getElementById("booking-flight").value
         };

@@ -228,6 +228,14 @@
         color: #a33939;
     }
 
+    .booking-capacity-note {
+        display: block;
+        margin: -4px 0 10px;
+        font-size: 11px;
+        color: #7a5252;
+        text-align: left;
+    }
+
     .booking-check-field {
         display: flex;
         align-items: center;
@@ -338,6 +346,21 @@
     .booking-check-checkbox input {
         width: auto;
         margin: 0;
+    }
+
+    .booking-child-equipment-title {
+        margin: 8px 0 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #a33939;
+    }
+
+    #booking-child-equipment-group {
+        margin-bottom: 12px;
+    }
+
+    #booking-child-equipment-list .booking-check-field {
+        margin-bottom: 8px;
     }
 
     .booking-check-result {
@@ -1532,19 +1555,25 @@
             </label>
 
             <label class="booking-check-field">
-                <span class="booking-check-field-label">Počet osôb</span>
-                <input type="number" id="booking-passengers" min="1" max="4" value="1">
+                <span class="booking-check-field-label">Dospelí</span>
+                <input type="number" id="booking-adults" min="0" max="4" value="1">
             </label>
 
             <label class="booking-check-field">
-                <span class="booking-check-field-label">Detská sedačka</span>
-                <select id="booking-seat">
-                    <option value="none">Bez sedačky</option>
-                    <option value="seat-9-36">Sedačka 9–36 kg</option>
-                    <option value="booster-22-36">Podsedák 22–36 kg</option>
-                    <option value="own-carrier">Vlastné vajíčko (do 9 kg)</option>
-                </select>
+                <span class="booking-check-field-label">Deti</span>
+                <input type="number" id="booking-children" min="0" max="4" value="0">
             </label>
+
+            <small class="booking-capacity-note">Maximálne 4 cestujúci spolu vrátane detí.</small>
+
+            <div id="booking-child-equipment-group" hidden>
+                <div class="booking-child-equipment-title">Vybavenie pre deti</div>
+                <div id="booking-child-equipment-list"></div>
+                <small class="booking-capacity-note">
+                    K dispozícii mám 1× sedačku 9–36 kg a 1× podsedák 22–36 kg.
+                    Vlastné vajíčko si prináša zákazník.
+                </small>
+            </div>
 
             <div class="booking-check-checkbox-row">
                 <label>

@@ -218,13 +218,13 @@ The customer can enter:
 - date and time,
 - pickup location,
 - destination,
-- number of passengers,
-- child-seat requirement,
+- number of adults and children (maximum 4 passengers in total),
+- per-child seating / restraint requirement,
 - larger luggage,
 - pet,
 - optional flight number.
 
-Pickup and destination are required. Passenger count is limited to the supported vehicle capacity shown by the form.
+Pickup and destination are required. Adults and children are entered separately and their combined total is limited to **4 passengers**. Child-only pre-booked rides can also be represented. For every child, the customer selects the required equipment separately.
 
 The selected ride time is always interpreted in the `Europe/Bratislava` timezone, independent of the timezone configured on the customer's device.
 
@@ -342,6 +342,15 @@ The quick SMS request form allows the customer to distinguish between:
 
 A child seat or booster seat should normally be requested at least **6 hours in advance**. For shorter notice, availability is not guaranteed.
 
+For each child in the request, the form dynamically creates a separate equipment selector with these options:
+
+- no child seat / booster needed,
+- child seat 9–36 kg required,
+- booster seat 22–36 kg required,
+- customer's own infant carrier for a child under 9 kg.
+
+Current onboard equipment capacity is **1× child seat 9–36 kg and 1× booster seat 22–36 kg**. The child seat and booster are treated as limited onboard resources: once selected for one child, the same item is disabled for the other children in that request. The no-seat and own-infant-carrier options are not quantity-limited.
+
 ## SEO and language versions
 
 The Slovak page is canonical at `https://www.erinkataxi.sk/` and the English page at `https://www.erinkataxi.sk/en/`.
@@ -419,8 +428,8 @@ The `v3.1.0` release extends the calendar-based availability system with a custo
 - sticky **Call / SMS** contact bar
 - quick SMS ride-request panel
 - required pickup and destination fields
-- passenger-count limit in the request form
-- child-seat type selection
+- separate adult / child counts with a maximum combined capacity of 4 passengers
+- dynamic per-child equipment selection when one or more children are entered with automatic child-count handling
 - optional luggage, pet and flight-number information
 - advisory calendar conflict pre-check before opening SMS
 - combined conflict checking against Google Calendar and long-term closures
@@ -438,7 +447,7 @@ The `v3.1.0` release extends the calendar-based availability system with a custo
 - fixed public surcharge zones were removed
 - city pricing now reflects the actual route, distance, time and conditions instead of generic district-to-district fixed examples
 - Slovak and English price presentation was synchronized
-- child-seat information was made more specific in both the website and request workflow
+- child-equipment wording was clarified in both SK and EN so customers select what each child needs
 - downloadable price lists were revised to match the new pricing model
 
 ### Operational impact
