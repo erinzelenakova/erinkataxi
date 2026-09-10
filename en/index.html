@@ -162,6 +162,9 @@
 
         max-height: 70vh;
         overflow-y: auto;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        width: 100%;
 
         background: #ffffff;
         border: 1px solid #e0b4b4;
@@ -395,6 +398,15 @@
         width: 100%;
         padding: 12px;
         font-size: 15px;
+    }
+
+    @media (max-width: 600px) {
+        .booking-check-form input[type="date"],
+        .booking-check-form input[type="text"],
+        .booking-check-form input[type="number"],
+        .booking-check-form select {
+            font-size: 16px;
+        }
     }
 
     main {
@@ -1564,23 +1576,31 @@
             </label>
 
             <label class="booking-check-field">
-                <span class="booking-check-field-label">Adults</span>
-                <input type="number" id="booking-adults" min="0" max="4" value="1">
+                <span class="booking-check-field-label">Passengers</span>
+                <select id="booking-passengers">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
             </label>
 
             <label class="booking-check-field">
-                <span class="booking-check-field-label">Children</span>
-                <input type="number" id="booking-children" min="0" max="4" value="0">
+                <span class="booking-check-field-label">Of which children</span>
+                <select id="booking-children">
+                    <option value="0" selected>0</option>
+                    <option value="1">1</option>
+                </select>
             </label>
 
-            <small class="booking-capacity-note">Maximum 4 passengers in total, including children.</small>
+            <small class="booking-capacity-note">Maximum 4 passengers. The number of children cannot exceed the total number of passengers.</small>
 
             <div id="booking-child-equipment-group" hidden>
                 <div class="booking-child-equipment-title">Child equipment</div>
                 <div id="booking-child-equipment-list"></div>
                 <small class="booking-capacity-note">
-                    I can provide 1× child seat 9–36 kg and 1× booster seat 22–36 kg.
-                    The customer must provide their own infant carrier.
+                    I have 1× child seat 9–36 kg and 1× booster seat 22–36 kg in the car.
+                    I do not provide an infant carrier – the customer must bring their own.
                 </small>
             </div>
 

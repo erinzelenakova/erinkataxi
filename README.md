@@ -65,7 +65,9 @@ The page uses a mobile-friendly single-column width (`max-width: 600px`). At sma
 - live status remains compact and clearly visible,
 - short-term calendar availability remains compact and readable,
 - the sticky Call / SMS bar remains available at the bottom of the screen,
-- the quick SMS request panel opens as a compact mobile-friendly overlay.
+- the quick SMS request panel opens as a compact mobile-friendly overlay,
+- passenger counts use select controls instead of numeric text inputs, avoiding unnecessary mobile keyboards,
+- booking fields use mobile-safe input sizing to prevent iOS focus zoom and horizontal scrolling.
 
 ## Live driver status
 
@@ -218,13 +220,13 @@ The customer can enter:
 - date and time,
 - pickup location,
 - destination,
-- number of adults and children (maximum 4 passengers in total),
+- total number of passengers and how many of them are children (maximum 4 passengers in total),
 - per-child seating / restraint requirement,
 - larger luggage,
 - pet,
 - optional flight number.
 
-Pickup and destination are required. Adults and children are entered separately and their combined total is limited to **4 passengers**. Child-only pre-booked rides can also be represented. For every child, the customer selects the required equipment separately.
+Pickup and destination are required. The customer selects the **total number of passengers (1–4)** and then specifies **how many of them are children (0–total passengers)**. The child count can never exceed the total passenger count. Child-only pre-booked rides can also be represented. For every child, the customer selects the required equipment separately.
 
 The selected ride time is always interpreted in the `Europe/Bratislava` timezone, independent of the timezone configured on the customer's device.
 
@@ -428,8 +430,8 @@ The `v3.1.0` release extends the calendar-based availability system with a custo
 - sticky **Call / SMS** contact bar
 - quick SMS ride-request panel
 - required pickup and destination fields
-- separate adult / child counts with a maximum combined capacity of 4 passengers
-- dynamic per-child equipment selection when one or more children are entered with automatic child-count handling
+- total passenger count (1–4) with a dependent “of which children” selector
+- dynamic per-child equipment selection when one or more children are entered
 - optional luggage, pet and flight-number information
 - advisory calendar conflict pre-check before opening SMS
 - combined conflict checking against Google Calendar and long-term closures

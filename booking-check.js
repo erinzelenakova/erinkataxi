@@ -1,16 +1,13 @@
-// Erinka Taxi - nezáväzný dopyt na jazdu cez SMS, s automatickým
-// upozornením na možnú časovú kolíziu.
+// Erinka Taxi - non-binding SMS ride request with availability conflict pre-check.
 //
-// DÔLEŽITÉ: Táto kontrola NIKDY nezablokuje odoslanie SMS. Ide len
-// o nezáväzný dopyt zákazníka - web len označí, či sa zvolený čas
-// prekrýva s už známym obsadeným termínom, aby si to hneď videla
-// v prijatej SMS. Skutočná rezervácia vzniká až keď TY potvrdíš
-// dostupnosť a cenu a zákazník objednávku potvrdí späť.
+// IMPORTANT: This check NEVER blocks sending the SMS. The website only marks
+// whether the requested time overlaps with a known busy interval. A booking is
+// confirmed only after the driver verifies availability and price and the
+// customer confirms the offer.
 //
-// Používa rovnaké zdroje dát ako availability.js (musí sa načítať
-// PRED týmto súborom):
-//   - AVAILABILITY_API   - Cloudflare Worker endpoint (Google Calendar)
-//   - availabilityData.longTerm - dovolenky / dlhodobé uzávierky
+// availability.js must be loaded before this file because this script uses:
+//   - AVAILABILITY_API
+//   - availabilityData.longTerm
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -20,24 +17,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("booking-check-form");
 
     if (!openBtn || !panel || !form) {
-        return; // prvky nie sú na stránke
+        return;
     }
 
     const lang = document.documentElement.lang === "en" ? "en" : "sk";
 
     const PHONE = "+421914208898";
     const TIME_ZONE = "Europe/Bratislava";
+    const MAX_PASSENGERS = 4;
 
-    // Predpokladané okno novej jazdy okolo požadovaného času.
-    // Napr. zákazník chce 10:00 -> kontroluje sa cca 09:45-10:30.
+    // Approximate window around the requested pickup time used only for the
+    // advisory conflict check.
     const WINDOW_BEFORE_MINUTES = 15;
     const WINDOW_AFTER_MINUTES = 30;
 
-    // -----------------------------------------------------------
-    // Prevod "nástenných" hodín zadaných zákazníkom (vždy myslené
-    // ako čas v Europe/Bratislava) na správny UTC okamih - bez
-    // ohľadu na to, v akom časovom pásme má nastavený svoj telefón.
-    // -----------------------------------------------------------
+    const passengersInput = document.getElementById("booking-passengers");
+    const childrenInput = document.getElementById("booking-children");
+    const childEquipmentGroup = document.getElementById("booking-child-equipment-group");
+    const childEquipmentList = document.getElementById("booking-child-equipment-list");
+
+    // ---------------------------------------------------------------------
+    // Europe/Bratislava wall-clock time -> UTC
+    // ---------------------------------------------------------------------
 
     function getTimeZoneOffsetMs(date, timeZone) {
         const dtf = new Intl.DateTimeFormat("en-US", {
@@ -68,8 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return asUTC - date.getTime();
     }
 
-    // dateStr: "YYYY-MM-DD", timeStr: "HH:MM" - obe myslené ako
-    // miestny čas v Europe/Bratislava, nie v čase zariadenia.
     function zonedWallTimeToUtc(dateStr, timeStr, timeZone) {
         const naiveUtcMs = Date.parse(dateStr + "T" + timeStr + ":00Z");
 
@@ -83,26 +82,36 @@ document.addEventListener("DOMContentLoaded", function () {
         return new Date(naiveUtcMs - offsetMs);
     }
 
+    // ---------------------------------------------------------------------
+    // Localized labels
+    // ---------------------------------------------------------------------
+
     const labels = lang === "sk"
         ? {
             checking: "Kontrolujem dostupnosť...",
-            conflict: "⚠️ V blízkosti zvoleného času už mám inú jazdu. Vašu žiadosť môžete pokojne odoslať - dostupnosť preverím podľa trasy a termín aj cenu vám potvrdím (alebo navrhnem iný čas). Otváram SMS...",
+            conflict: "⚠️ V blízkosti zvoleného času už mám inú jazdu. Vašu žiadosť môžete pokojne odoslať – dostupnosť preverím podľa trasy a termín aj cenu vám potvrdím (alebo navrhnem iný čas). Otváram SMS...",
             clear: "✅ Bez zistenej časovej kolízie. Otváram SMS s vašou žiadosťou o jazdu...",
             unknown: "ℹ️ Dostupnosť sa nepodarilo automaticky overiť. Žiadosť môžete odoslať aj tak, termín potvrdím ručne. Otváram SMS...",
             missing: "Vyplňte, prosím, dátum a čas jazdy.",
             missingRoute: "Vyplňte, prosím, odkiaľ a kam máte záujem o odvoz.",
-            missingChildEquipment: "Pre každé dieťa vyberte, prosím, či nepotrebuje sedačku alebo aké detské vybavenie potrebuje.",
-            capacity: "⚠️ Maximálna kapacita vozidla sú 4 cestujúci spolu vrátane detí."
+            passengerCount: "Vyberte, prosím, 1 až 4 osoby.",
+            childCount: "Počet detí nemôže byť vyšší ako celkový počet osôb.",
+            childEquipmentMissing: "Vyberte, prosím, vybavenie pre každé dieťa.",
+            childEquipmentLimit: "Pre jednu objednávku je k dispozícii najviac 1× sedačka 9–36 kg a 1× podsedák 22–36 kg.",
+            child: "Dieťa"
         }
         : {
             checking: "Checking availability...",
-            conflict: "⚠️ I already have another ride around that time. You can still send your request - I'll check the route and confirm the time and price (or suggest another time). Opening SMS...",
+            conflict: "⚠️ I already have another ride around that time. You can still send your request – I'll check the route and confirm the time and price (or suggest another time). Opening SMS...",
             clear: "✅ No conflict detected. Opening SMS with your request...",
-            unknown: "ℹ️ Could not automatically verify availability. You can still send your request, I'll confirm manually. Opening SMS...",
+            unknown: "ℹ️ Could not automatically verify availability. You can still send your request; I'll confirm manually. Opening SMS...",
             missing: "Please fill in the date and time of the ride.",
             missingRoute: "Please fill in the pickup and destination.",
-            missingChildEquipment: "For each child, please select whether no seat is needed or which child equipment is required.",
-            capacity: "⚠️ Maximum vehicle capacity is 4 passengers in total, including children."
+            passengerCount: "Please select 1 to 4 passengers.",
+            childCount: "The number of children cannot exceed the total number of passengers.",
+            childEquipmentMissing: "Please select the required equipment for every child.",
+            childEquipmentLimit: "A maximum of 1× child seat 9–36 kg and 1× booster seat 22–36 kg is available per request.",
+            child: "Child"
         };
 
     const smsFlag = lang === "sk"
@@ -117,30 +126,6 @@ document.addEventListener("DOMContentLoaded", function () {
             unknown: "AVAILABILITY NOT VERIFIED - will confirm manually"
         };
 
-
-    // -----------------------------------------------------------
-    // Otváranie / zatváranie panelu
-    // -----------------------------------------------------------
-
-    openBtn.addEventListener("click", function () {
-        panel.hidden = false;
-        panel.scrollIntoView({ behavior: "smooth", block: "end" });
-    });
-
-    if (closeBtn) {
-        closeBtn.addEventListener("click", function () {
-            panel.hidden = true;
-        });
-    }
-
-
-    const adultsInput = document.getElementById("booking-adults");
-    const childrenInput = document.getElementById("booking-children");
-    const childEquipmentGroup = document.getElementById("booking-child-equipment-group");
-    const childEquipmentList = document.getElementById("booking-child-equipment-list");
-
-    const MAX_PASSENGERS = 4;
-
     const childEquipmentOptions = lang === "sk"
         ? [
             { value: "", label: "Vyberte možnosť" },
@@ -154,67 +139,134 @@ document.addEventListener("DOMContentLoaded", function () {
             { value: "none", label: "No child seat / booster needed" },
             { value: "booster-22-36", label: "Booster seat 22–36 kg required" },
             { value: "seat-9-36", label: "Child seat 9–36 kg required" },
-            { value: "own-carrier", label: "Own infant carrier – customer must bring their own" }
+            { value: "own-carrier", label: "Own infant carrier – customer brings their own" }
         ];
 
+    const seatLabels = lang === "sk"
+        ? {
+            "none": "bez sedacky / podsedaku",
+            "seat-9-36": "potrebuje sedacku 9-36 kg",
+            "booster-22-36": "potrebuje podsedak 22-36 kg",
+            "own-carrier": "vlastne vajicko - zakaznik si prinesie vlastne"
+        }
+        : {
+            "none": "no child seat / booster needed",
+            "seat-9-36": "child seat 9-36 kg required",
+            "booster-22-36": "booster seat 22-36 kg required",
+            "own-carrier": "own infant carrier - customer brings their own"
+        };
+
+    // ---------------------------------------------------------------------
+    // Panel controls
+    // ---------------------------------------------------------------------
+
+    openBtn.addEventListener("click", function () {
+        panel.hidden = false;
+        panel.scrollIntoView({ behavior: "smooth", block: "end" });
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", function () {
+            panel.hidden = true;
+        });
+    }
+
+    // ---------------------------------------------------------------------
+    // Passenger counts and per-child equipment selectors
+    // ---------------------------------------------------------------------
+
+    function parsePassengerCount(input, fallback) {
+        if (!input) {
+            return fallback;
+        }
+
+        const value = parseInt(input.value, 10);
+        return Number.isFinite(value) ? value : fallback;
+    }
+
+    function updateChildrenOptions() {
+        if (!passengersInput || !childrenInput) {
+            return;
+        }
+
+        const passengers = Math.max(1, Math.min(MAX_PASSENGERS, parsePassengerCount(passengersInput, 1)));
+        const previousChildren = Math.max(0, parsePassengerCount(childrenInput, 0));
+        const selectedChildren = Math.min(previousChildren, passengers);
+
+        childrenInput.innerHTML = "";
+
+        for (let i = 0; i <= passengers; i += 1) {
+            const option = document.createElement("option");
+            option.value = String(i);
+            option.textContent = String(i);
+            childrenInput.appendChild(option);
+        }
+
+        childrenInput.value = String(selectedChildren);
+    }
+
     function getChildEquipmentSelects() {
-        if (!childEquipmentList) return [];
-        return Array.from(
-            childEquipmentList.querySelectorAll(".booking-child-equipment-select")
-        );
+        if (!childEquipmentList) {
+            return [];
+        }
+
+        return Array.from(childEquipmentList.querySelectorAll("select[data-child-equipment]"));
     }
 
     function updateLimitedEquipmentOptions() {
         const selects = getChildEquipmentSelects();
 
-        selects.forEach(function (select) {
-            Array.from(select.options).forEach(function (option) {
-                if (option.value !== "seat-9-36" && option.value !== "booster-22-36") {
-                    option.disabled = false;
-                    return;
-                }
+        const selectedValues = selects.map(function (select) {
+            return select.value;
+        });
 
-                const usedByAnotherChild = selects.some(function (otherSelect) {
-                    return otherSelect !== select && otherSelect.value === option.value;
+        selects.forEach(function (select, index) {
+            const seatOption = select.querySelector('option[value="seat-9-36"]');
+            const boosterOption = select.querySelector('option[value="booster-22-36"]');
+
+            if (seatOption) {
+                seatOption.disabled = selectedValues.some(function (value, otherIndex) {
+                    return otherIndex !== index && value === "seat-9-36";
                 });
+            }
 
-                option.disabled = usedByAnotherChild;
-            });
+            if (boosterOption) {
+                boosterOption.disabled = selectedValues.some(function (value, otherIndex) {
+                    return otherIndex !== index && value === "booster-22-36";
+                });
+            }
         });
     }
 
     function renderChildEquipmentFields() {
-        if (!childrenInput || !childEquipmentGroup || !childEquipmentList) return;
+        if (!childrenInput || !childEquipmentGroup || !childEquipmentList) {
+            return;
+        }
 
-        const children = Math.max(
-            0,
-            Math.min(MAX_PASSENGERS, parseInt(childrenInput.value || "0", 10))
-        );
-
+        const childCount = Math.max(0, Math.min(MAX_PASSENGERS, parsePassengerCount(childrenInput, 0)));
         const previousValues = getChildEquipmentSelects().map(function (select) {
             return select.value;
         });
 
         childEquipmentList.innerHTML = "";
 
-        if (children === 0) {
+        if (childCount === 0) {
             childEquipmentGroup.hidden = true;
             return;
         }
 
         childEquipmentGroup.hidden = false;
 
-        for (let i = 0; i < children; i++) {
+        for (let i = 0; i < childCount; i += 1) {
             const label = document.createElement("label");
             label.className = "booking-check-field";
 
             const labelText = document.createElement("span");
             labelText.className = "booking-check-field-label";
-            labelText.textContent =
-                (lang === "sk" ? "Dieťa " : "Child ") + (i + 1);
+            labelText.textContent = labels.child + " " + (i + 1);
 
             const select = document.createElement("select");
-            select.className = "booking-child-equipment-select";
+            select.dataset.childEquipment = String(i);
             select.required = true;
 
             childEquipmentOptions.forEach(function (item) {
@@ -224,7 +276,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 select.appendChild(option);
             });
 
-            if (previousValues[i]) {
+            if (previousValues[i] && childEquipmentOptions.some(function (item) {
+                return item.value === previousValues[i];
+            })) {
                 select.value = previousValues[i];
             }
 
@@ -238,52 +292,23 @@ document.addEventListener("DOMContentLoaded", function () {
         updateLimitedEquipmentOptions();
     }
 
-    function normalizePassengerCounts(changedInput) {
-        if (!adultsInput || !childrenInput) return;
+    if (passengersInput && childrenInput) {
+        passengersInput.addEventListener("change", function () {
+            updateChildrenOptions();
+            renderChildEquipmentFields();
+        });
 
-        let adults = Math.max(
-            0,
-            Math.min(MAX_PASSENGERS, parseInt(adultsInput.value || "0", 10))
-        );
-        let children = Math.max(
-            0,
-            Math.min(MAX_PASSENGERS, parseInt(childrenInput.value || "0", 10))
-        );
+        childrenInput.addEventListener("change", function () {
+            renderChildEquipmentFields();
+        });
 
-        if (adults + children > MAX_PASSENGERS) {
-            if (changedInput === adultsInput) {
-                adults = Math.max(0, MAX_PASSENGERS - children);
-            } else {
-                children = Math.max(0, MAX_PASSENGERS - adults);
-            }
-        }
-
-        adultsInput.value = String(adults);
-        childrenInput.value = String(children);
-
+        updateChildrenOptions();
         renderChildEquipmentFields();
     }
 
-    if (adultsInput && childrenInput) {
-        adultsInput.addEventListener("input", function () {
-            normalizePassengerCounts(adultsInput);
-        });
-        childrenInput.addEventListener("input", function () {
-            normalizePassengerCounts(childrenInput);
-        });
-        adultsInput.addEventListener("change", function () {
-            normalizePassengerCounts(adultsInput);
-        });
-        childrenInput.addEventListener("change", function () {
-            normalizePassengerCounts(childrenInput);
-        });
-
-        normalizePassengerCounts(null);
-    }
-
-    // -----------------------------------------------------------
-    // Zostavenie textu SMS z vyplnených údajov
-    // -----------------------------------------------------------
+    // ---------------------------------------------------------------------
+    // SMS body
+    // ---------------------------------------------------------------------
 
     function yesNo(checked) {
         if (lang === "sk") {
@@ -292,22 +317,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return checked ? "yes" : "no";
     }
 
-    const seatLabels = lang === "sk"
-        ? {
-            "none": "bez sedacky / podsedaku",
-            "seat-9-36": "potrebuje sedacku 9-36 kg",
-            "booster-22-36": "potrebuje podsedak 22-36 kg",
-            "own-carrier": "vlastne vajicko - zakaznik si prinesie vlastne"
-        }
-        : {
-            "none": "no child seat / booster needed",
-            "seat-9-36": "child seat 9-36 kg required",
-            "booster-22-36": "booster seat 22-36 kg required",
-            "own-carrier": "own infant carrier - customer will bring their own"
-        };
-
     function buildSmsBody(values, status) {
         const flagLine = smsFlag[status];
+
+        const childLines = values.childEquipment.map(function (equipment, index) {
+            const prefix = lang === "sk" ? "Dieta " : "Child ";
+            return prefix + (index + 1) + ": " + (seatLabels[equipment] || equipment);
+        });
 
         const requestLines = lang === "sk"
             ? [
@@ -315,51 +331,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Odkial: " + values.from,
                 "Kam: " + values.to,
                 "Datum a cas: " + values.date + " " + values.time + " (SK cas)",
-                "Dospeli: " + values.adults,
-                "Deti: " + values.children,
-                "Spolu cestujucich: " + values.totalPassengers
-            ]
+                "Pocet osob: " + values.totalPassengers,
+                "Z toho deti: " + values.children
+            ].concat(childLines, [
+                "Vacsia batozina: " + yesNo(values.luggage),
+                "Domace zviera: " + yesNo(values.pet),
+                "Cislo letu: " + (values.flight || "-")
+            ])
             : [
-                "Hello, I would like to book a ride. (non-binding request)",
+                "Hello, I would like to request a ride. (non-binding request)",
                 "Pickup: " + values.from,
                 "Destination: " + values.to,
                 "Date and time: " + values.date + " " + values.time + " (SK time)",
-                "Adults: " + values.adults,
-                "Children: " + values.children,
-                "Total passengers: " + values.totalPassengers
-            ];
-
-        if (values.childEquipment.length > 0) {
-            requestLines.push("");
-
-            values.childEquipment.forEach(function (item, index) {
-                const text = seatLabels[item] || item;
-                requestLines.push(
-                    (lang === "sk" ? "Dieta " : "Child ") +
-                    (index + 1) +
-                    ": " +
-                    text
-                );
-            });
-        }
-
-        requestLines.push(
-            lang === "sk"
-                ? "Vacsia batozina: " + yesNo(values.luggage)
-                : "Larger luggage: " + yesNo(values.luggage)
-        );
-
-        requestLines.push(
-            lang === "sk"
-                ? "Domace zviera: " + yesNo(values.pet)
-                : "Pet: " + yesNo(values.pet)
-        );
-
-        requestLines.push(
-            lang === "sk"
-                ? "Cislo letu: " + (values.flight || "-")
-                : "Flight number: " + (values.flight || "-")
-        );
+                "Passengers: " + values.totalPassengers,
+                "Of which children: " + values.children
+            ].concat(childLines, [
+                "Larger luggage: " + yesNo(values.luggage),
+                "Pet: " + yesNo(values.pet),
+                "Flight number: " + (values.flight || "-")
+            ]);
 
         return [flagLine, ""].concat(requestLines).join("\n");
     }
@@ -367,13 +357,24 @@ document.addEventListener("DOMContentLoaded", function () {
     function openSms(values, status) {
         const body = buildSmsBody(values, status);
         const encoded = encodeURIComponent(body);
-        window.location.href = "sms:" + PHONE + "?&body=" + encoded;
+        const fullSmsUrl = "sms:" + PHONE + "?&body=" + encoded;
+        const fallbackSmsUrl = "sms:" + PHONE;
+
+        window.location.href = fullSmsUrl;
+
+        // Some browsers/devices do not support an SMS body in the URI.
+        // If navigation did not happen, fall back to opening the SMS app
+        // with only the phone number.
+        setTimeout(function () {
+            if (!document.hidden) {
+                window.location.href = fallbackSmsUrl;
+            }
+        }, 1200);
     }
 
-
-    // -----------------------------------------------------------
-    // Načítanie obsadených intervalov (rovnaké zdroje ako availability.js)
-    // -----------------------------------------------------------
+    // ---------------------------------------------------------------------
+    // Busy intervals
+    // ---------------------------------------------------------------------
 
     function getLongTermIntervals() {
         if (typeof availabilityData === "undefined" || !availabilityData.longTerm) {
@@ -394,7 +395,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function getShortTermIntervals() {
         if (typeof AVAILABILITY_API === "undefined") {
-            return [];
+            throw new Error("AVAILABILITY_API is not defined");
         }
 
         const response = await fetch(AVAILABILITY_API, { cache: "no-store" });
@@ -413,9 +414,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Skontroluje, či sa predpokladané OKNO novej jazdy
-    // (candidate - WINDOW_BEFORE, candidate + WINDOW_AFTER)
-    // prekrýva s niektorým existujúcim obsadeným intervalom.
     function hasWindowConflict(candidate, intervals) {
         const windowStart = candidate.getTime() - WINDOW_BEFORE_MINUTES * 60 * 1000;
         const windowEnd = candidate.getTime() + WINDOW_AFTER_MINUTES * 60 * 1000;
@@ -423,16 +421,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return intervals.some(function (interval) {
             const busyStart = interval.start.getTime();
             const busyEnd = interval.end.getTime();
-
-            // Klasické prekrytie dvoch intervalov
             return windowStart <= busyEnd && windowEnd >= busyStart;
         });
     }
 
-
-    // -----------------------------------------------------------
-    // Odoslanie formulára
-    // -----------------------------------------------------------
+    // ---------------------------------------------------------------------
+    // Form submit
+    // ---------------------------------------------------------------------
 
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
@@ -460,41 +455,30 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const candidate = zonedWallTimeToUtc(dateVal, timeVal, TIME_ZONE);
+        const totalPassengers = Math.max(1, Math.min(MAX_PASSENGERS, parsePassengerCount(passengersInput, 1)));
+        const children = Math.max(0, parsePassengerCount(childrenInput, 0));
 
-        if (isNaN(candidate.getTime())) {
-            resultBox.textContent = labels.missing;
+        if (totalPassengers < 1 || totalPassengers > MAX_PASSENGERS) {
+            resultBox.textContent = labels.passengerCount;
             resultBox.className = "booking-check-result booking-check-warning";
             return;
         }
 
-        const adultsEl = document.getElementById("booking-adults");
-        const childrenEl = document.getElementById("booking-children");
-
-        const adults = parseInt(adultsEl.value || "0", 10);
-        const children = parseInt(childrenEl.value || "0", 10);
-        const totalPassengers = adults + children;
-
-        if (
-            adults < 0 ||
-            children < 0 ||
-            totalPassengers < 1 ||
-            totalPassengers > MAX_PASSENGERS
-        ) {
-            resultBox.textContent = labels.capacity;
+        if (children > totalPassengers) {
+            resultBox.textContent = labels.childCount;
             resultBox.className = "booking-check-result booking-check-warning";
             return;
         }
 
-        const childEquipment = getChildEquipmentSelects().map(function (select) {
+        const childSelects = getChildEquipmentSelects();
+        const childEquipment = childSelects.map(function (select) {
             return select.value;
         });
 
-        if (
-            childEquipment.length !== children ||
-            childEquipment.some(function (value) { return !value; })
-        ) {
-            resultBox.textContent = labels.missingChildEquipment;
+        if (children > 0 && (childEquipment.length !== children || childEquipment.some(function (value) {
+            return !value;
+        }))) {
+            resultBox.textContent = labels.childEquipmentMissing;
             resultBox.className = "booking-check-result booking-check-warning";
             return;
         }
@@ -508,9 +492,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }).length;
 
         if (seatCount > 1 || boosterCount > 1) {
-            resultBox.textContent = labels.missingChildEquipment;
+            resultBox.textContent = labels.childEquipmentLimit;
             resultBox.className = "booking-check-result booking-check-warning";
-            updateLimitedEquipmentOptions();
+            return;
+        }
+
+        const candidate = zonedWallTimeToUtc(dateVal, timeVal, TIME_ZONE);
+
+        if (isNaN(candidate.getTime())) {
+            resultBox.textContent = labels.missing;
+            resultBox.className = "booking-check-result booking-check-warning";
             return;
         }
 
@@ -519,13 +510,12 @@ document.addEventListener("DOMContentLoaded", function () {
             time: timeVal,
             from: fromVal,
             to: toVal,
-            adults: String(adults),
-            children: String(children),
-            totalPassengers: String(totalPassengers),
+            children: children,
+            totalPassengers: totalPassengers,
             childEquipment: childEquipment,
             luggage: document.getElementById("booking-luggage").checked,
             pet: document.getElementById("booking-pet").checked,
-            flight: document.getElementById("booking-flight").value
+            flight: document.getElementById("booking-flight").value.trim()
         };
 
         submitBtn.disabled = true;
@@ -544,7 +534,9 @@ document.addEventListener("DOMContentLoaded", function () {
             resultBox.className = "booking-check-result " +
                 (conflict ? "booking-check-warning" : "booking-check-success");
 
-            setTimeout(function () { openSms(values, status); }, 700);
+            setTimeout(function () {
+                openSms(values, status);
+            }, 700);
 
         } catch (error) {
             console.error("Booking availability check failed:", error);
@@ -552,7 +544,9 @@ document.addEventListener("DOMContentLoaded", function () {
             resultBox.textContent = labels.unknown;
             resultBox.className = "booking-check-result booking-check-neutral";
 
-            setTimeout(function () { openSms(values, "unknown"); }, 700);
+            setTimeout(function () {
+                openSms(values, "unknown");
+            }, 700);
 
         } finally {
             submitBtn.disabled = false;
