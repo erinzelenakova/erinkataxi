@@ -1,4 +1,4 @@
-k<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sk">
 
 <head>
@@ -26,11 +26,49 @@ k<!DOCTYPE html>
 
     <meta property="og:url"
         content="https://www.erinkataxi.sk/">
+
+    <meta property="og:image"
+        content="https://www.erinkataxi.sk/IMG_8532.jpeg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Erinka Taxi | Bezpečné jazdy pre ženy, rodiny a seniorov v Košiciach">
+    <meta name="twitter:description" content="Bezpečné plánované jazdy v Košiciach a okolí. Individuálny prístup, letiskové transfery, rodinné jazdy a preprava seniorov.">
+    <meta name="twitter:image" content="https://www.erinkataxi.sk/IMG_8532.jpeg">
     <link rel="canonical" href="https://www.erinkataxi.sk/">
 
     <link rel="alternate" hreflang="sk" href="https://www.erinkataxi.sk/">
     <link rel="alternate" hreflang="en" href="https://www.erinkataxi.sk/en/">
     <link rel="alternate" hreflang="x-default" href="https://www.erinkataxi.sk/">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TaxiService",
+        "name": "ErinkaTAXI",
+        "image": "https://www.erinkataxi.sk/IMG_8532.jpeg",
+        "url": "https://www.erinkataxi.sk/",
+        "telephone": "+421914208898",
+        "email": "erinkataxi@gmail.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Rastislavova 746/1",
+            "addressLocality": "Košice - Juh",
+            "postalCode": "040 01",
+            "addressCountry": "SK"
+        },
+        "areaServed": [
+            {
+                "@type": "City",
+                "name": "Košice"
+            },
+            {
+                "@type": "AdministrativeArea",
+                "name": "Košice-okolie"
+            }
+        ],
+        "priceRange": "€€"
+    }
+    </script>
     <style>
     /* =========================================================
        1. Basic styles
@@ -41,9 +79,297 @@ k<!DOCTYPE html>
         background: #fcf5f5;
         color: #333;
         margin: 0;
-        padding: 0;
+        padding: 0 0 66px;
         line-height: 1.4;
         font-size: 14px;
+    }
+
+    /* =========================================================
+       17. Sticky call/SMS bar (mobile-first quick contact)
+       ========================================================= */
+
+    .sticky-cta {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+
+        display: flex;
+        gap: 8px;
+
+        padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+        background: #ffffff;
+        border-top: 1px solid #e0b4b4;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sticky-cta a,
+    .sticky-cta button {
+        flex: 1;
+        text-align: center;
+        padding: 11px 8px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 15px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .sticky-cta a:hover,
+    .sticky-cta button:hover {
+        text-decoration: none;
+    }
+
+    .sticky-call {
+        background: #b54f4f;
+        color: #ffffff;
+    }
+
+    .sticky-call:hover {
+        background: #a33939;
+        color: #ffffff;
+    }
+
+    .sticky-sms {
+        background: #f4cccc;
+        color: #a33939;
+        border: none;
+        font-family: inherit;
+        cursor: pointer;
+    }
+
+    .sticky-sms:hover {
+        background: #e0b4b4;
+        color: #a33939;
+    }
+
+    /* =========================================================
+       18. Booking availability check panel
+       ========================================================= */
+
+    .booking-check-panel {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 58px;
+        z-index: 1001;
+
+        max-width: 600px;
+        margin: 0 auto;
+
+        max-height: 70vh;
+        overflow-y: auto;
+
+        background: #ffffff;
+        border: 1px solid #e0b4b4;
+        border-bottom: none;
+        border-radius: 14px 14px 0 0;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+
+        padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+    }
+
+    .booking-check-panel[hidden] {
+        display: none;
+    }
+
+    .booking-check-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .booking-check-header strong {
+        color: #b54f4f;
+        font-size: 15px;
+    }
+
+    .booking-check-disclaimer {
+        font-size: 12px;
+        line-height: 1.45;
+        color: #7a5252;
+        background: #fdf3f3;
+        border: 1px solid #f0d6d6;
+        border-radius: 8px;
+        padding: 8px 10px;
+        margin-bottom: 12px;
+    }
+
+    .booking-check-disclaimer strong {
+        color: #a33939;
+    }
+
+    .booking-check-disclaimer ol {
+        margin: 4px 0 4px 18px;
+        padding: 0;
+    }
+
+    .booking-check-disclaimer li {
+        margin-bottom: 2px;
+    }
+
+    .booking-check-close {
+        background: none;
+        border: none;
+        font-size: 18px;
+        line-height: 1;
+        color: #a33939;
+        cursor: pointer;
+        padding: 4px 6px;
+    }
+
+    .booking-check-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #a33939;
+    }
+
+    .booking-check-field {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .booking-check-field-label {
+        flex: 0 1 40%;
+        max-width: 40%;
+        font-size: 13px;
+        font-weight: 600;
+        color: #a33939;
+        line-height: 1.25;
+    }
+
+    .booking-check-field input[type="text"],
+    .booking-check-field input[type="number"],
+    .booking-check-field select {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .booking-check-datetime-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .booking-check-datetime-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .booking-check-datetime-col > span {
+        font-size: 13px;
+        font-weight: 600;
+        color: #a33939;
+        margin-bottom: 4px;
+    }
+
+    .booking-check-time-select {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .booking-check-time-select select {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 8px 4px;
+        border: 1px solid #e0b4b4;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        color: #333;
+        background: #fff;
+    }
+
+    .booking-check-checkbox-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        margin-bottom: 12px;
+    }
+
+    .booking-check-checkbox-row label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+        font-weight: 600;
+        font-size: 13px;
+        color: #a33939;
+        white-space: nowrap;
+    }
+
+    .booking-check-checkbox-row input {
+        width: auto;
+        margin: 0;
+    }
+
+    .booking-check-form input[type="date"],
+    .booking-check-form input[type="text"],
+    .booking-check-form input[type="number"],
+    .booking-check-form select {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 10px;
+        border: 1px solid #e0b4b4;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        color: #333;
+        background: #fff;
+    }
+
+    .booking-check-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+    }
+
+    .booking-check-checkbox input {
+        width: auto;
+        margin: 0;
+    }
+
+    .booking-check-result {
+        margin: 8px 0 12px;
+        font-size: 13px;
+        min-height: 18px;
+        text-align: left;
+    }
+
+    .booking-check-info {
+        color: #666;
+    }
+
+    .booking-check-success {
+        color: #2e7d32;
+        font-weight: 700;
+    }
+
+    .booking-check-warning {
+        color: #b56300;
+        font-weight: 700;
+    }
+
+    .booking-check-neutral {
+        color: #555;
+        font-weight: 600;
+    }
+
+    .booking-check-submit-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
     }
 
     main {
@@ -256,11 +582,6 @@ k<!DOCTYPE html>
         line-height: 1.3;
     }
 
-    .live-status-detail {
-        font-size: 13px;
-        font-weight: 400;
-    }
-
     /* Prijímam objednávky */
     .live-status-booking {
         background: #eef5fb;
@@ -294,6 +615,35 @@ k<!DOCTYPE html>
         background: #fafafa;
         border-color: #dddddd;
         color: #777;
+    }
+
+    /* Skeleton - zobrazí sa len pri prvom načítaní stránky, kým nepríde odpoveď */
+    .status-skeleton {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .status-skeleton .live-status-dot,
+    .status-skeleton .live-status-text {
+        visibility: hidden;
+    }
+
+    .status-skeleton::after {
+        content: "";
+        position: absolute;
+        top: 12px;
+        bottom: 12px;
+        left: 14px;
+        right: 14px;
+        border-radius: 6px;
+        background: linear-gradient(90deg, #ececec 25%, #f7f7f7 50%, #ececec 75%);
+        background-size: 200% 100%;
+        animation: skeleton-shimmer 1.3s ease-in-out infinite;
+    }
+
+    @keyframes skeleton-shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
     }
     
 
@@ -367,6 +717,15 @@ k<!DOCTYPE html>
     .availability-row {
         margin: 5px 0;
         text-align: left;
+    }
+
+    .availability-load-error {
+        color: #b56300;
+        font-weight: 600;
+        background: #fff6ea;
+        border: 1px solid #f0ddb8;
+        border-radius: 8px;
+        padding: 8px 10px;
     }
     
     .availability-notice p {
@@ -744,7 +1103,7 @@ k<!DOCTYPE html>
             <h2>Rezervácia jazdy alebo letiskového transferu</h2>
 
             <!-- LIVE STATUS -->
-            <div id="live-status" class="live-status live-status-loading">
+            <div id="live-status" class="live-status live-status-loading status-skeleton">
                 <span class="live-status-dot"></span>
 
                 <span class="live-status-text">
@@ -849,7 +1208,8 @@ k<!DOCTYPE html>
             <section class="profile-photo">
             
                 <img src="IMG_8532.jpeg"
-                     alt="Erinka Taxi - Ing. Erin Zeleňáková pri vozidle">
+                     alt="Erinka Taxi - Ing. Erin Zeleňáková pri vozidle"
+                     loading="lazy" decoding="async">
             
                 <p>
                     Teším sa na spoločnú jazdu.
@@ -869,11 +1229,15 @@ k<!DOCTYPE html>
             <div class="price-cards">
                 <div class="card">
                     <h3>Minimálne jazdné v meste</h3>
-                    <p>5,0 €</p>
+                    <p>od 5 €</p>
                 </div>
                 <div class="card">
-                    <h3>Minimálne jazdné mimo mesta</h3>
-                    <p>10,0 €</p>
+                    <h3>Bežná mestská jazda</h3>
+                    <p>cca 6–10 €</p>
+                </div>
+                <div class="card">
+                    <h3>Dlhšia jazda naprieč mestom</h3>
+                    <p>cca 10–15 €</p>
                 </div>
                 <div class="card">
                     <h3>Letisko Košice (KSC)</h3>
@@ -895,218 +1259,76 @@ k<!DOCTYPE html>
             <button class="btn" onclick="toggleCennik()">Otvoriť celý cenník</button>
 
             <div id="full-cennik">
-                <h3>Otvoriť celý cenník Erinka Taxi</h3>
+                <h3>Kompletný cenník Erinka Taxi</h3>
 
                 <p>
                     <strong>
                         Erinka Taxi nepoužíva taxameter.<br>
-                        Cena jazdy je dohodnutá vopred pred začiatkom jazdy
-                        na základe trasy, času a požiadaviek zákazníka.
+                        Cena každej jazdy sa určuje individuálne vopred podľa trasy,
+                        vzdialenosti, času a prípadných osobitných požiadaviek.
                     </strong>
                 </p>
 
-         <!-- OBJEDNANIE A SLUŽBY -->
-        <div class="availability-box">
-
-            <div class="availability-columns">
-
-                <div class="availability-col">
-                    <strong>📞 Ako si objednať jazdu?</strong>
-
-                    1️⃣ Zavolajte mi, pošlite SMS alebo e-mail<br>
-                    2️⃣ Dohodneme termín, trasu a cenu<br>
-                    3️⃣ V dohodnutom čase vás vyzdvihnem
-                </div>
-
-                <div class="availability-col included-col">
-                    <strong>✅ V cene jazdy</strong>
-
-                    👧 Detská sedačka / podsedák podľa potreby<br>
-                    🐶 Domáce zvieratá po dohode<br>
-                    ♿ Invalidný vozík, kočík, bicykel aj väčšia batožina
-                </div>
-            </div>
-
-            <div class="payment-options">
-                <strong>💳 Možnosti platby</strong>
-                <p>💳 Kartou • 📱 Apple Pay • 📱 Google Pay • 🔳 QR platba • 💵 Hotovosť</p>
-            </div>
-
-            <div class="reservation-warning">
-                <strong>📅 Jazdu je potrebné rezervovať vopred.</strong>
-
-                <p>
-                    Keďže jazdy plánujem individuálne podľa už dohodnutých rezervácií,<br>
-                    odporúčam rezerváciu vytvoriť niekoľko hodín,
-                    ideálne deň vopred.
-                </p>
-
-                <strong>Okamžitý odvoz po telefonáte spravidla nie je možný.</strong>
-            </div>
-        </div>    
-
-
                 <p>
                     <em>
-                        Uvedené ceny sú orientačné. Konečná cena jazdy je zákazníkovi
-                        oznámená a odsúhlasená pred začiatkom jazdy.
+                        Uvedené ceny sú orientačné. Konečnú cenu vám oznámim ešte pred jazdou
+                        a jazda sa uskutoční až po jej odsúhlasení.
                     </em>
                 </p>
 
                 <h4>1. Jazdy na území mesta Košice</h4>
                 <table>
-                    <tr>
-                        <td>Minimálne jazdné v meste</td>
-                        <td>5,00 €</td>
-                    </tr>
+                    <tr><td>Minimálne jazdné v meste</td><td>od 5,00 €</td></tr>
+                    <tr><td>Kratšia jazda v rámci mesta</td><td>od 5,00 €</td></tr>
+                    <tr><td>Bežná mestská jazda</td><td>cca 6,00–10,00 €</td></tr>
+                    <tr><td>Dlhšia jazda naprieč mestom</td><td>cca 10,00–15,00 €</td></tr>
                 </table>
-
-                <h4>1a. Orientačné ceny v rámci mesta (príklady)</h4>
-                <table>
-                    <tr>
-                        <td>Centrum – sídliská</td>
-                        <td>5,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Medzi sídliskami</td>
-                        <td>6,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Letisko Košice (KSC)</td>
-                        <td>od 12,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>DoubleTree Hlavná ulica – KVP</td>
-                        <td>5,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>DoubleTree Hlavná ulica –&gt; Galéria -&gt; KVP</td>
-                        <td>6,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Ťahanovce – Terasa</td>
-                        <td>6,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Dargovských hrdinov –&gt; Jazero Jenisejská</td>
-                        <td>8,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Košická Nová Ves – Pereš</td>
-                        <td>12,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Hlavná – Baška</td>
-                        <td>10,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Hlavná – Komenského – Letná – KVP</td>
-                        <td>10,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Ťahanovce – Dargovských hrdinov – KVP</td>
-                        <td>12,00 €</td>
-                    </tr>
-                </table>
-
-                <h4>1b. Príplatkové zóny (Košice – okolie)</h4>
-                <table>
-                    <tr>
-                        <td>Zóna 2: Barca, Jazero, Košická Nová Ves, Myslava</td>
-                        <td>+2,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Zóna 3: Krásna, Myslava Maša, Pereš</td>
-                        <td>+3,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Zóna 3b: Baška, Krásna na hore, Lorinčík, Nižný Klátov, Valaliky, Vyšný Lorinčík</td>
-                        <td>+4,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Zóna 4: Alpinka, Beniakovce, Budimír, Bukovec, Družstevná nad Hornádom, Geča, Hrašovík, Kavečany, Kokšov-Bakša, Košické Oľšany, Kostolany, Malá Ida, Poľov, Sady nad Torysou, Vajkovce</td>
-                        <td>+6,00 €</td>
-                    </tr>
-                    <tr>
-                        <td>Zóna 5: Hýľov, Kráľovce, Rozhanovce, Šaca, Vyšný Klátov, Ďurďošík</td>
-                        <td>+8,00 €</td>
-                    </tr>
-                </table>
+                <p><small>Konkrétna cena závisí od presného miesta nástupu a cieľa, dĺžky trasy, času jazdy a aktuálnych podmienok.</small></p>
 
                 <h4>2. Jazdy mimo mesta Košice</h4>
                 <table>
-                    <tr>
-                        <td>Minimálne jazdné mimo mesta</td>
-                        <td>10,00 €</td>
-                    </tr>
+                    <tr><td>Minimálne jazdné mimo mesta</td><td>od 10,00 €</td></tr>
+                    <tr><td>Ostatné jazdy mimo mesta</td><td>individuálna cena podľa trasy a termínu</td></tr>
                 </table>
 
-                <h4>3. Letiskové transfery (cena za celé vozidlo bez ohľadu na počet cestujúcich)</h4>
-
+                <h4>3. Letiskové transfery</h4>
+                <p><small>Cena je za celé vozidlo bez ohľadu na počet cestujúcich.</small></p>
                 <table>
-                    <tr>
-                        <td>Letisko Košice (KSC)</td>
-                        <td>
-                            od 12 €<br>
-                            <small>(podľa miesta nástupu)</small>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Budapešť (BUD)</td>
-                        <td>od 200 €</td>
-                    </tr>
-                    <tr>
-                        <td>Bratislava (BTS)</td>
-                        <td>od 280 €</td>
-                    </tr>
-                    <tr>
-                        <td>Ostatné letiská v SR a zahraničí</td>
-                        <td>cena dohodou podľa trasy a termínu</td>
-                    </tr>
+                    <tr><td>Letisko Košice (KSC)</td><td>od 12,00 €<br><small>podľa miesta nástupu</small></td></tr>
+                    <tr><td>Budapešť (BUD)</td><td>od 200,00 €</td></tr>
+                    <tr><td>Bratislava (BTS)</td><td>od 280,00 €</td></tr>
+                    <tr><td>Varšava (WAW)</td><td>od 300,00 €</td></tr>
+                    <tr><td>Ostatné letiská v SR a zahraničí</td><td>individuálna cena podľa trasy a termínu</td></tr>
                 </table>
 
                 <h4>4. Špeciálne služby</h4>
-
                 <table>
                     <tr>
                         <td>Drink Taxi (odvoz vášho vozidla)</td>
-                        <td>
-                            individuálna cenová ponuka<br>
-                            <small>
-                                iba po rezervácii vopred a podľa dostupnosti druhého vodiča,<br>
-                                môže byť vyžadovaná záloha
-                            </small>
-                        </td>
+                        <td>individuálna cenová ponuka<br><small>iba po rezervácii vopred a podľa dostupnosti druhého vodiča; môže byť vyžadovaná záloha</small></td>
                     </tr>
                 </table>
 
                 <h4>5. Doplatky, náhrady a osobitné poplatky</h4>
-
                 <table>
-                    <tr>
-                        <td>Čakanie (na požiadanie)</td>
-                        <td>30,00 €/hod</td>
-                    </tr>
-                    <tr>
-                        <td>Náhrada nákladov pri znečistení interiéru</td>
-                        <td>
-                            min. 100,00 €<br>
-                            <small>
-                                pri väčšom znečistení individuálne podľa rozsahu
-                                znečistenia a nákladov na čistenie
-                            </small>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Špecifické požiadavky (extra zastávky, obchádzky, donáška vecí)</td>
-                        <td>dohodou</td>
-                    </tr>
-                    <tr>
-                        <td>Storno jazdy po pristavení vozidla</td>
-                        <td>5,00 €</td>
-                    </tr>
+                    <tr><td>Čakanie (na požiadanie)</td><td>30,00 €/hod</td></tr>
+                    <tr><td>Náhrada nákladov pri znečistení interiéru</td><td>min. 100,00 €<br><small>pri väčšom znečistení individuálne podľa rozsahu a nákladov na čistenie</small></td></tr>
+                    <tr><td>Špecifické požiadavky (extra zastávky, obchádzky, donáška vecí)</td><td>dohodou</td></tr>
+                    <tr><td>Storno jazdy po pristavení vozidla</td><td>5,00 €</td></tr>
                 </table>
-                
+
+                <h4>6. Rezervácia a vybavenie</h4>
+                <p>
+                    Odoslaná SMS alebo iná požiadavka je nezáväzný dopyt. Rezervácia vzniká až po tom,
+                    čo potvrdím dostupnosť a cenu a zákazník objednávku následne potvrdí.
+                </p>
+                <table>
+                    <tr><td>Detská autosedačka</td><td>9–36 kg, bez príplatku</td></tr>
+                    <tr><td>Podsedák</td><td>22–36 kg, bez príplatku</td></tr>
+                    <tr><td>Dieťa pod 9 kg</td><td>vlastné vajíčko</td></tr>
+                    <tr><td>Sedačka / podsedák</td><td>objednať min. 6 h vopred; pri kratšom čase dostupnosť nie je garantovaná</td></tr>
+                </table>
+
                 <a href="cennik.pdf" class="btn-download" download>Stiahnuť PDF verziu</a>
             </div>
         </section>
@@ -1178,6 +1400,180 @@ k<!DOCTYPE html>
         <p>© 2025-2026 Erinka Taxi</p>
     </footer>
 
+    <div id="booking-check-panel" class="booking-check-panel" hidden>
+        <div class="booking-check-header">
+            <strong>📋 Rýchla objednávka cez SMS</strong>
+            <button type="button" id="booking-check-close" class="booking-check-close" aria-label="Zavrieť">✕</button>
+        </div>
+
+        <div class="booking-check-disclaimer">
+            <strong>Toto je nezáväzná žiadosť o jazdu:</strong>
+            <ol>
+                <li>Pošlete žiadosť</li>
+                <li>Potvrdím dostupnosť a cenu</li>
+                <li>Vy potvrdíte objednávku</li>
+            </ol>
+            Rezervácia vzniká až po vzájomnom potvrdení.
+        </div>
+
+        <form id="booking-check-form" class="booking-check-form">
+            <div class="booking-check-datetime-row">
+                <div class="booking-check-datetime-col">
+                    <span>Dátum</span>
+                    <input type="date" id="booking-date" required>
+                </div>
+
+                <div class="booking-check-datetime-col">
+                    <span>Čas (24 h)</span>
+                    <div class="booking-check-time-select">
+                        <select id="booking-hour" required>
+                            <option value="" disabled selected>HH</option>
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                        </select>
+                        <span>:</span>
+                        <select id="booking-minute" required>
+                            <option value="" disabled selected>MM</option>
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                            <option value="32">32</option>
+                            <option value="33">33</option>
+                            <option value="34">34</option>
+                            <option value="35">35</option>
+                            <option value="36">36</option>
+                            <option value="37">37</option>
+                            <option value="38">38</option>
+                            <option value="39">39</option>
+                            <option value="40">40</option>
+                            <option value="41">41</option>
+                            <option value="42">42</option>
+                            <option value="43">43</option>
+                            <option value="44">44</option>
+                            <option value="45">45</option>
+                            <option value="46">46</option>
+                            <option value="47">47</option>
+                            <option value="48">48</option>
+                            <option value="49">49</option>
+                            <option value="50">50</option>
+                            <option value="51">51</option>
+                            <option value="52">52</option>
+                            <option value="53">53</option>
+                            <option value="54">54</option>
+                            <option value="55">55</option>
+                            <option value="56">56</option>
+                            <option value="57">57</option>
+                            <option value="58">58</option>
+                            <option value="59">59</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <label class="booking-check-field">
+                <span class="booking-check-field-label">Odkiaľ</span>
+                <input type="text" id="booking-from" placeholder="napr. Sídlisko KVP" required>
+            </label>
+
+            <label class="booking-check-field">
+                <span class="booking-check-field-label">Kam</span>
+                <input type="text" id="booking-to" placeholder="napr. Letisko Košice" required>
+            </label>
+
+            <label class="booking-check-field">
+                <span class="booking-check-field-label">Počet osôb</span>
+                <input type="number" id="booking-passengers" min="1" max="4" value="1">
+            </label>
+
+            <label class="booking-check-field">
+                <span class="booking-check-field-label">Detská sedačka</span>
+                <select id="booking-seat">
+                    <option value="none">Bez sedačky</option>
+                    <option value="seat-9-36">Sedačka 9–36 kg</option>
+                    <option value="booster-22-36">Podsedák 22–36 kg</option>
+                    <option value="own-carrier">Vlastné vajíčko (do 9 kg)</option>
+                </select>
+            </label>
+
+            <div class="booking-check-checkbox-row">
+                <label>
+                    <input type="checkbox" id="booking-luggage"> Väčšia batožina
+                </label>
+
+                <label>
+                    <input type="checkbox" id="booking-pet"> Domáce zviera
+                </label>
+            </div>
+
+            <label class="booking-check-field">
+                <span class="booking-check-field-label">Číslo letu</span>
+                <input type="text" id="booking-flight" placeholder="voliteľné, ak ide o transfer">
+            </label>
+
+            <div id="booking-check-result" class="booking-check-result"></div>
+
+            <button type="submit" id="booking-check-submit" class="btn booking-check-submit-btn">
+                Skontrolovať a odoslať SMS
+            </button>
+        </form>
+    </div>
+
+    <div class="sticky-cta">
+        <a href="tel:+421914208898" class="sticky-call">📞 Zavolať</a>
+        <button type="button" id="open-booking-check" class="sticky-sms">💬 SMS</button>
+    </div>
+
     <script>
         function toggleCennik() {
             const cennik = document.getElementById("full-cennik");
@@ -1188,6 +1584,7 @@ k<!DOCTYPE html>
         }
     </script>
     <script src="availability.js"></script>
+    <script src="booking-check.js"></script>
     <script src="status.js"></script>    
     <script src="reviews.js"></script>
 </body>

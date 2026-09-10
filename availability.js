@@ -43,7 +43,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             longTerm: "Dlhodobejšie obmedzenia",
             allDay: "celý deň",
             nextBooking:
-                "✅ Nové objednávky po dovolenke prijímam od"
+                "✅ Nové objednávky po dovolenke prijímam od",
+            loadError:
+                "⚠️ Obsadené termíny sa momentálne nepodarilo načítať. Prosím, overte dostupnosť priamo telefonicky alebo SMS."
         }
         : {
             title: "📅 Exceptions and booked time slots",
@@ -51,7 +53,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             longTerm: "Long-term availability changes",
             allDay: "all day",
             nextBooking:
-                "✅ I am accepting new bookings again from"
+                "✅ I am accepting new bookings again from",
+            loadError:
+                "⚠️ Booked time slots could not be loaded right now. Please check availability directly by phone or SMS."
         };
 
 
@@ -144,43 +148,33 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     async function loadCalendarAvailability() {
-        try {
-            const response = await fetch(
-                AVAILABILITY_API,
-                {
-                    cache: "no-store"
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(
-                    "Availability API returned " +
-                    response.status
-                );
+        const response = await fetch(
+            AVAILABILITY_API,
+            {
+                cache: "no-store"
             }
+        );
 
-            const data = await response.json();
-
-            return (data.busy || []).map(function (slot) {
-                const start = new Date(slot.start);
-                const end = new Date(slot.end);
-
-                return {
-                    date: formatDate(start),
-                    startTime: formatTime(start),
-                    endTime: formatTime(end),
-                    allDay: isAllDaySlot(start, end)
-                };
-            });
-
-        } catch (error) {
-            console.error(
-                "Unable to load calendar availability:",
-                error
+        if (!response.ok) {
+            throw new Error(
+                "Availability API returned " +
+                response.status
             );
-
-            return [];
         }
+
+        const data = await response.json();
+
+        return (data.busy || []).map(function (slot) {
+            const start = new Date(slot.start);
+            const end = new Date(slot.end);
+
+            return {
+                date: formatDate(start),
+                startTime: formatTime(start),
+                endTime: formatTime(end),
+                allDay: isAllDaySlot(start, end)
+            };
+        });
     }
 
 
@@ -323,17 +317,30 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
-    availabilityData.shortTerm =
-        await loadCalendarAvailability();
+    let shortTermLoadFailed = false;
+
+    try {
+        availabilityData.shortTerm = await loadCalendarAvailability();
+    } catch (error) {
+        console.error(
+            "Unable to load calendar availability:",
+            error
+        );
+
+        availabilityData.shortTerm = [];
+        shortTermLoadFailed = true;
+    }
 
     const hasItems =
         availabilityData.shortTerm.length > 0 ||
         availabilityData.longTerm.length > 0;
 
-    if (
-        !availabilityData.enabled ||
-        !hasItems
-    ) {
+    if (!availabilityData.enabled) {
+        box.style.display = "none";
+        return;
+    }
+
+    if (!hasItems && !shortTermLoadFailed) {
         box.style.display = "none";
         return;
     }
@@ -342,6 +349,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         '<h3>' +
         labels.title +
         '</h3>';
+
+    if (shortTermLoadFailed) {
+        html +=
+            '<p class="availability-row availability-load-error">' +
+            labels.loadError +
+            '</p>';
+    }
 
     html += renderShortTerm(
         availabilityData.shortTerm

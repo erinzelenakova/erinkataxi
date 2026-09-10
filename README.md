@@ -13,6 +13,7 @@ The project is intentionally lightweight and static. It uses HTML5, embedded CSS
 /
 ├── index.html              # Slovak version
 ├── availability.js         # Shared SK/EN availability renderer + Google Calendar availability
+├── booking-check.js        # Non-binding SMS ride request + availability conflict pre-check
 ├── status.js               # Live driver status renderer
 ├── reviews.js              # Customer reviews data and renderer
 ├── cennik.pdf              # Slovak downloadable price list
@@ -48,6 +49,8 @@ Both language versions follow the same general structure:
 15. Target customer groups
 16. Legal information and downloadable documents
 17. Footer
+18. Sticky Call / SMS contact bar
+19. Quick SMS ride-request panel with availability pre-check
 
 The booking area is deliberately compact: standard operating hours are shown only in the dedicated booking-hours box, while the two-column booking box contains **How to book** and **Included in the ride**. Payment methods are displayed below both columns.
 
@@ -60,7 +63,9 @@ The page uses a mobile-friendly single-column width (`max-width: 600px`). At sma
 - legal-information columns stack vertically,
 - reservation notices adapt to the available width,
 - live status remains compact and clearly visible,
-- short-term calendar availability remains compact and readable.
+- short-term calendar availability remains compact and readable,
+- the sticky Call / SMS bar remains available at the bottom of the screen,
+- the quick SMS request panel opens as a compact mobile-friendly overlay.
 
 ## Live driver status
 
@@ -145,7 +150,8 @@ Credentials and private keys are stored outside the public repository and must n
 - groups multiple occupied slots by date,
 - detects full-day blocks,
 - renders localized Slovak or English labels,
-- displays compact rows using separate date / lock / time columns.
+- displays compact rows using separate date / lock / time columns,
+- shows a visible fallback message if booked time slots cannot be loaded.
 
 Example:
 
@@ -203,11 +209,94 @@ const availabilityData = {
 };
 ```
 
+## Quick SMS ride request
+
+`booking-check.js` provides a lightweight ride-request workflow without turning the website into a full booking system.
+
+The customer can enter:
+
+- date and time,
+- pickup location,
+- destination,
+- number of passengers,
+- child-seat requirement,
+- larger luggage,
+- pet,
+- optional flight number.
+
+Pickup and destination are required. Passenger count is limited to the supported vehicle capacity shown by the form.
+
+The selected ride time is always interpreted in the `Europe/Bratislava` timezone, independent of the timezone configured on the customer's device.
+
+### Availability conflict pre-check
+
+Before opening the SMS application, the website checks the requested time against:
+
+- short-term busy intervals from Google Calendar,
+- manually configured long-term closures.
+
+The request is checked using an approximate time window:
+
+```text
+requested time - 15 minutes
+requested time + 30 minutes
+```
+
+The result can be:
+
+- **no conflict detected**,
+- **possible time conflict**,
+- **availability could not be verified**.
+
+The check is advisory only. It never blocks the customer from sending the SMS.
+
+### Non-binding booking workflow
+
+Sending the generated SMS is only a **non-binding ride request**.
+
+The booking workflow is:
+
+```text
+Customer sends a ride request
+      ↓
+Driver checks route and real availability
+      ↓
+Driver confirms availability and proposes the price
+      ↓
+Customer confirms the offer
+      ↓
+Booking is confirmed
+```
+
+A request is therefore not considered a confirmed reservation until availability and price have been agreed by both sides.
+
+The generated SMS includes a status flag for the driver so a possible calendar conflict is immediately visible when the message is received.
+
 ## Customer reviews
 
 Selected customer reviews are maintained separately in `reviews.js`.
 
 The review data is rendered dynamically on the website, keeping review content separate from the main HTML structure and making future updates easier.
+
+## Pricing model
+
+Erinka Taxi uses **pre-agreed pricing** and does not use a taximeter.
+
+The published price list uses a flexible model:
+
+- minimum fare within Košice starts from **€5**,
+- short city rides start from **€5**,
+- normal city rides are shown as an indicative range,
+- longer cross-city rides are shown as an indicative range,
+- rides outside Košice are priced individually according to route and date,
+- airport transfers have published starting prices,
+- special requirements and additional services may be priced individually.
+
+Published prices are indicative. The final price is determined according to the exact pickup location, destination, route, distance, time and any special requirements.
+
+The final price is communicated to the customer before the ride and the ride takes place only after the price has been accepted.
+
+Fixed surcharge zones are no longer used in the public price presentation.
 
 ## Price lists and transport regulations
 
@@ -218,6 +307,8 @@ The website provides downloadable documents for customers:
 - Erinka Taxi transport regulations — `Prepravny_poriadok_ErinkaTAXI_revizia_k_datumu_20260828.pdf`
 
 The HTML price presentation and downloadable price lists are maintained together so that published pricing information remains consistent.
+
+The current revised price-list model is valid from **10 September 2026**.
 
 ## Payments
 
@@ -242,6 +333,13 @@ Depending on prior arrangement and vehicle capacity, the booking section highlig
 - bicycle,
 - larger luggage.
 
+The quick SMS request form allows the customer to distinguish between:
+
+- no child seat,
+- child seat 9–36 kg,
+- booster seat 22–36 kg,
+- own infant carrier below 9 kg.
+
 A child seat or booster seat should normally be requested at least **6 hours in advance**. For shorter notice, availability is not guaranteed.
 
 ## SEO and language versions
@@ -249,6 +347,8 @@ A child seat or booster seat should normally be requested at least **6 hours in 
 The Slovak page is canonical at `https://www.erinkataxi.sk/` and the English page at `https://www.erinkataxi.sk/en/`.
 
 Both pages define `hreflang` links for `sk`, `en` and `x-default`.
+
+Both pages include `TaxiService` structured data.
 
 `sitemap.xml` contains both language URLs and `robots.txt` allows crawling and points search engines to the sitemap.
 
@@ -279,6 +379,8 @@ Sensitive values are stored as Cloudflare Worker secrets or environment variable
 
 The calendar integration exposes only availability intervals required for customer-facing scheduling. Private calendar event metadata is kept outside the public website.
 
+The SMS request form is client-side and does not create a customer account or store booking data on the website.
+
 ## Versioning
 
 Stable website versions are marked using GitHub release tags. Earlier development milestones are documented using their corresponding Git commits.
@@ -292,8 +394,9 @@ Stable website versions are marked using GitHub release tags. Earlier developmen
 | `v2.7.0` | Live driver status, customer reviews, updated price lists, transport regulations and further availability/layout improvements |
 | `v2.8.0` | Extended live status system with separate available, driving, booking and offline states |
 | `v3.0.0` | Google Calendar powered short-term availability, Cloudflare Worker calendar API integration, automatic booked-slot rendering and compact availability layout |
+| `v3.1.0` | Quick SMS ride request with calendar conflict pre-check, sticky contact controls, timezone-safe booking logic and flexible route-based pricing |
 
-The current stable release is planned as **v3.0.0**.
+The current stable release is **v3.1.0**.
 
 ### Historical milestones
 
@@ -306,9 +409,56 @@ The current stable release is planned as **v3.0.0**.
 | `v2.3.0` | `c157c9f` | Layout, styling and contact information improvements |
 | `v2.4.0` | `49d1a79` | Availability system, branding and website URL updates |
 
+## v3.1.0 release highlights
+
+The `v3.1.0` release extends the calendar-based availability system with a customer-facing SMS request workflow and revises the public pricing model to better reflect individually planned rides.
+
+### Added
+
+- `booking-check.js`
+- sticky **Call / SMS** contact bar
+- quick SMS ride-request panel
+- required pickup and destination fields
+- passenger-count limit in the request form
+- child-seat type selection
+- optional luggage, pet and flight-number information
+- advisory calendar conflict pre-check before opening SMS
+- combined conflict checking against Google Calendar and long-term closures
+- `Europe/Bratislava` timezone-safe interpretation of requested ride times
+- approximate conflict window of **15 minutes before** and **30 minutes after** the requested pickup time
+- SMS status flag for possible conflict / clear / unavailable verification
+- visible availability API error message instead of silently hiding unavailable calendar data
+- `TaxiService` structured data in both language versions
+
+### Changed
+
+- SMS ride requests are explicitly treated as **non-binding requests**
+- a reservation becomes confirmed only after driver availability and price are confirmed and the customer accepts the offer
+- the public pricing model now uses minimum fares, indicative ranges and individually proposed prices
+- fixed public surcharge zones were removed
+- city pricing now reflects the actual route, distance, time and conditions instead of generic district-to-district fixed examples
+- Slovak and English price presentation was synchronized
+- child-seat information was made more specific in both the website and request workflow
+- downloadable price lists were revised to match the new pricing model
+
+### Operational impact
+
+The driver keeps full control of every booking while customers can send a structured request with the key information needed to evaluate the ride.
+
+The website does not automatically accept a ride. It only helps to:
+
+1. collect the necessary request details,
+2. identify a possible calendar conflict,
+3. open a prepared SMS,
+4. allow the driver to verify the real route and availability,
+5. propose the final price,
+6. confirm the ride only after customer acceptance.
+
+This keeps the workflow lightweight while reducing incomplete requests and avoidable scheduling conflicts.
+
 ## v3.0.0 release highlights
 
-The `v3.0.0` release introduces a major operational improvement to the availability system.
+The `v3.0.0` release introduced a major operational improvement to the availability system.
 
 ### Added
 
@@ -333,7 +483,7 @@ The `v3.0.0` release introduces a major operational improvement to the availabil
 
 ### Operational impact
 
-The driver can now manage ordinary bookings directly from the calendar already used on the phone.
+The driver can manage ordinary bookings directly from the calendar already used on the phone.
 
 There is no need to:
 

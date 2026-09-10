@@ -64,13 +64,14 @@ async function loadLiveStatus() {
             }
         );
 
+        // Skeleton sa zobrazuje len kým nepríde prvá odpoveď (úspešná aj chybová)
+        box.classList.remove("status-skeleton");
+
         if (!response.ok) {
             throw new Error(`HTTP error ${response.status}`);
         }
 
         const data = await response.json();
-
-        console.log("ErinkaTaxi status:", data);
 
         let status = data.status;
 
@@ -111,6 +112,8 @@ async function loadLiveStatus() {
 
     } catch (error) {
         console.error("Live status error:", error);
+
+        box.classList.remove("status-skeleton");
 
         box.classList.remove(
             "live-status-online",
