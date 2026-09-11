@@ -1077,11 +1077,26 @@
        ========================================================= */
 
     footer {
+        position: relative;
         text-align: center;
         font-size: 12px;
         color: #a33939;
-        padding: 0.5rem 0;
+        padding: 0.5rem 0 1.25rem;
         border-top: 1px solid #e0b4b4;
+    }
+
+    .site-build {
+        position: absolute;
+        right: 8px;
+        bottom: 3px;
+        font-size: 9px;
+        line-height: 1;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        color: #9a8f8f;
+        opacity: 0.62;
+        white-space: nowrap;
+        user-select: text;
     }
 
 
@@ -1450,6 +1465,7 @@
 
     <footer>
         <p>© 2025-2026 Erinka Taxi</p>
+        <span class="site-build" aria-label="Site version v3.1.0 • build 2026-09-11.1">v3.1.0 • build 2026-09-11.1</span>
     </footer>
 
     <div id="booking-check-panel" class="booking-check-panel" hidden>

@@ -559,3 +559,11 @@ The website and the Erinka Taxi project are owned and maintained by **Erin Zele≈
 
 Email: **erinkataxi@gmail.com**  
 Web: **https://www.erinkataxi.sk/**
+
+## Visible build identifier
+
+Both SK and EN pages display a small deployment identifier in the bottom-right corner of the footer:
+
+`v3.1.0 ‚Ä¢ build 2026-09-11.1`
+
+The release version may remain unchanged while the build suffix is incremented for test deployments. This makes it easy to confirm which GitHub Pages deployment is currently loaded, including on cached mobile browsers.
