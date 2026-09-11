@@ -564,13 +564,26 @@ Web: **https://www.erinkataxi.sk/**
 
 Both SK and EN pages display a small deployment identifier in the bottom-right corner of the footer:
 
-`v3.1.0 • build 2026-09-11.2`
+`v3.1.0 • build 2026-09-11.3`
 
 The release version may remain unchanged while the build suffix is incremented for test deployments. This makes it easy to confirm which GitHub Pages deployment is currently loaded, including on cached mobile browsers.
 
-### Availability priority in build 2026-09-11.2
+### Static asset cache-busting
 
-The booking pre-check uses this priority:
+Build `build 2026-09-11.3` uses explicit version query strings for the shared JavaScript files:
+
+```html
+<script src="availability.js?v=3.1.0-20260911.3"></script>
+<script src="booking-check.js?v=3.1.0-20260911.3"></script>
+<script src="status.js?v=3.1.0-20260911.3"></script>
+<script src="reviews.js?v=3.1.0-20260911.3"></script>
+```
+
+The English page uses the same version with `../` paths.
+
+This prevents browsers and intermediary caches from continuing to use an older JavaScript file after a GitHub Pages deployment. The visible footer build identifier and the JavaScript asset version should be bumped together for each test deployment.
+
+Current availability priority remains:
 
 1. concrete busy interval from the main Google Calendar -> conflict
 2. private Extra availability interval -> clear
@@ -579,4 +592,4 @@ The booking pre-check uses this priority:
 5. weekend -> by arrangement
 6. otherwise -> outside usual hours
 
-A deliberate Extra availability slot therefore overrides a general holiday or other long-term closure, while a concrete busy booking always has the highest priority.
+A deliberate Extra availability slot can therefore override a general holiday/long-term closure, while a concrete busy booking always wins.
