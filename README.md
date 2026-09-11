@@ -564,6 +564,19 @@ Web: **https://www.erinkataxi.sk/**
 
 Both SK and EN pages display a small deployment identifier in the bottom-right corner of the footer:
 
-`v3.1.0 • build 2026-09-11.1`
+`v3.1.0 • build 2026-09-11.2`
 
 The release version may remain unchanged while the build suffix is incremented for test deployments. This makes it easy to confirm which GitHub Pages deployment is currently loaded, including on cached mobile browsers.
+
+### Availability priority in build 2026-09-11.2
+
+The booking pre-check uses this priority:
+
+1. concrete busy interval from the main Google Calendar -> conflict
+2. private Extra availability interval -> clear
+3. manual long-term closure / holiday -> conflict
+4. normal weekday ride hours -> clear
+5. weekend -> by arrangement
+6. otherwise -> outside usual hours
+
+A deliberate Extra availability slot therefore overrides a general holiday or other long-term closure, while a concrete busy booking always has the highest priority.

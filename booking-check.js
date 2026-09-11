@@ -599,10 +599,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let status;
 
-            // Explicit blocks always win over standard or extra availability.
-            if (busyConflict || longTermConflict) {
+            // Priority:
+            // 1. A concrete busy booking always wins.
+            // 2. A deliberate private Extra availability slot can override
+            //    a general long-term closure / holiday.
+            // 3. Long-term closures block the remaining times.
+            // 4. Otherwise use the normal weekly ride schedule.
+            if (busyConflict) {
                 status = "conflict";
-            } else if (extraAvailable || usualTime) {
+            } else if (extraAvailable) {
+                status = "clear";
+            } else if (longTermConflict) {
+                status = "conflict";
+            } else if (usualTime) {
                 status = "clear";
             } else if (weekend) {
                 status = "weekend";
