@@ -4,8 +4,11 @@
 // Calendar, private extraAvailable intervals from a second Google Calendar,
 // and manually configured long-term closures.
 //
-// IMPORTANT: This check NEVER blocks sending the SMS. A booking is confirmed
-// only after the driver verifies availability and price and the customer confirms.
+// IMPORTANT: This check NEVER turns the request into a confirmed booking.
+// Clear times open the prepared SMS directly. Problematic / uncertain results
+// require the customer to consciously choose "send request anyway" first.
+// A booking is confirmed only after the driver verifies availability and price
+// and the customer confirms.
 //
 // availability.js must be loaded before this file because this script uses:
 //   - AVAILABILITY_API
@@ -99,33 +102,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const labels = lang === "sk"
         ? {
             checking: "Kontrolujem aktuálnu dostupnosť...",
-            conflict: "⚠️ V blízkosti zvoleného času už mám inú jazdu alebo je termín blokovaný. Žiadosť môžete odoslať aj tak – preverím trasu a možnosti a termín aj cenu vám potvrdím (alebo navrhnem iný čas). Otváram SMS...",
+            conflict: "⚠️ V blízkosti zvoleného času už mám inú jazdu alebo je termín blokovaný. Dostupnosť musím najprv preveriť. Žiadosť môžete odoslať aj tak – termín vám následne potvrdím alebo navrhnem iný čas.",
             clear: "✅ Zvolený čas je momentálne možné dopytovať. Konečnú dostupnosť a cenu ešte potvrdím. Otváram SMS...",
-            outside: "🕒 Zvolený čas je mimo mojich bežných časov odvozov. Žiadosť môžete odoslať aj tak – dostupnosť vám potvrdím individuálne. Otváram SMS...",
-            weekend: "📅 Víkendové jazdy sú po dohode vopred. Žiadosť môžete odoslať – dostupnosť a cenu vám potvrdím individuálne. Otváram SMS...",
-            unknown: "ℹ️ Dostupnosť sa nepodarilo automaticky overiť. Žiadosť môžete odoslať aj tak, termín potvrdím ručne. Otváram SMS...",
+            outside: "🕒 Zvolený čas je mimo mojich bežných časov odvozov. Dostupnosť musím potvrdiť individuálne. Ak chcete, môžete napriek tomu odoslať nezáväzný dopyt.",
+            weekend: "📅 Víkendové jazdy sú po dohode vopred. Dostupnosť a cenu vám musím najprv potvrdiť. Ak chcete, môžete odoslať nezáväzný dopyt.",
+            unknown: "ℹ️ Dostupnosť sa nepodarilo automaticky overiť. Termín preto musím preveriť ručne. Ak chcete, môžete napriek tomu odoslať nezáväzný dopyt.",
             missing: "Vyplňte, prosím, dátum a čas jazdy.",
             missingRoute: "Vyplňte, prosím, odkiaľ a kam máte záujem o odvoz.",
             passengerCount: "Vyberte, prosím, 1 až 4 osoby.",
             childCount: "Počet detí nemôže byť vyšší ako celkový počet osôb.",
             childEquipmentMissing: "Vyberte, prosím, vybavenie pre každé dieťa.",
             childEquipmentLimit: "Pre jednu objednávku je k dispozícii najviac 1× sedačka 9–36 kg a 1× podsedák 22–36 kg.",
-            child: "Dieťa"
+            child: "Dieťa",
+            sendAnyway: "Odoslať dopyt aj tak"
         }
         : {
             checking: "Checking current availability...",
-            conflict: "⚠️ I already have another ride around that time or the period is blocked. You can still send your request – I'll check the route and confirm the time and price (or suggest another time). Opening SMS...",
+            conflict: "⚠️ I already have another ride around that time or the period is blocked. I need to check availability first. You can still send a request – I will then confirm the time or suggest another one.",
             clear: "✅ The selected time can currently be requested. Final availability and price will still be confirmed. Opening SMS...",
-            outside: "🕒 The selected time is outside my usual ride times. You can still send the request – I will confirm availability individually. Opening SMS...",
-            weekend: "📅 Weekend rides are available by prior arrangement. You can send the request and I will confirm availability and price individually. Opening SMS...",
-            unknown: "ℹ️ Could not automatically verify availability. You can still send your request; I'll confirm manually. Opening SMS...",
+            outside: "🕒 The selected time is outside my usual ride times. I need to confirm availability individually. If you wish, you can still send a non-binding request.",
+            weekend: "📅 Weekend rides are available by prior arrangement. I need to confirm availability and price first. If you wish, you can send a non-binding request.",
+            unknown: "ℹ️ Availability could not be verified automatically. I therefore need to check the time manually. If you wish, you can still send a non-binding request.",
             missing: "Please fill in the date and time of the ride.",
             missingRoute: "Please fill in the pickup and destination.",
             passengerCount: "Please select 1 to 4 passengers.",
             childCount: "The number of children cannot exceed the total number of passengers.",
             childEquipmentMissing: "Please select the required equipment for every child.",
             childEquipmentLimit: "A maximum of 1× child seat 9–36 kg and 1× booster seat 22–36 kg is available per request.",
-            child: "Child"
+            child: "Child",
+            sendAnyway: "Send request anyway"
         };
 
     const smsFlag = lang === "sk"
@@ -390,6 +395,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1200);
     }
 
+    function showManualSmsChoice(resultBox, values, status) {
+        const actionWrap = document.createElement("div");
+        actionWrap.className = "booking-check-result-action";
+
+        const actionBtn = document.createElement("button");
+        actionBtn.type = "button";
+        actionBtn.className = "btn booking-check-send-anyway-btn";
+        actionBtn.textContent = labels.sendAnyway;
+
+        actionBtn.addEventListener("click", function () {
+            actionBtn.disabled = true;
+            openSms(values, status);
+        });
+
+        actionWrap.appendChild(actionBtn);
+        resultBox.appendChild(actionWrap);
+    }
+
     // ---------------------------------------------------------------------
     // Busy intervals
     // ---------------------------------------------------------------------
@@ -623,15 +646,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (status === "clear") {
                 resultBox.className = "booking-check-result booking-check-success";
-            } else if (status === "conflict") {
-                resultBox.className = "booking-check-result booking-check-warning";
-            } else {
-                resultBox.className = "booking-check-result booking-check-neutral";
-            }
 
-            setTimeout(function () {
-                openSms(values, status);
-            }, 700);
+                // Clear result: continue directly to the prepared SMS.
+                setTimeout(function () {
+                    openSms(values, status);
+                }, 700);
+            } else {
+                if (status === "conflict") {
+                    resultBox.className = "booking-check-result booking-check-warning";
+                } else {
+                    resultBox.className = "booking-check-result booking-check-neutral";
+                }
+
+                // Problematic / uncertain result: stop here so the customer
+                // has time to understand that the ride is NOT confirmed.
+                // SMS opens only after an explicit second action.
+                showManualSmsChoice(resultBox, values, status);
+            }
 
         } catch (error) {
             console.error("Booking availability check failed:", error);
@@ -639,9 +670,9 @@ document.addEventListener("DOMContentLoaded", function () {
             resultBox.textContent = labels.unknown;
             resultBox.className = "booking-check-result booking-check-neutral";
 
-            setTimeout(function () {
-                openSms(values, "unknown");
-            }, 700);
+            // Fail-safe: do not jump straight into SMS when availability
+            // could not be checked. Require an explicit customer action.
+            showManualSmsChoice(resultBox, values, "unknown");
 
         } finally {
             submitBtn.disabled = false;

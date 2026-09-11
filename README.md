@@ -564,7 +564,7 @@ Web: **https://www.erinkataxi.sk/**
 
 Both SK and EN pages display a small deployment identifier in the bottom-right corner of the footer:
 
-`v3.1.0 • build 2026-09-11.3`
+`v3.1.0 • build 2026-09-11.4`
 
 The release version may remain unchanged while the build suffix is incremented for test deployments. This makes it easy to confirm which GitHub Pages deployment is currently loaded, including on cached mobile browsers.
 
@@ -573,10 +573,10 @@ The release version may remain unchanged while the build suffix is incremented f
 Build `build 2026-09-11.3` uses explicit version query strings for the shared JavaScript files:
 
 ```html
-<script src="availability.js?v=3.1.0-20260911.3"></script>
-<script src="booking-check.js?v=3.1.0-20260911.3"></script>
-<script src="status.js?v=3.1.0-20260911.3"></script>
-<script src="reviews.js?v=3.1.0-20260911.3"></script>
+<script src="availability.js?v=3.1.0-20260911.4"></script>
+<script src="booking-check.js?v=3.1.0-20260911.4"></script>
+<script src="status.js?v=3.1.0-20260911.4"></script>
+<script src="reviews.js?v=3.1.0-20260911.4"></script>
 ```
 
 The English page uses the same version with `../` paths.
@@ -593,3 +593,17 @@ Current availability priority remains:
 6. otherwise -> outside usual hours
 
 A deliberate Extra availability slot can therefore override a general holiday/long-term closure, while a concrete busy booking always wins.
+
+### Two-step SMS flow for uncertain availability
+
+Build `2026-09-11.4` changes the ride-request UX so customers have time to understand an uncertain result before the SMS app opens.
+
+- `clear` -> show the green result and open the prepared SMS automatically
+- `conflict` -> show the warning and require **Send request anyway**
+- `outside` -> show the outside-usual-hours message and require **Send request anyway**
+- `weekend` -> show the weekend/by-arrangement message and require **Send request anyway**
+- `unknown` -> fail safe; show that availability could not be verified and require **Send request anyway**
+
+The second action does not confirm a booking. It only opens the same non-binding SMS request. The driver still verifies availability and price, and the booking exists only after mutual confirmation.
+
+The main form button is now labelled **Skontrolovať dostupnosť / Check availability**, because submitting the form no longer always opens SMS immediately.
