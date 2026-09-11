@@ -1,5 +1,7 @@
 // Erinka Taxi - shared availability data and renderer for SK/EN pages.
-// Short-term availability is loaded automatically from Google Calendar.
+// Short-term busy availability is loaded automatically from Google Calendar.
+// The API may also return extraAvailable intervals from a private second calendar.
+// extraAvailable is intentionally NOT rendered publicly here; it is used only by booking-check.js.
 // Edit only the longTerm block below for holidays / longer closures.
 
 const AVAILABILITY_API =
@@ -164,6 +166,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const data = await response.json();
 
+        // Public notice renders only occupied slots. Private extraAvailable
+        // intervals must never be exposed as a public timetable.
         return (data.busy || []).map(function (slot) {
             const start = new Date(slot.start);
             const end = new Date(slot.end);

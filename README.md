@@ -96,7 +96,8 @@ Legacy `online` and `busy` status values remain supported by the backend for com
 
 Availability is split into two independent layers:
 
-- **short-term availability** — loaded automatically from Google Calendar,
+- **short-term busy availability** — loaded automatically from the main Google Calendar,
+- **private extra availability** — loaded from a separate Google Calendar and used only by the booking checker,
 - **long-term availability** — maintained manually in `availability.js` for holidays and longer closures.
 
 This means ordinary booked rides no longer have to be entered manually into the website.
@@ -129,7 +130,9 @@ so short-term busy periods are loaded for the upcoming **31 days**.
 
 The calendar remains the operational source of truth for ordinary bookings. A ride entered into the Erinka Taxi Google Calendar automatically becomes visible on the website as an occupied time slot.
 
-The website receives only busy time intervals. Event names, passenger details, route information, notes and other private calendar content are not rendered on the public website.
+The website receives only the time intervals needed for availability decisions. Event names, passenger details, route information, notes and other private calendar content are not rendered on the public website.
+
+A second private calendar can provide `extraAvailable` intervals. Those intervals are used only by `booking-check.js` and are intentionally not rendered in the public availability list.
 
 ### Calendar backend
 
@@ -142,6 +145,30 @@ The calendar integration uses:
 - the Google Calendar `freeBusy` data model.
 
 Credentials and private keys are stored outside the public repository and must never be committed to GitHub.
+
+
+### Extra-availability calendar
+
+Exceptional availability outside the usual public schedule is managed through a second private Google Calendar, for example `Erinka Taxi – Extra availability`.
+
+The Worker uses Google Calendar FreeBusy for both calendars:
+
+- main Erinka Taxi calendar `busy` intervals → `busy[]`,
+- extra-availability calendar `busy` intervals → `extraAvailable[]`.
+
+The second calendar is deliberately interpreted in reverse: an event there opens a private one-off availability window for the booking checker.
+
+The `/availability` endpoint is expected to return:
+
+```json
+{
+  "busy": [],
+  "extraAvailable": []
+}
+```
+
+`availability.js` publicly renders only `busy[]`. `extraAvailable[]` remains invisible as a timetable and is used only by `booking-check.js`.
+
 
 ### Short-term rendering
 
@@ -234,8 +261,11 @@ The selected ride time is always interpreted in the `Europe/Bratislava` timezone
 
 Before opening the SMS application, the website checks the requested time against:
 
-- short-term busy intervals from Google Calendar,
-- manually configured long-term closures.
+- the usual weekday ride times (`03:00–08:00` and `16:00–22:00`),
+- short-term busy intervals from the main Google Calendar,
+- private extra-availability intervals from the second Google Calendar,
+- manually configured long-term closures,
+- the weekend rule (`by prior arrangement`).
 
 The request is checked using an approximate time window:
 
@@ -246,8 +276,10 @@ requested time + 30 minutes
 
 The result can be:
 
-- **no conflict detected**,
-- **possible time conflict**,
+- **time can currently be requested** — inside usual weekday hours or inside an extra-availability interval,
+- **possible time conflict / blocked period**,
+- **outside usual ride times** — request can still be sent for individual confirmation,
+- **weekend / by prior arrangement**,
 - **availability could not be verified**.
 
 The check is advisory only. It never blocks the customer from sending the SMS.
@@ -272,7 +304,7 @@ Booking is confirmed
 
 A request is therefore not considered a confirmed reservation until availability and price have been agreed by both sides.
 
-The generated SMS includes a status flag for the driver so a possible calendar conflict is immediately visible when the message is received.
+The generated SMS starts with the universal marker `[ERINKA TAXI / REQUEST]` and includes a status flag so website-generated requests are easy to recognize and search in the messaging app.
 
 ## Customer reviews
 
@@ -405,7 +437,7 @@ Stable website versions are marked using GitHub release tags. Earlier developmen
 | `v2.7.0` | Live driver status, customer reviews, updated price lists, transport regulations and further availability/layout improvements |
 | `v2.8.0` | Extended live status system with separate available, driving, booking and offline states |
 | `v3.0.0` | Google Calendar powered short-term availability, Cloudflare Worker calendar API integration, automatic booked-slot rendering and compact availability layout |
-| `v3.1.0` | Quick SMS ride request with calendar conflict pre-check, sticky contact controls, timezone-safe booking logic and flexible route-based pricing |
+| `v3.1.0` | Quick SMS ride request, usual-hours + private extra-availability pre-check, sticky contact controls, timezone-safe booking logic and flexible route-based pricing |
 
 The current stable release is **v3.1.0**.
 
@@ -433,11 +465,14 @@ The `v3.1.0` release extends the calendar-based availability system with a custo
 - total passenger count (1–4) with a dependent “of which children” selector
 - dynamic per-child equipment selection when one or more children are entered
 - optional luggage, pet and flight-number information
-- advisory calendar conflict pre-check before opening SMS
+- advisory availability pre-check before opening SMS
+- usual weekday ride-time logic
+- private extra-availability support through a second Google Calendar
 - combined conflict checking against Google Calendar and long-term closures
 - `Europe/Bratislava` timezone-safe interpretation of requested ride times
 - approximate conflict window of **15 minutes before** and **30 minutes after** the requested pickup time
-- SMS status flag for possible conflict / clear / unavailable verification
+- universal `[ERINKA TAXI / REQUEST]` SMS prefix
+- SMS status flag for possible conflict / available / outside usual hours / weekend / unavailable verification
 - visible availability API error message instead of silently hiding unavailable calendar data
 - `TaxiService` structured data in both language versions
 

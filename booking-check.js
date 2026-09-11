@@ -1,9 +1,11 @@
-// Erinka Taxi - non-binding SMS ride request with availability conflict pre-check.
+// Erinka Taxi - non-binding SMS ride request with availability pre-check.
 //
-// IMPORTANT: This check NEVER blocks sending the SMS. The website only marks
-// whether the requested time overlaps with a known busy interval. A booking is
-// confirmed only after the driver verifies availability and price and the
-// customer confirms the offer.
+// The check combines usual ride times, busy intervals from the main Google
+// Calendar, private extraAvailable intervals from a second Google Calendar,
+// and manually configured long-term closures.
+//
+// IMPORTANT: This check NEVER blocks sending the SMS. A booking is confirmed
+// only after the driver verifies availability and price and the customer confirms.
 //
 // availability.js must be loaded before this file because this script uses:
 //   - AVAILABILITY_API
@@ -25,6 +27,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const PHONE = "+421914208898";
     const TIME_ZONE = "Europe/Bratislava";
     const MAX_PASSENGERS = 4;
+    const SMS_PREFIX = "[ERINKA TAXI / REQUEST]";
+
+    // Usual public weekday pickup windows. Extra availability can open
+    // additional one-off time periods without publishing the reason.
+    const WEEKDAY_USUAL_WINDOWS = [
+        { start: "03:00", end: "08:00" },
+        { start: "16:00", end: "22:00" }
+    ];
 
     // Approximate window around the requested pickup time used only for the
     // advisory conflict check.
@@ -88,9 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const labels = lang === "sk"
         ? {
-            checking: "Kontrolujem dostupnosť...",
-            conflict: "⚠️ V blízkosti zvoleného času už mám inú jazdu. Vašu žiadosť môžete pokojne odoslať – dostupnosť preverím podľa trasy a termín aj cenu vám potvrdím (alebo navrhnem iný čas). Otváram SMS...",
-            clear: "✅ Bez zistenej časovej kolízie. Otváram SMS s vašou žiadosťou o jazdu...",
+            checking: "Kontrolujem aktuálnu dostupnosť...",
+            conflict: "⚠️ V blízkosti zvoleného času už mám inú jazdu alebo je termín blokovaný. Žiadosť môžete odoslať aj tak – preverím trasu a možnosti a termín aj cenu vám potvrdím (alebo navrhnem iný čas). Otváram SMS...",
+            clear: "✅ Zvolený čas je momentálne možné dopytovať. Konečnú dostupnosť a cenu ešte potvrdím. Otváram SMS...",
+            outside: "🕒 Zvolený čas je mimo mojich bežných časov odvozov. Žiadosť môžete odoslať aj tak – dostupnosť vám potvrdím individuálne. Otváram SMS...",
+            weekend: "📅 Víkendové jazdy sú po dohode vopred. Žiadosť môžete odoslať – dostupnosť a cenu vám potvrdím individuálne. Otváram SMS...",
             unknown: "ℹ️ Dostupnosť sa nepodarilo automaticky overiť. Žiadosť môžete odoslať aj tak, termín potvrdím ručne. Otváram SMS...",
             missing: "Vyplňte, prosím, dátum a čas jazdy.",
             missingRoute: "Vyplňte, prosím, odkiaľ a kam máte záujem o odvoz.",
@@ -101,9 +113,11 @@ document.addEventListener("DOMContentLoaded", function () {
             child: "Dieťa"
         }
         : {
-            checking: "Checking availability...",
-            conflict: "⚠️ I already have another ride around that time. You can still send your request – I'll check the route and confirm the time and price (or suggest another time). Opening SMS...",
-            clear: "✅ No conflict detected. Opening SMS with your request...",
+            checking: "Checking current availability...",
+            conflict: "⚠️ I already have another ride around that time or the period is blocked. You can still send your request – I'll check the route and confirm the time and price (or suggest another time). Opening SMS...",
+            clear: "✅ The selected time can currently be requested. Final availability and price will still be confirmed. Opening SMS...",
+            outside: "🕒 The selected time is outside my usual ride times. You can still send the request – I will confirm availability individually. Opening SMS...",
+            weekend: "📅 Weekend rides are available by prior arrangement. You can send the request and I will confirm availability and price individually. Opening SMS...",
             unknown: "ℹ️ Could not automatically verify availability. You can still send your request; I'll confirm manually. Opening SMS...",
             missing: "Please fill in the date and time of the ride.",
             missingRoute: "Please fill in the pickup and destination.",
@@ -116,13 +130,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const smsFlag = lang === "sk"
         ? {
-            conflict: "POZOR - MOZNA CASOVA KOLIZIA (overim a potvrdim)",
-            clear: "BEZ ZISTENEJ CASOVEJ KOLIZIE",
+            conflict: "POZOR - MOZNA CASOVA KOLIZIA / BLOKOVANY TERMIN (overim a potvrdim)",
+            clear: "TERMIN JE MOZNE DOPYTOVAT - dostupnost a cenu potvrdim",
+            outside: "MIMO BEZNYCH CASOV - dostupnost potvrdim individualne",
+            weekend: "VIKEND - po dohode vopred, dostupnost potvrdim",
             unknown: "DOSTUPNOST NEOVERENA - potvrdim rucne"
         }
         : {
-            conflict: "WARNING - POSSIBLE TIME CONFLICT (will confirm)",
-            clear: "NO CONFLICT DETECTED",
+            conflict: "WARNING - POSSIBLE TIME CONFLICT / BLOCKED PERIOD (will confirm)",
+            clear: "TIME CAN BE REQUESTED - availability and price will be confirmed",
+            outside: "OUTSIDE USUAL HOURS - availability will be confirmed individually",
+            weekend: "WEEKEND - by prior arrangement, availability will be confirmed",
             unknown: "AVAILABILITY NOT VERIFIED - will confirm manually"
         };
 
@@ -351,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Flight number: " + (values.flight || "-")
             ]);
 
-        return [flagLine, ""].concat(requestLines).join("\n");
+        return [SMS_PREFIX, flagLine, ""].concat(requestLines).join("\n");
     }
 
     function openSms(values, status) {
@@ -393,7 +411,18 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    async function getShortTermIntervals() {
+    function normalizeIntervals(items) {
+        return (items || []).map(function (slot) {
+            return {
+                start: new Date(slot.start),
+                end: new Date(slot.end)
+            };
+        }).filter(function (slot) {
+            return !isNaN(slot.start.getTime()) && !isNaN(slot.end.getTime());
+        });
+    }
+
+    async function getCalendarAvailability() {
         if (typeof AVAILABILITY_API === "undefined") {
             throw new Error("AVAILABILITY_API is not defined");
         }
@@ -406,11 +435,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const data = await response.json();
 
-        return (data.busy || []).map(function (slot) {
-            return {
-                start: new Date(slot.start),
-                end: new Date(slot.end)
-            };
+        return {
+            busy: normalizeIntervals(data.busy),
+            extraAvailable: normalizeIntervals(data.extraAvailable)
+        };
+    }
+
+    function timeToMinutes(value) {
+        const parts = value.split(":");
+        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    }
+
+    function getWallClockWeekday(dateStr) {
+        return new Date(dateStr + "T00:00:00Z").getUTCDay();
+    }
+
+    function isWithinUsualRideTimes(dateStr, timeStr) {
+        const weekday = getWallClockWeekday(dateStr);
+
+        if (weekday === 0 || weekday === 6) {
+            return false;
+        }
+
+        const minutes = timeToMinutes(timeStr);
+
+        return WEEKDAY_USUAL_WINDOWS.some(function (window) {
+            const start = timeToMinutes(window.start);
+            const end = timeToMinutes(window.end);
+            return minutes >= start && minutes <= end;
+        });
+    }
+
+    function isWeekend(dateStr) {
+        const weekday = getWallClockWeekday(dateStr);
+        return weekday === 0 || weekday === 6;
+    }
+
+    function isInsideInterval(candidate, intervals) {
+        const value = candidate.getTime();
+
+        return intervals.some(function (interval) {
+            return value >= interval.start.getTime() && value <= interval.end.getTime();
         });
     }
 
@@ -523,16 +588,37 @@ document.addEventListener("DOMContentLoaded", function () {
         resultBox.className = "booking-check-result booking-check-info";
 
         try {
-            const shortTerm = await getShortTermIntervals();
+            const calendarAvailability = await getCalendarAvailability();
             const longTerm = getLongTermIntervals();
-            const allIntervals = shortTerm.concat(longTerm);
 
-            const conflict = hasWindowConflict(candidate, allIntervals);
-            const status = conflict ? "conflict" : "clear";
+            const busyConflict = hasWindowConflict(candidate, calendarAvailability.busy);
+            const longTermConflict = hasWindowConflict(candidate, longTerm);
+            const extraAvailable = isInsideInterval(candidate, calendarAvailability.extraAvailable);
+            const usualTime = isWithinUsualRideTimes(dateVal, timeVal);
+            const weekend = isWeekend(dateVal);
+
+            let status;
+
+            // Explicit blocks always win over standard or extra availability.
+            if (busyConflict || longTermConflict) {
+                status = "conflict";
+            } else if (extraAvailable || usualTime) {
+                status = "clear";
+            } else if (weekend) {
+                status = "weekend";
+            } else {
+                status = "outside";
+            }
 
             resultBox.textContent = labels[status];
-            resultBox.className = "booking-check-result " +
-                (conflict ? "booking-check-warning" : "booking-check-success");
+
+            if (status === "clear") {
+                resultBox.className = "booking-check-result booking-check-success";
+            } else if (status === "conflict") {
+                resultBox.className = "booking-check-result booking-check-warning";
+            } else {
+                resultBox.className = "booking-check-result booking-check-neutral";
+            }
 
             setTimeout(function () {
                 openSms(values, status);
