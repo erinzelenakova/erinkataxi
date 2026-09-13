@@ -564,7 +564,7 @@ Web: **https://www.erinkataxi.sk/**
 
 Both SK and EN pages display a small deployment identifier in the bottom-right corner of the footer:
 
-`v3.1.0 • build 2026-09-11.4`
+`v3.1.0 • build 2026-09-11.5`
 
 The release version may remain unchanged while the build suffix is incremented for test deployments. This makes it easy to confirm which GitHub Pages deployment is currently loaded, including on cached mobile browsers.
 
@@ -573,10 +573,10 @@ The release version may remain unchanged while the build suffix is incremented f
 Build `build 2026-09-11.3` uses explicit version query strings for the shared JavaScript files:
 
 ```html
-<script src="availability.js?v=3.1.0-20260911.4"></script>
-<script src="booking-check.js?v=3.1.0-20260911.4"></script>
-<script src="status.js?v=3.1.0-20260911.4"></script>
-<script src="reviews.js?v=3.1.0-20260911.4"></script>
+<script src="availability.js?v=3.1.0-20260911.5"></script>
+<script src="booking-check.js?v=3.1.0-20260911.5"></script>
+<script src="status.js?v=3.1.0-20260911.5"></script>
+<script src="reviews.js?v=3.1.0-20260911.5"></script>
 ```
 
 The English page uses the same version with `../` paths.
@@ -607,3 +607,7 @@ Build `2026-09-11.4` changes the ride-request UX so customers have time to under
 The second action does not confirm a booking. It only opens the same non-binding SMS request. The driver still verifies availability and price, and the booking exists only after mutual confirmation.
 
 The main form button is now labelled **Skontrolovať dostupnosť / Check availability**, because submitting the form no longer always opens SMS immediately.
+
+### Contact button accessibility – build 2026-09-11.5
+
+The fixed bottom Call and SMS actions now use monochrome inline SVG outline icons instead of system emoji. Only these two sticky contact icons changed; booking, availability and calendar logic remain unchanged.

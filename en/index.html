@@ -1152,6 +1152,19 @@
             font-weight: 600;
         }   
     }
+
+    .sticky-action-icon {
+        width: 26px;
+        height: 26px;
+        flex: 0 0 26px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.15;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+    .sticky-action-dot { fill: currentColor; stroke: none; }
+
 </style>
 </head>
 
@@ -1475,7 +1488,7 @@
 
     <footer>
         <p>© 2025-2026 Erinka Taxi</p>
-        <span class="site-build" aria-label="Site version v3.1.0 • build 2026-09-11.4">v3.1.0 • build 2026-09-11.4</span>
+        <span class="site-build" aria-label="Site version v3.1.0 • build 2026-09-11.5">v3.1.0 • build 2026-09-11.5</span>
     </footer>
 
     <div id="booking-check-panel" class="booking-check-panel" hidden>
@@ -1662,8 +1675,8 @@
     </div>
 
     <div class="sticky-cta">
-        <a href="tel:+421914208898" class="sticky-call">📞 Call</a>
-        <button type="button" id="open-booking-check" class="sticky-sms">💬 SMS</button>
+        <a href="tel:+421914208898" class="sticky-call"><svg class="sticky-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92z"/></svg> Call</a>
+        <button type="button" id="open-booking-check" class="sticky-sms"><svg class="sticky-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><circle cx="8" cy="11" r="0.8" class="sticky-action-dot"/><circle cx="12" cy="11" r="0.8" class="sticky-action-dot"/><circle cx="16" cy="11" r="0.8" class="sticky-action-dot"/></svg> SMS</button>
     </div>
 
     <script>
@@ -1675,10 +1688,10 @@
             }
         }
     </script>
-    <script src="../availability.js?v=3.1.0-20260911.4"></script>
-    <script src="../booking-check.js?v=3.1.0-20260911.4"></script>
-    <script src="../status.js?v=3.1.0-20260911.4"></script>    
-    <script src="../reviews.js?v=3.1.0-20260911.4"></script>
+    <script src="../availability.js?v=3.1.0-20260911.5"></script>
+    <script src="../booking-check.js?v=3.1.0-20260911.5"></script>
+    <script src="../status.js?v=3.1.0-20260911.5"></script>    
+    <script src="../reviews.js?v=3.1.0-20260911.5"></script>
 </body>
 
 </html>
