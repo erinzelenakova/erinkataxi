@@ -564,7 +564,7 @@ Web: **https://www.erinkataxi.sk/**
 
 Both SK and EN pages display a small deployment identifier in the bottom-right corner of the footer:
 
-`v3.1.0 • build 2026-09-11.5`
+`v3.1.1 • build 2026-09-14.8`
 
 The release version may remain unchanged while the build suffix is incremented for test deployments. This makes it easy to confirm which GitHub Pages deployment is currently loaded, including on cached mobile browsers.
 
@@ -573,10 +573,10 @@ The release version may remain unchanged while the build suffix is incremented f
 Build `build 2026-09-11.3` uses explicit version query strings for the shared JavaScript files:
 
 ```html
-<script src="availability.js?v=3.1.0-20260911.5"></script>
-<script src="booking-check.js?v=3.1.0-20260911.5"></script>
-<script src="status.js?v=3.1.0-20260911.5"></script>
-<script src="reviews.js?v=3.1.0-20260911.5"></script>
+<script src="availability.js?v=3.1.1-20260914.8"></script>
+<script src="booking-check.js?v=3.1.1-20260914.8"></script>
+<script src="status.js?v=3.1.1-20260914.8"></script>
+<script src="reviews.js?v=3.1.1-20260914.8"></script>
 ```
 
 The English page uses the same version with `../` paths.
@@ -611,3 +611,75 @@ The main form button is now labelled **Skontrolovať dostupnosť / Check availab
 ### Contact button accessibility – build 2026-09-11.5
 
 The fixed bottom Call and SMS actions now use monochrome inline SVG outline icons instead of system emoji. Only these two sticky contact icons changed; booking, availability and calendar logic remain unchanged.
+
+## v3.1.1 – Save & Share
+
+Build `2026-09-14.1` adds two lightweight actions directly below the main phone and email contact row:
+
+- **❤️ Save contact / Uložiť kontakt** downloads `erinka-taxi.vcf` with the Erinka Taxi name, phone, email and website.
+- **↗ Share / Zdieľať** uses the native Web Share API where supported.
+- If native sharing is unavailable, the site falls back to copying the website URL, then to a manual copy prompt.
+- Slovak and English pages are both supported.
+- The fixed bottom Call / SMS bar remains unchanged.
+- Booking, Google Calendar availability and Worker logic remain unchanged.
+
+### Branding assets – build 2026-09-14.2
+
+- Added the official Erinka Taxi logo as browser/favicon branding.
+- Added Apple Touch Icon and 192/512 px icon assets for mobile use.
+- Added the Erinka Taxi logo as the embedded contact photo in `erinka-taxi.vcf`.
+- Save & Share functionality is unchanged.
+- Booking, availability, Google Calendar and Worker logic remain unchanged.
+
+### Save & Share polish – build 2026-09-14.3
+
+- Reduced the visual size of the Save contact heart and Share arrow.
+- Corrected the vCard identity and added the driver's personal/business name.
+- vCard display name: `Ing. Erin Zelenakova - ERINKA`.
+- vCard organization: `Ing. Erin Zelenakova - ERINKA / Erinka Taxi`.
+- Retained the Erinka Taxi logo as the embedded contact photo.
+- Booking, availability, Google Calendar and Worker logic remain unchanged.
+
+### Final vCard naming – build 2026-09-14.4
+
+- Final customer-facing saved-contact name is `Erinka Taxi`.
+- The personal/business identity `Ing. Erin Zelenakova - ERINKA` remains supplementary metadata.
+- The Erinka Taxi logo remains embedded as the contact photo.
+- Retains the smaller Save/Share symbols introduced in build `.3`.
+- Booking, availability, Google Calendar and Worker logic remain unchanged.
+
+### Language-neutral vCard – build 2026-09-14.5
+
+- Removed the free-text note from `erinka-taxi.vcf`.
+- The same clean, language-neutral Erinka Taxi contact card is used by both SK and EN pages.
+- Contact name, logo, phone, email and website remain unchanged.
+- Booking, availability, Google Calendar and Worker logic remain unchanged.
+
+### Compact contact layout – build 2026-09-14.6
+
+- Reworked the Save & Share area into a compact two-column layout inspired by the selected “F” mockup.
+- Row 1: phone number on the left, Save contact on the right.
+- Row 2: email address on the left, Share on the right.
+- Reduced action-button height, padding and icon size, especially on mobile.
+- Preserved the existing vCard, logo, favicon and share behaviour.
+- The fixed bottom Call / SMS bar remains unchanged.
+- Booking, availability, Google Calendar and Worker logic remain unchanged.
+
+### Final responsive Save & Share layout – build 2026-09-14.8
+
+- Finalized the compact two-row contact/action layout:
+  - phone number + Save contact
+  - email address + Share
+- Desktop and tablet:
+  - center the entire contact/action block
+  - limit width to 620 px
+  - keep Save and Share aligned and visually secondary
+- Mobile:
+  - preserve the more spacious build `.6` proportions
+  - retain larger text and tap targets than build `.7`
+  - keep the compact two-column layout on iPhone-sized screens
+- The shared language-neutral vCard still saves as `Erinka Taxi`.
+- The Erinka Taxi logo remains embedded in the vCard and used for favicon / Apple touch branding.
+- Native Share API and clipboard/manual fallbacks remain unchanged.
+- Fixed bottom Call / SMS actions remain unchanged.
+- Booking, availability, Google Calendar, Extra Availability and Worker logic remain unchanged.
