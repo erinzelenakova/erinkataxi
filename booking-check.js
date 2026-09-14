@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const childrenInput = document.getElementById("booking-children");
     const childEquipmentGroup = document.getElementById("booking-child-equipment-group");
     const childEquipmentList = document.getElementById("booking-child-equipment-list");
+    const bookingDateInput = document.getElementById("booking-date");
 
     // ---------------------------------------------------------------------
     // Europe/Bratislava wall-clock time -> UTC
@@ -95,6 +96,26 @@ document.addEventListener("DOMContentLoaded", function () {
         return new Date(naiveUtcMs - offsetMs);
     }
 
+    function getDateStringInTimeZone(date, timeZone) {
+        const dtf = new Intl.DateTimeFormat("en-CA", {
+            timeZone: timeZone,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        });
+
+        const parts = dtf.formatToParts(date).reduce(function (acc, part) {
+            acc[part.type] = part.value;
+            return acc;
+        }, {});
+
+        return parts.year + "-" + parts.month + "-" + parts.day;
+    }
+
+    if (bookingDateInput) {
+        bookingDateInput.min = getDateStringInTimeZone(new Date(), TIME_ZONE);
+    }
+
     // ---------------------------------------------------------------------
     // Localized labels
     // ---------------------------------------------------------------------
@@ -108,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
             weekend: "📅 Víkendové jazdy sú po dohode vopred. Dostupnosť a cenu vám musím najprv potvrdiť. Ak chcete, môžete odoslať nezáväzný dopyt.",
             unknown: "ℹ️ Dostupnosť sa nepodarilo automaticky overiť. Termín preto musím preveriť ručne. Ak chcete, môžete napriek tomu odoslať nezáväzný dopyt.",
             missing: "Vyplňte, prosím, dátum a čas jazdy.",
+            past: "Zvolený dátum a čas už uplynul. Vyberte, prosím, budúci termín.",
             missingRoute: "Vyplňte, prosím, odkiaľ a kam máte záujem o odvoz.",
             passengerCount: "Vyberte, prosím, 1 až 4 osoby.",
             childCount: "Počet detí nemôže byť vyšší ako celkový počet osôb.",
@@ -124,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
             weekend: "📅 Weekend rides are available by prior arrangement. I need to confirm availability and price first. If you wish, you can send a non-binding request.",
             unknown: "ℹ️ Availability could not be verified automatically. I therefore need to check the time manually. If you wish, you can still send a non-binding request.",
             missing: "Please fill in the date and time of the ride.",
+            past: "The selected date and time has already passed. Please choose a future time.",
             missingRoute: "Please fill in the pickup and destination.",
             passengerCount: "Please select 1 to 4 passengers.",
             childCount: "The number of children cannot exceed the total number of passengers.",
@@ -589,6 +612,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (isNaN(candidate.getTime())) {
             resultBox.textContent = labels.missing;
+            resultBox.className = "booking-check-result booking-check-warning";
+            return;
+        }
+
+        // Reject past pickup times at minute precision.
+        const nowMinute = new Date();
+        nowMinute.setSeconds(0, 0);
+
+        if (candidate.getTime() < nowMinute.getTime()) {
+            resultBox.textContent = labels.past;
             resultBox.className = "booking-check-result booking-check-warning";
             return;
         }

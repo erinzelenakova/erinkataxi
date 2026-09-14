@@ -30,6 +30,8 @@ const titleElement = document.getElementById("reviews-title");
 const textElement = document.getElementById("review-text");
 
 let currentReview = 0;
+let reviewIntervalId = null;
+let reviewTransitionTimeoutId = null;
 
 
 function renderReview() {
@@ -40,18 +42,50 @@ function renderReview() {
 function nextReview() {
     textElement.classList.add("review-hidden");
 
-    setTimeout(() => {
+    reviewTransitionTimeoutId = setTimeout(() => {
         currentReview = (currentReview + 1) % data.reviews.length;
 
         renderReview();
 
         textElement.classList.remove("review-hidden");
+        reviewTransitionTimeoutId = null;
     }, 350);
 }
 
 
+function stopReviewRotation() {
+    if (reviewIntervalId !== null) {
+        clearInterval(reviewIntervalId);
+        reviewIntervalId = null;
+    }
+
+    if (reviewTransitionTimeoutId !== null) {
+        clearTimeout(reviewTransitionTimeoutId);
+        reviewTransitionTimeoutId = null;
+        textElement.classList.remove("review-hidden");
+    }
+}
+
+function startReviewRotation() {
+    stopReviewRotation();
+
+    if (document.hidden) {
+        return;
+    }
+
+    reviewIntervalId = setInterval(nextReview, 6000);
+}
+
 titleElement.textContent = data.title;
-
 renderReview();
+startReviewRotation();
 
-setInterval(nextReview, 6000);
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+        stopReviewRotation();
+        return;
+    }
+
+    // Keep the current review visible and start a fresh six-second cycle.
+    startReviewRotation();
+});

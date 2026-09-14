@@ -1,3 +1,6 @@
+let liveStatusPollId = null;
+let lastAnnouncedStatus = null;
+
 async function loadLiveStatus() {
     const box = document.getElementById("live-status");
     const title = document.getElementById("live-status-title");
@@ -96,19 +99,23 @@ async function loadLiveStatus() {
             status = "offline";
         }
 
-        box.classList.remove(
-            "live-status-loading",
-            "live-status-online",
-            "live-status-available",
-            "live-status-driving",
-            "live-status-booking",
-            "live-status-offline"
-        );
+        // Do not rewrite the live region on every poll. Screen readers
+        // should announce only a real rendered status change.
+        if (lastAnnouncedStatus !== status) {
+            box.classList.remove(
+                "live-status-loading",
+                "live-status-online",
+                "live-status-available",
+                "live-status-driving",
+                "live-status-booking",
+                "live-status-offline"
+            );
 
-        box.classList.add(`live-status-${status}`);
-
-        title.textContent = labels[lang][status].title;
-        detail.textContent = " " + labels[lang][status].detail;
+            box.classList.add(`live-status-${status}`);
+            title.textContent = labels[lang][status].title;
+            detail.textContent = " " + labels[lang][status].detail;
+            lastAnnouncedStatus = status;
+        }
 
     } catch (error) {
         console.error("Live status error:", error);
@@ -131,9 +138,36 @@ async function loadLiveStatus() {
                 : "Stav je dočasne nedostupný";
 
         detail.textContent = "";
+        lastAnnouncedStatus = "unavailable";
     }
 }
 
-loadLiveStatus();
+function stopLiveStatusPolling() {
+    if (liveStatusPollId !== null) {
+        clearInterval(liveStatusPollId);
+        liveStatusPollId = null;
+    }
+}
 
-setInterval(loadLiveStatus, 10000);
+function startLiveStatusPolling() {
+    stopLiveStatusPolling();
+
+    if (document.hidden) {
+        return;
+    }
+
+    liveStatusPollId = setInterval(loadLiveStatus, 30000);
+}
+
+loadLiveStatus();
+startLiveStatusPolling();
+
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+        stopLiveStatusPolling();
+        return;
+    }
+
+    loadLiveStatus();
+    startLiveStatusPolling();
+});

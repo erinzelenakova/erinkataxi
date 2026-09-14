@@ -18,7 +18,9 @@ The project is intentionally lightweight and static. It uses HTML5, embedded CSS
 ├── reviews.js              # Customer reviews data and renderer
 ├── cennik.pdf              # Slovak downloadable price list
 ├── Prepravny_poriadok_ErinkaTAXI_revizia_k_datumu_20260828.pdf
-├── IMG_8532.jpeg           # Profile photo
+├── IMG_8532.jpeg           # Original profile photo / fallback
+├── IMG_8532-800.webp       # Optimized profile photo for smaller screens
+├── IMG_8532-1200.webp      # Optimized profile photo for larger screens
 ├── sitemap.xml
 ├── robots.txt
 ├── CNAME
@@ -564,7 +566,7 @@ Web: **https://www.erinkataxi.sk/**
 
 Both SK and EN pages display a small deployment identifier in the bottom-right corner of the footer:
 
-`v3.1.1 • build 2026-09-14.8`
+`v3.1.2 • build 2026-09-14.1`
 
 The release version may remain unchanged while the build suffix is incremented for test deployments. This makes it easy to confirm which GitHub Pages deployment is currently loaded, including on cached mobile browsers.
 
@@ -573,10 +575,10 @@ The release version may remain unchanged while the build suffix is incremented f
 Build `build 2026-09-11.3` uses explicit version query strings for the shared JavaScript files:
 
 ```html
-<script src="availability.js?v=3.1.1-20260914.8"></script>
-<script src="booking-check.js?v=3.1.1-20260914.8"></script>
-<script src="status.js?v=3.1.1-20260914.8"></script>
-<script src="reviews.js?v=3.1.1-20260914.8"></script>
+<script src="availability.js?v=3.1.2-20260914.1"></script>
+<script src="booking-check.js?v=3.1.2-20260914.1"></script>
+<script src="status.js?v=3.1.2-20260914.1"></script>
+<script src="reviews.js?v=3.1.2-20260914.1"></script>
 ```
 
 The English page uses the same version with `../` paths.
@@ -683,3 +685,64 @@ Build `2026-09-14.1` adds two lightweight actions directly below the main phone 
 - Native Share API and clipboard/manual fallbacks remain unchanged.
 - Fixed bottom Call / SMS actions remain unchanged.
 - Booking, availability, Google Calendar, Extra Availability and Worker logic remain unchanged.
+
+
+## v3.1.2 – Reliability, performance & accessibility polish
+
+### Build 2026-09-14.1
+
+Focused maintenance release based on v3.1.1 build 2026-09-14.8.
+
+### Booking date/time protection
+
+- Set the booking date minimum dynamically using the `Europe/Bratislava` timezone.
+- Reject pickup dates/times that have already passed.
+- Keep a second JavaScript validation in addition to the browser date limit.
+- Validate at minute precision so the current minute remains usable while submitting.
+
+### Live driver status
+
+- Reduce polling from 10 seconds to 30 seconds.
+- Stop polling while the page/tab is hidden.
+- Refresh immediately when the customer returns, then resume the 30-second cadence.
+- Prevent duplicate polling intervals.
+- Rewrite the live region only when the rendered status actually changes.
+
+### Availability freshness
+
+- No cache was added between `availability.js` and `booking-check.js`.
+- The public availability display and the booking check intentionally remain separate.
+- The booking flow continues to fetch fresh data at submission time.
+- Private `extraAvailable` intervals remain private and available to booking logic.
+
+### Profile image optimization
+
+- Add `IMG_8532-800.webp`.
+- Add `IMG_8532-1200.webp`.
+- Keep the original `IMG_8532.jpeg` as fallback and for existing social/structured-data references.
+- Use responsive WebP `srcset` in both SK and EN pages.
+
+### Accessibility
+
+- Booking result: `role="status"`, `aria-live="polite"`, `aria-atomic="true"`.
+- Live driver status: same polite live-region behaviour.
+- Existing visual layout and primary Call / SMS actions remain unchanged.
+
+### Reviews
+
+- Pause automatic review rotation while the page/tab is hidden.
+- On return, keep the current review visible and begin a fresh 6-second cycle.
+- No previous/next arrows were added.
+
+### Unchanged
+
+- SMS request workflow and non-binding confirmation model
+- Google Calendar conflict checking
+- private Extra Availability calendar
+- manual long-term closures
+- child equipment logic
+- flexible pricing
+- Save Contact / vCard
+- Web Share
+- sticky Call / SMS actions
+- SK / EN page structure

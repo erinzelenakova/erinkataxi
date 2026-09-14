@@ -1444,7 +1444,7 @@
             <h2>Rezervácia jazdy alebo letiskového transferu</h2>
 
             <!-- LIVE STATUS -->
-            <div id="live-status" class="live-status live-status-loading status-skeleton">
+            <div id="live-status" class="live-status live-status-loading status-skeleton" role="status" aria-live="polite" aria-atomic="true">
                 <span class="live-status-dot"></span>
 
                 <span class="live-status-text">
@@ -1564,9 +1564,15 @@
             </section>
             <section class="profile-photo">
             
-                <img src="IMG_8532.jpeg"
-                     alt="Erinka Taxi - Ing. Erin Zeleňáková pri vozidle"
-                     loading="lazy" decoding="async">
+                <picture>
+                    <source type="image/webp"
+                            srcset="IMG_8532-800.webp 800w, IMG_8532-1200.webp 1200w"
+                            sizes="(max-width: 768px) 100vw, 720px">
+                    <img src="IMG_8532.jpeg"
+                         alt="Erinka Taxi - Ing. Erin Zeleňáková pri vozidle"
+                         width="1592" height="1289"
+                         loading="lazy" decoding="async">
+                </picture>
             
                 <p>
                     Teším sa na spoločnú jazdu.
@@ -1755,7 +1761,7 @@
 
     <footer>
         <p>© 2025-2026 Erinka Taxi</p>
-        <span class="site-build" aria-label="Site version v3.1.1 • build 2026-09-14.8">v3.1.1 • build 2026-09-14.8</span>
+        <span class="site-build" aria-label="Site version v3.1.2 • build 2026-09-14.1">v3.1.2 • build 2026-09-14.1</span>
     </footer>
 
     <div id="booking-check-panel" class="booking-check-panel" hidden>
@@ -1933,7 +1939,7 @@
                 <input type="text" id="booking-flight" placeholder="voliteľné, ak ide o transfer">
             </label>
 
-            <div id="booking-check-result" class="booking-check-result"></div>
+            <div id="booking-check-result" class="booking-check-result" role="status" aria-live="polite" aria-atomic="true"></div>
 
             <button type="submit" id="booking-check-submit" class="btn booking-check-submit-btn">
                 Skontrolovať dostupnosť
@@ -1955,10 +1961,10 @@
             }
         }
     </script>
-    <script src="availability.js?v=3.1.1-20260914.8"></script>
-    <script src="booking-check.js?v=3.1.1-20260914.8"></script>
-    <script src="status.js?v=3.1.1-20260914.8"></script>    
-    <script src="reviews.js?v=3.1.1-20260914.8"></script>
+    <script src="availability.js?v=3.1.2-20260914.1"></script>
+    <script src="booking-check.js?v=3.1.2-20260914.1"></script>
+    <script src="status.js?v=3.1.2-20260914.1"></script>    
+    <script src="reviews.js?v=3.1.2-20260914.1"></script>
 
     <script>
         (function () {
