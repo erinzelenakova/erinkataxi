@@ -14,18 +14,18 @@ const availabilityData = {
 
     longTerm: [
         {
-            date: "24. 09. – 11. 10. 2026",
+            date: "25. 11. – 29. 11. 2026",
             time: "",
             icon: "🌴",
     
-            startDate: "2026-09-24",
-            endDate: "2026-10-11",
+            startDate: "2026-11-25",
+            endDate: "2026-11-29",
     
             text_sk: "V tomto termíne budem na dovolenke.",
             text_en: "I will be on holiday during this period.",
     
-            nextAvailableDate: "12. 10. 2026",
-            nextAvailableTime: "04:00"
+            nextAvailableDate: "30. 11. 2026",
+            nextAvailableTime: "03:00"
         }
     ]
 };
